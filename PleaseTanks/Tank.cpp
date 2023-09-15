@@ -9,40 +9,46 @@
 
 #include "Tank.hpp"
 
-Tank::Tank(sf::Vector2<float> position) : speed(5.f), angularSpeed(5.f), gunAngularSpeed(5.f), size({200.f, 200.f}), hull({200.f, 200.f}), PhysicsBody({position.x, position.y}, 70.f) {
-    move(std::move(position));
+Tank::Tank(sf::Vector2<float> position) : speed(5.f), angularSpeed(5.f), gunAngularSpeed(5.f), size({200.f, 200.f}), hull(size), PhysicsBody({position.x, position.y}, 70.f), tracks(size) {
+    translate(std::move(position));
     hull.connectToJoint(&transform);
 }
 Tank::~Tank() {
 }
-void Tank::move(sf::Vector2<float>&& delta) {
-    transform.translate(delta.x, delta.y);
-}
 void Tank::moveFront() {
-    move({0.f, -speed});
+    translate({0.f, -speed});
 }
 void Tank::moveBack() {
-    move({0.f, speed});
+    translate({0.f, speed});
 }
 
 void Tank::rotateClock() {
-    transform.rotate(angularSpeed);
+    rotate(angularSpeed);
 }
 void Tank::rotateAntiClock() {
-    transform.rotate(-angularSpeed);
+    rotate(-angularSpeed);
 }
 
 void Tank::rotateGun(bool clockwise) {
-    
 }
 void Tank::rotateGunClock() {
-    
 }
 void Tank::rotateGunAntiClock() {
-    
+}
+
+void Tank::rotate(float degrees) {
+    transform.rotate(degrees);
+    hull.rotate(degrees);
+    tracks.rotate(degrees);
+}
+void Tank::translate(sf::Vector2<float> delta) {
+    transform.translate(delta.x, delta.y);
+    hull.translate(delta);
+    tracks.translate(delta);
 }
 
 void Tank::draw(sf::RenderWindow& window) {
-    hull.draw(window, &transform);
+    tracks.draw(window);
+    hull.draw(window);
 //    PhysicsBody::draw(window);
 }

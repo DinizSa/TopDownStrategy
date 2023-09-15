@@ -18,10 +18,12 @@ protected:
     
 public:
     PhysicsBody(sf::Vector2<float> position, float radius);
-    void translate(sf::Vector2<float> delta);
+    sf::Vector2<float> position();
+    virtual void translate(sf::Vector2<float> delta);
+    virtual void rotate(float degrees);
+    virtual void rotateWithCenter(float degrees, sf::Vector2<float> center);
     bool intersects(sf::Vector2<float> point);
     void connectToJoint(sf::Transform* jointTransform);
-    sf::Vector2<float> position();
     
 //    debug utils
     void draw(sf::RenderWindow& window);

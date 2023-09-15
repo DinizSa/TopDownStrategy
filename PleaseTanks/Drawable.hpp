@@ -17,6 +17,6 @@ protected:
     
 public:
     Drawable(sf::Vector2<float> size, const std::string&& texturePath);
-    virtual void draw(sf::RenderWindow& window);
+    virtual void draw(sf::RenderWindow& window) = 0;
     virtual void draw(sf::RenderWindow& window, const sf::Transform* transform);
 };

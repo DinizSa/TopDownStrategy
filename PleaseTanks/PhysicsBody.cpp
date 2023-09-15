@@ -21,6 +21,12 @@ void PhysicsBody::connectToJoint(sf::Transform* jointTransform) {
 }
 
 
+void PhysicsBody::rotate(float degrees) {
+    transform.rotate(degrees);
+}
+void PhysicsBody::rotateWithCenter(float degrees, sf::Vector2<float> center) {
+    transform.rotate(degrees, center);
+}
 void PhysicsBody::translate(sf::Vector2<float> delta) {
     transform.translate(delta.x, delta.y);
 }

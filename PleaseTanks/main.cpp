@@ -8,10 +8,7 @@ int main()
 {
     int windowWidth = 600;
     int windowHeight = 600;
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "SFML works!");
-//    sf::CircleShape shape(windowWidth/4);
-//    shape.setFillColor(sf::Color::Green);
-//    shape.setPosition(windowWidth/4, windowHeight/4);
+    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Please Tanks");
     
     int tankWidth = 200;
     int tankHeight = 200;
@@ -80,41 +77,21 @@ int main()
                         break;
                     case sf::Keyboard::Scan::E:
                         tank.rotateGunClock();
-//                        rectGun.rotate(gunAngularSpeed);
                         break;
                     case sf::Keyboard::Scan::Q:
                         tank.rotateAntiClock();
-//                        rectGun.rotate(-gunAngularSpeed);
                         break;
                     case sf::Keyboard::Scan::A:
                         tank.rotateAntiClock();
-//                        rectGun.rotate(-tracksAngularSpeed);
-//                        rectTrackA.rotate(-tracksAngularSpeed);
-//                        rectTrackB.rotate(-tracksAngularSpeed);
-//                        rectHull.rotate(-tracksAngularSpeed);
                         break;
                     case sf::Keyboard::Scan::D:
                         tank.rotateClock();
-//                        tankTransform.rotate(tracksAngularSpeed, rectGun.getPosition());
-                        
-//                        rectGun.rotate(tracksAngularSpeed);
-//                        rectTrackA.rotate(tracksAngularSpeed);
-//                        rectTrackB.rotate(tracksAngularSpeed);
-//                        rectHull.rotate(tracksAngularSpeed);
                         break;
                     case sf::Keyboard::Scan::S:
                         tank.moveBack();
-//                        rectGun.move(0, speed);
-//                        rectTrackA.move(0, speed);
-//                        rectTrackB.move(0, speed);
-//                        rectHull.move(0, speed);
                         break;
                     case sf::Keyboard::Scan::W:
                         tank.moveFront();
-//                        rectGun.move(0, -speed);
-//                        rectTrackA.move(0, -speed);
-//                        rectTrackB.move(0, -speed);
-//                        rectHull.move(0, -speed);
                         break;
                     default:
                         break;
@@ -125,10 +102,6 @@ int main()
 
         window.clear();
         tank.draw(window);
-//        window.draw(rectTrackA, tankTransform);
-//        window.draw(rectTrackB, tankTransform);
-//        window.draw(rectHull, tankTransform);
-//        window.draw(rectGun, tankTransform);
         window.display();
     }
 

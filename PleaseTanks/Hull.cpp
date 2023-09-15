@@ -10,7 +10,7 @@
 Hull::Hull(sf::Vector2<float> size) : Drawable(size, "/Users/Shared/merda/PleaseTanks/images/Hull_03.png"), PhysicsBody({0.f, 0.f}, 20.f) {
 }
 
-void Hull::draw(sf::RenderWindow& window, const sf::Transform* transform) {
-    Drawable::draw(window, transform);
+void Hull::draw(sf::RenderWindow& window) {
+    Drawable::draw(window, &transform);
     PhysicsBody::draw(window);
 }

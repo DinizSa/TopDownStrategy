@@ -17,10 +17,6 @@ Drawable::Drawable(sf::Vector2<float> size, const std::string&& texturePath) {
     rect.setOrigin({size.x/2, size.y/2});
 }
 
-void Drawable::draw(sf::RenderWindow& window) {
-    window.draw(rect);
-}
-
 void Drawable::draw(sf::RenderWindow& window, const sf::Transform* transform) {
     window.draw(rect, *transform);
 }

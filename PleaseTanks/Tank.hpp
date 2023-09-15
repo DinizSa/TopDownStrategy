@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Hull.hpp"
+#include "Tracks.hpp"
 #include <SFML/Graphics.hpp>
 
 class Tank : public PhysicsBody {
@@ -14,6 +15,7 @@ class Tank : public PhysicsBody {
     sf::Vector2<float> size;
     float speed, angularSpeed, gunAngularSpeed;
     Hull hull;
+    Tracks tracks;
 
 public:
     Tank(sf::Vector2<float> position);
@@ -26,6 +28,7 @@ public:
     void rotateGunAntiClock();
     void draw(sf::RenderWindow& window);
 private:
-    void move(sf::Vector2<float>&& delta);
     void rotateGun(bool clockwise);
+    void translate(sf::Vector2<float> delta) override;
+    void rotate(float degrees) override;
 };

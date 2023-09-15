@@ -12,5 +12,5 @@
 class Hull : public Drawable, public PhysicsBody {
 public:
     Hull(sf::Vector2<float> size);
-    void draw(sf::RenderWindow& window, const sf::Transform* transform) override;
+    virtual void draw(sf::RenderWindow& window);
 };
