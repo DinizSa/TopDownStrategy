@@ -13,6 +13,6 @@ Track::Track(sf::Vector2<float> size) : Drawable(size, "/Users/Shared/merda/Plea
 }
 
 void Track::draw(sf::RenderWindow& window) {
-    Drawable::draw(window, &transform);
+    Drawable::draw(window, &combinedTransform);
 //    PhysicsBody::draw(window);
 }

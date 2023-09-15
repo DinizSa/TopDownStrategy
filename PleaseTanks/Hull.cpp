@@ -11,6 +11,6 @@ Hull::Hull(sf::Vector2<float> size) : Drawable(size, "/Users/Shared/merda/Please
 }
 
 void Hull::draw(sf::RenderWindow& window) {
-    Drawable::draw(window, &transform);
-    PhysicsBody::draw(window);
+    Drawable::draw(window, &combinedTransform);
+//    PhysicsBody::draw(window);
 }

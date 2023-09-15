@@ -79,7 +79,7 @@ int main()
                         tank.rotateGunClock();
                         break;
                     case sf::Keyboard::Scan::Q:
-                        tank.rotateAntiClock();
+                        tank.rotateGunAntiClock();
                         break;
                     case sf::Keyboard::Scan::A:
                         tank.rotateAntiClock();

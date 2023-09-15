@@ -6,33 +6,51 @@
 //
 
 #include <cmath>
+#include <iostream>
 
 #include "PhysicsBody.hpp"
 
-PhysicsBody::PhysicsBody(sf::Vector2<float> position, float radius): debugColor(sf::Color(255,0,0,255)), jointTransform(nullptr) {
-    translate(position);
+PhysicsBody::PhysicsBody(sf::Vector2<float> position, float radius): debugColor(sf::Color(255,0,0,140)) {
+    translateWorld(position);
     circleShape.setFillColor(debugColor);
     circleShape.setRadius(radius);
     circleShape.setOrigin(radius, radius);
 }
 
-void PhysicsBody::connectToJoint(sf::Transform* jointTransform) {
-    this->jointTransform = jointTransform;
+// Local transform operations
+void PhysicsBody::rotateLocal(float degrees) {
+    localTransform.rotate(degrees, position());
+    updateCombinedTransform();
+}
+void PhysicsBody::rotateWithCenterLocal(float degrees, sf::Vector2<float> center) {
+    localTransform.rotate(degrees, center);
+    updateCombinedTransform();
+}
+void PhysicsBody::translateLocal(sf::Vector2<float> delta) {
+    localTransform.translate(delta.x, delta.y);
+    updateCombinedTransform();
 }
 
+// World transform operations
+void PhysicsBody::rotateWorld(float degrees) {
+    worldTransform.rotate(degrees);
+    updateCombinedTransform();
+}
+void PhysicsBody::rotateWithCenterWorld(float degrees, sf::Vector2<float> center) {
+    worldTransform.rotate(degrees, center);
+    updateCombinedTransform();
+}
+void PhysicsBody::translateWorld(sf::Vector2<float> delta) {
+    worldTransform.translate(delta.x, delta.y);
+    updateCombinedTransform();
+}
 
-void PhysicsBody::rotate(float degrees) {
-    transform.rotate(degrees);
-}
-void PhysicsBody::rotateWithCenter(float degrees, sf::Vector2<float> center) {
-    transform.rotate(degrees, center);
-}
-void PhysicsBody::translate(sf::Vector2<float> delta) {
-    transform.translate(delta.x, delta.y);
+void PhysicsBody::updateCombinedTransform() {
+    combinedTransform = localTransform * worldTransform;
 }
 
 sf::Vector2<float> PhysicsBody::position() {
-    return getGlobalTransform().transformPoint(0.f, 0.f);
+    return combinedTransform.transformPoint(0.f, 0.f);
 }
 
 bool PhysicsBody::intersects(sf::Vector2<float> point) {
@@ -42,15 +60,7 @@ bool PhysicsBody::intersects(sf::Vector2<float> point) {
     return sqrt(delta.x * delta.x + delta.y * delta.y) < radius;
 }
 
-sf::Transform PhysicsBody::getGlobalTransform() {
-    if (jointTransform != nullptr) {
-        return jointTransform->combine(transform);
-    }
-    return transform;
-}
-
-
 //    debug utils
 void PhysicsBody::draw(sf::RenderWindow& window) {
-    window.draw(circleShape, getGlobalTransform());
+    window.draw(circleShape, combinedTransform);
 }
