@@ -14,12 +14,12 @@ class Drawable {
 protected:
     sf::RectangleShape rect;
     sf::Texture texture;
-    sf::Vector2<float> origin;
-    sf::Transform localTransform;
     
 public:
     Drawable(sf::Vector2<float> size, const std::string&& texturePath);
     float getRotation();
+    void setRotationCenter(sf::Vector2<float> center);
+    
     void translate(float delta);
     void translate(float delta, float angle);
     void translate(sf::Vector2<float> deltaPosition);

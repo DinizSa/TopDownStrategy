@@ -14,8 +14,6 @@ private:
 //    float gunAngularSpeed;
 public:
     Gun(sf::Vector2<float> size);
-//    void translate(sf::Vector2<float> delta) override;
     void rotate(float degrees) override;
-    void rotateWithCenter(float degrees, sf::Vector2<float> center) override;
     void draw(sf::RenderWindow& window) override;
 };

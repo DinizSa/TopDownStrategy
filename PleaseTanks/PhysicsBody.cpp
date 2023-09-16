@@ -30,9 +30,6 @@ void PhysicsBody::translate(sf::Vector2<float> delta) {
 }
 
 bool PhysicsBody::intersects(sf::Vector2<float> point) {
-//    sf::Vector2<float> pos =  rect.getPosition();
-//    sf::Vector2<float> delta = pos - point;
-//    return sqrt(delta.x * delta.x + delta.y * delta.y) < radius;
     return true;
 }
 
