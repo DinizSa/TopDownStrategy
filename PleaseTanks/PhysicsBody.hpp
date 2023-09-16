@@ -11,21 +11,16 @@
 
 class PhysicsBody {
 protected:
-    sf::CircleShape circleShape;
+    sf::RectangleShape rect;
     sf::Color debugColor;
     sf::Transform localTransform;
-    sf::Transform worldTransform;
-    sf::Transform combinedTransform;
+    sf::Vector2<float> origin;
     
 public:
-    PhysicsBody(sf::Vector2<float> position, float radius);
-    sf::Vector2<float> position();
-    virtual void translateLocal(sf::Vector2<float> delta);
-    virtual void rotateLocal(float degrees);
-    virtual void rotateWithCenterLocal(float degrees, sf::Vector2<float> center);
-    virtual void translateWorld(sf::Vector2<float> delta);
-    virtual void rotateWorld(float degrees);
-    virtual void rotateWithCenterWorld(float degrees, sf::Vector2<float> center);
+    PhysicsBody(sf::Vector2<float> position, sf::Vector2<float> size, sf::Vector2<float> origin);
+    virtual void translate(sf::Vector2<float> delta);
+    virtual void rotate(float degrees);
+    virtual void rotateWithCenter(float degrees, sf::Vector2<float> center);
     bool intersects(sf::Vector2<float> point);
     
 //    debug utils

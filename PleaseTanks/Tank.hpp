@@ -30,7 +30,7 @@ public:
     void rotateGunAntiClock();
     void draw(sf::RenderWindow& window);
 private:
-    void rotateGun(float degrees);
+    void translate(float delta);
     void translate(sf::Vector2<float> delta);
     void rotate(float degrees);
 };

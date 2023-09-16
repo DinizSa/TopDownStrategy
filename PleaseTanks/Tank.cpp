@@ -15,10 +15,10 @@ Tank::Tank(sf::Vector2<float> position) : speed(5.f), angularSpeed(5.f), gunAngu
 Tank::~Tank() {
 }
 void Tank::moveFront() {
-    translate({0.f, -speed});
+    translate(-speed);
 }
 void Tank::moveBack() {
-    translate({0.f, speed});
+    translate(speed);
 }
 
 void Tank::rotateClock() {
@@ -28,24 +28,28 @@ void Tank::rotateAntiClock() {
     rotate(-angularSpeed);
 }
 
-void Tank::rotateGun(float degrees) {
-}
 void Tank::rotateGunClock() {
-    gun.rotateLocal(gunAngularSpeed);
+    gun.rotate(gunAngularSpeed);
 }
 void Tank::rotateGunAntiClock() {
-    gun.rotateLocal(-gunAngularSpeed);
+    gun.rotate(-gunAngularSpeed);
 }
 
 void Tank::rotate(float degrees) {
-    hull.rotateWorld(degrees);
+    hull.rotate(degrees);
     tracks.rotate(degrees);
-    gun.rotateWorld(degrees);
+    gun.rotate(degrees);
 }
 void Tank::translate(sf::Vector2<float> delta) {
-    hull.translateWorld(delta);
+    hull.translate(delta);
     tracks.translate(delta);
-    gun.translateWorld(delta);
+    gun.translate(delta);
+}
+void Tank::translate(float delta) {
+    hull.translate(delta);
+    tracks.translate(delta);
+//    gun.translate(delta);
+    gun.translate(delta, hull.getRotation());
 }
 
 void Tank::draw(sf::RenderWindow& window) {

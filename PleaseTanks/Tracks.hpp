@@ -21,5 +21,6 @@ public:
 
 //    put in interface to avoid unecessary specific cases
     void translate(sf::Vector2<float> delta);
+    void translate(float delta);
     void rotate(float degrees);
 };

@@ -9,10 +9,13 @@
 #include "Drawable.hpp"
 #include "PhysicsBody.hpp"
 
-class Gun : public Drawable, public PhysicsBody {
+class Gun : public Drawable {
 private:
 //    float gunAngularSpeed;
 public:
     Gun(sf::Vector2<float> size);
-    virtual void draw(sf::RenderWindow& window);
+//    void translate(sf::Vector2<float> delta) override;
+    void rotate(float degrees) override;
+    void rotateWithCenter(float degrees, sf::Vector2<float> center) override;
+    void draw(sf::RenderWindow& window) override;
 };
