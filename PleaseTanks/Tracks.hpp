@@ -7,13 +7,9 @@
 
 #pragma once
 #include "Drawable.hpp"
-#include "PhysicsBody.hpp"
 #include "Track.hpp"
 
 class Tracks {
-private:
-    sf::Vector2<float> deltaCenter;
-    
 public:
     Track trackA, trackB;
     Tracks(sf::Vector2<float> size);
@@ -22,5 +18,5 @@ public:
 //    put in interface to avoid unecessary specific cases
     void translate(sf::Vector2<float> delta);
     void translate(float delta);
-    void rotate(float degrees);
+    void rotate(float currentAngle, float degrees);
 };

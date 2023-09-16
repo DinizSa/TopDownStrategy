@@ -14,9 +14,10 @@ class Drawable {
 protected:
     sf::RectangleShape rect;
     sf::Texture texture;
+    sf::Vector2<float> deltaCenter;
     
 public:
-    Drawable(sf::Vector2<float> size, const std::string&& texturePath);
+    Drawable(sf::Vector2<float> size, sf::Vector2<float> deltaCenter, const std::string&& texturePath);
     float getRotation();
     void setRotationCenter(sf::Vector2<float> center);
     
@@ -24,6 +25,6 @@ public:
     void translate(float delta, float angle);
     void translate(sf::Vector2<float> deltaPosition);
     virtual void rotate(float deltaAngle);
-    virtual void rotateWithCenter(float degrees, sf::Vector2<float> center);
+    virtual void rotateAroundParent(float currentAngle, float degrees);
     virtual void draw(sf::RenderWindow& window);
 };

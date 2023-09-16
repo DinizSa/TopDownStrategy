@@ -8,7 +8,7 @@
 #include "Drawable.hpp"
 #include <cmath>
 
-Drawable::Drawable(sf::Vector2<float> size, const std::string&& texturePath) {
+Drawable::Drawable(sf::Vector2<float> size, sf::Vector2<float> deltaCenter, const std::string&& texturePath) : deltaCenter(deltaCenter) {
     
     rect.setSize({size.x, size.y});
     if (!texture.loadFromFile(texturePath)) {
@@ -16,6 +16,8 @@ Drawable::Drawable(sf::Vector2<float> size, const std::string&& texturePath) {
     }
     rect.setTexture(&texture);
     rect.setOrigin(size.x/2.f, size.y/2);
+    
+    translate(-deltaCenter);
 }
 
 void Drawable::setRotationCenter(sf::Vector2<float> center) {
@@ -44,14 +46,14 @@ void Drawable::translate(sf::Vector2<float> delta) {
 void Drawable::rotate(float deltaAngle) {
     rect.rotate(deltaAngle);
 }
-void Drawable::rotateWithCenter(float deltaAngle, sf::Vector2<float> center) {
-    float rot0 = rect.getRotation();
+void Drawable::rotateAroundParent(float currentAngle, float deltaAngle) {
+    float rot0 = currentAngle;
     sf::Transform t0;
-    t0.rotate(rot0, center);
+    t0.rotate(rot0, deltaCenter);
     auto p0 = t0.transformPoint(0.f, 0.f);
     
     sf::Transform t1;
-    t1.rotate(rot0 + deltaAngle, center);
+    t1.rotate(rot0 + deltaAngle, deltaCenter);
     auto p1 = t1.transformPoint(0.f, 0.f);
     auto p2 = p1 - p0;
     

@@ -7,14 +7,12 @@
 
 #include "Tracks.hpp"
 
-Tracks::Tracks(sf::Vector2<float> size): deltaCenter({(-2.f/10.f) * size.x, 0}), trackA({size.x/4, size.y}), trackB({size.x/4, size.y}) {
-    trackA.translate(-deltaCenter);
-    trackB.translate(deltaCenter);
+Tracks::Tracks(sf::Vector2<float> size): trackA({size.x/4, size.y}, {(2.f/10.f) * size.x, 0}), trackB({size.x/4, size.y}, {(-2.f/10.f) * size.x, 0}) {
 }
 
-void Tracks::rotate(float degrees) {
-    trackA.rotateWithCenter(degrees, deltaCenter);
-    trackB.rotateWithCenter(degrees, -deltaCenter);
+void Tracks::rotate(float currentAngle, float degrees) {
+    trackA.rotateAroundParent(currentAngle, degrees);
+    trackB.rotateAroundParent(currentAngle, degrees);
 }
 void Tracks::translate(sf::Vector2<float> delta) {
     trackA.translate(delta);

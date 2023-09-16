@@ -37,9 +37,10 @@ void Tank::rotateGunAntiClock() {
 }
 
 void Tank::rotate(float degrees) {
+    auto rot = hull.getRotation();
+    tracks.rotate(rot, degrees);
+    gun.rotateAroundParent(rot, degrees);
     hull.rotate(degrees);
-    tracks.rotate(degrees);
-    gun.rotateWithCenter(degrees, position);
 }
 void Tank::translate(sf::Vector2<float> delta) {
     position += delta;
