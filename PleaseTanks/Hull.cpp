@@ -9,7 +9,3 @@
 
 Hull::Hull(sf::Vector2<float> size) : Drawable(size, {0.f, 0.f}, "/Users/Shared/merda/PleaseTanks/images/Hull_03.png") {
 }
-
-void Hull::draw(sf::RenderWindow& window) {
-    Drawable::draw(window);
-}

@@ -19,7 +19,7 @@ protected:
 public:
     Drawable(sf::Vector2<float> size, sf::Vector2<float> deltaCenter, const std::string&& texturePath);
     float getRotation();
-    void setRotationCenter(sf::Vector2<float> center);
+    void setRotationCenter(sf::Vector2<float>&& center);
     
     void translate(float delta);
     void translate(float delta, float angle);

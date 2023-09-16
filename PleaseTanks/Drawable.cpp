@@ -15,12 +15,12 @@ Drawable::Drawable(sf::Vector2<float> size, sf::Vector2<float> deltaCenter, cons
         std::cout << "Error loading texture. Path: " << texturePath << " \n";
     }
     rect.setTexture(&texture);
-    rect.setOrigin(size.x/2.f, size.y/2);
+    setRotationCenter({size.x/2.f, size.y/2});
     
     translate(-deltaCenter);
 }
 
-void Drawable::setRotationCenter(sf::Vector2<float> center) {
+void Drawable::setRotationCenter(sf::Vector2<float>&& center) {
     rect.setOrigin({center.x, center.y});
 }
 float Drawable::getRotation() {
