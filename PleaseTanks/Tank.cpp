@@ -36,12 +36,12 @@ void Tank::rotateGunAntiClock() {
     gun.rotate(-gunAngularSpeed);
 }
 
-void Tank::rotate(float degrees) {
-    auto rot = hull.getRotation();
-    trackA.rotateAroundParent(degrees, degrees);
-    trackB.rotateAroundParent(degrees, degrees);
-    gun.rotateAroundParent(rot, degrees);
-    hull.rotate(degrees);
+void Tank::rotate(float deltaAngle) {
+    auto currentRotation = hull.getRotation();
+    trackA.rotateAroundParent(currentRotation, deltaAngle);
+    trackB.rotateAroundParent(currentRotation, deltaAngle);
+    gun.rotateAroundParent(currentRotation, deltaAngle);
+    hull.rotate(deltaAngle);
 }
 void Tank::translate(sf::Vector2<float> delta) {
     position += delta;
