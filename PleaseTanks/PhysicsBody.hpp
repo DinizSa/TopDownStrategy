@@ -16,6 +16,7 @@ protected:
     float rotation;
     sf::Vector2<float> deltaCenter;
     sf::Vector2<float> centerPosition;
+    float maxRadius;
     
 public:
     PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position, sf::Vector2<float> deltaCenter);
@@ -23,6 +24,7 @@ public:
     const sf::FloatRect& getBody() const;
     float getRotation() const;
     sf::Vector2<float> getCenter() const;
+    void setSize(sf::Vector2<float> size);
     
     void translate(float delta);
     void translate(sf::Vector2<float> delta);

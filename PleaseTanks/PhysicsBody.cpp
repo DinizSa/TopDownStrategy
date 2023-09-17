@@ -5,21 +5,26 @@
 //  Created by Diniz Sá on 14/09/2023.
 //
 
-#include "PhysicsBody.hpp"
 #include <array>
 #include <cmath>
 
+#include "PhysicsBody.hpp"
+#include "Utils.hpp"
+
 PhysicsBody::PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position, sf::Vector2<float> deltaCenter): deltaCenter(deltaCenter), centerPosition({0.f, 0.f}) {
-    body.width = size.x;
-    body.height = size.y;
+    setSize(size);
     
     sf::Vector2<float> leftTopPosition = -size/2.f;
     body.left = leftTopPosition.x;
     body.top = leftTopPosition.y;
     
     translate(position);
-    
-    std::cout << "centerPosition: " << centerPosition.x << ", " << centerPosition.y << std::endl;
+}
+
+void PhysicsBody::setSize(sf::Vector2<float> size) {
+    body.width = size.x;
+    body.height = size.y;
+    maxRadius = Utils::getLength(body.width/2.f, body.height/2.f);
 }
 
 sf::Vector2<float> PhysicsBody::getCenter() const {
@@ -81,6 +86,11 @@ std::array<sf::Vector2<float>, 4> PhysicsBody::getVertices() const {
     return vertices;
 }
 bool PhysicsBody::contains(const PhysicsBody& other) const {
+    float distance = Utils::getDistance(centerPosition, other.centerPosition);
+    if (distance > maxRadius + other.maxRadius) {
+        return false;
+    }
+    
     std::array<sf::Vector2<float>, 4> vertices = getVertices();
     for (auto& v : vertices) {
         if (other.contains(v)) {
