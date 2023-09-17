@@ -31,4 +31,7 @@ public:
     virtual void rotateAroundParent(float currentAngle, float degrees);
     bool contains(sf::Vector2<float> point) const;
     bool contains(const PhysicsBody& other) const;
+    
+protected:
+    std::array<sf::Vector2<float>, 4> getVertices() const;
 };

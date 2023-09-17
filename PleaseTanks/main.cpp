@@ -19,6 +19,11 @@ int main()
     sf::Vector2<float> sizeBody = {120.f, 200.f};
     PhysicsBody body(sizeBody, position, {0.f, 0.f});
     
+    sf::Vector2<float> position2 = {200.f, 410.f};
+    PhysicsBody body2(sizeBody, position2, {0.f, 0.f});
+    
+    Tank tank2 = Tank(size, position2);
+    
     while (window.isOpen())
     {
         sf::Event event;
@@ -28,8 +33,12 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2<float> point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
-//                    std::cout << "contains: " << (body.contains(point) ? "true" : "false");
-                    std::cout << std::endl;
+                    if (body.contains(point)) {
+                        std::cout << "hit A " << std::endl;
+                    }
+                    if (body2.contains(point)) {
+                        std::cout << "hit B " << std::endl;
+                    }
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -56,10 +65,13 @@ int main()
                     case sf::Keyboard::Scan::S:
                         tank.moveBack();
                         body.translate(5.f);
+                        std::cout << "contains: " << (body.contains(body2) ? "true" : "false") << std::endl;
+//                        std::cout << "contains: " << ((body.contains(body2) || body2.contains(body)) ? "true" : "false") << std::endl;
                         break;
                     case sf::Keyboard::Scan::W:
                         tank.moveFront();
                         body.translate(-5.f);
+                        std::cout << "contains: " << (body.contains(body2) ? "true" : "false") << std::endl;
                         break;
                     default:
                         break;
@@ -70,6 +82,7 @@ int main()
 
         window.clear();
         tank.draw(window);
+        tank2.draw(window);
         window.display();
     }
 

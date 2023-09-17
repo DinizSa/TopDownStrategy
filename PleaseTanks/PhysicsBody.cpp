@@ -6,6 +6,7 @@
 //
 
 #include "PhysicsBody.hpp"
+#include <array>
 #include <cmath>
 
 PhysicsBody::PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position, sf::Vector2<float> deltaCenter): deltaCenter(deltaCenter), centerPosition({0.f, 0.f}) {
@@ -64,14 +65,35 @@ bool PhysicsBody::contains(sf::Vector2<float> point) const {
     sf::Vector2<float> rotatedPoint = t.transformPoint(point);
     return body.contains(rotatedPoint);
 }
-bool PhysicsBody::contains(const PhysicsBody& other) const {
-//    const sf::FloatRect otherBody = other.getBody();
-//    float otherRotation = other.getRotation();
-//    sf::Vector2<float> otherCenter = other.getWorldCenter();
-//    
-//    float p0, p1, p2, p3;
-//    sf::Transform t;
-//    t.rotate(-otherRotation, {body.width/2.f, body.height/2.f});
+std::array<sf::Vector2<float>, 4> PhysicsBody::getVertices() const {
+    std::array<sf::Vector2<float>, 4> vertices = {
+        sf::Vector2<float>({body.left, body.top}),
+        sf::Vector2<float>({body.left + body.width, body.top}),
+        sf::Vector2<float>({body.left, body.top + body.height}),
+        sf::Vector2<float>({body.left + body.width, body.top + body.height})
+    };
     
-    return true;
+    sf::Transform t;
+    t.rotate(rotation, centerPosition);
+    for (auto& v : vertices) {
+        v = t.transformPoint(v);
+    }
+    return vertices;
+}
+bool PhysicsBody::contains(const PhysicsBody& other) const {
+    std::array<sf::Vector2<float>, 4> vertices = getVertices();
+    for (auto& v : vertices) {
+        if (other.contains(v)) {
+            return true;
+        }
+    }
+    
+    std::array<sf::Vector2<float>, 4> verticesOther = other.getVertices();
+    for (auto& v : verticesOther) {
+        if (contains(v)) {
+            return true;
+        }
+    }
+    
+    return false;
 }
