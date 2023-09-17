@@ -15,14 +15,14 @@ protected:
     sf::FloatRect body;
     float rotation;
     sf::Vector2<float> deltaCenter;
+    sf::Vector2<float> centerPosition;
     
 public:
     PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position, sf::Vector2<float> deltaCenter);
     
     const sf::FloatRect& getBody() const;
     float getRotation() const;
-    sf::Vector2<float> getLocalCenter() const;
-    sf::Vector2<float> getWorldCenter() const;
+    sf::Vector2<float> getCenter() const;
     
     void translate(float delta);
     void translate(sf::Vector2<float> delta);

@@ -8,19 +8,21 @@
 #include "PhysicsBody.hpp"
 #include <cmath>
 
-PhysicsBody::PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position, sf::Vector2<float> deltaCenter): deltaCenter(deltaCenter) {
+PhysicsBody::PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position, sf::Vector2<float> deltaCenter): deltaCenter(deltaCenter), centerPosition({0.f, 0.f}) {
     body.width = size.x;
     body.height = size.y;
-    position -= size/2.f;
+    
+    sf::Vector2<float> leftTopPosition = -size/2.f;
+    body.left = leftTopPosition.x;
+    body.top = leftTopPosition.y;
+    
     translate(position);
+    
+    std::cout << "centerPosition: " << centerPosition.x << ", " << centerPosition.y << std::endl;
 }
 
-sf::Vector2<float> PhysicsBody::getLocalCenter() const {
-    return {body.width/2, body.height/2};
-}
-sf::Vector2<float> PhysicsBody::getWorldCenter() const {
-    auto localCenter = getLocalCenter();
-    return localCenter + sf::Vector2<float>{body.left, body.top};
+sf::Vector2<float> PhysicsBody::getCenter() const {
+    return centerPosition;
 }
 float PhysicsBody::getRotation() const {
     return rotation;
@@ -32,13 +34,13 @@ void PhysicsBody::rotate(float deltaAngle) {
     rotation += deltaAngle;
 }
 void PhysicsBody::translate(float delta) {
-    float rotDeg = rotation * M_PI / 180;
-    float x = -delta * sin(rotDeg);
-    float y = delta * cos(rotDeg);
+    float rotationRadians = rotation * M_PI / 180;
+    float x = -delta * sin(rotationRadians);
+    float y = delta * cos(rotationRadians);
     translate({x, y});
 }
 void PhysicsBody::translate(sf::Vector2<float> delta) {
-    delta += body.getPosition();
+    centerPosition += delta;
     body.left += delta.x;
     body.top += delta.y;
 }
@@ -58,7 +60,7 @@ void PhysicsBody::rotateAroundParent(float currentAngle, float deltaAngle) {
 }
 bool PhysicsBody::contains(sf::Vector2<float> point) const {
     sf::Transform t;
-    t.rotate(-rotation, {body.width/2.f, body.height/2.f});
+    t.rotate(-rotation, centerPosition);
     sf::Vector2<float> rotatedPoint = t.transformPoint(point);
     return body.contains(rotatedPoint);
 }
