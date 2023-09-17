@@ -20,7 +20,7 @@ class Tank {
     Track trackA, trackB;
 
 public:
-    Tank(sf::Vector2<float> position);
+    Tank(sf::Vector2<float> size, sf::Vector2<float> position);
     ~Tank();
     void moveFront();
     void moveBack();

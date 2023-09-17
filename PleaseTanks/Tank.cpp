@@ -10,7 +10,7 @@
 
 #include "Tank.hpp"
 
-Tank::Tank(sf::Vector2<float> position) : speed(5.f), angularSpeed(5.f), gunAngularSpeed(10.f), size({200.f, 200.f}), hull(size), gun(position), trackA({size.x/4, size.y}, {(2.f/10.f) * size.x, 0}), trackB({size.x/4, size.y}, {(-2.f/10.f) * size.x, 0}) {
+Tank::Tank(sf::Vector2<float> size, sf::Vector2<float> position) : speed(5.f), angularSpeed(5.f), gunAngularSpeed(5.f), size(size), hull(size), gun(size), trackA({size.x/4, size.y}, {(2.f/10.f) * size.x, 0}), trackB({size.x/4, size.y}, {(-2.f/10.f) * size.x, 0}) {
     translate(std::move(position));
 }
 Tank::~Tank() {

@@ -33,12 +33,6 @@ void Drawable::translate(float delta) {
     float y = delta * cos(rotDeg);
     translate({x, y});
 }
-void Drawable::translate(float delta, float angle) {
-    float rotDeg = angle * M_PI / 180;
-    float x = -delta * sin(rotDeg);
-    float y = delta * cos(rotDeg);
-    translate({x, y});
-}
 void Drawable::translate(sf::Vector2<float> delta) {
     delta += rect.getPosition();
     rect.setPosition(delta);

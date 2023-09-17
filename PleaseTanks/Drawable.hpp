@@ -22,8 +22,7 @@ public:
     void setRotationCenter(sf::Vector2<float>&& center);
     
     void translate(float delta);
-    void translate(float delta, float angle);
-    void translate(sf::Vector2<float> deltaPosition);
+    void translate(sf::Vector2<float> delta);
     virtual void rotate(float deltaAngle);
     virtual void rotateAroundParent(float currentAngle, float degrees);
     virtual void draw(sf::RenderWindow& window);
