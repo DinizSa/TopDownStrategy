@@ -7,8 +7,8 @@
 
 int main()
 {
-    int windowWidth = 600;
-    int windowHeight = 600;
+    int windowWidth = 1200;
+    int windowHeight = 1200;
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Please Tanks");
     
     
@@ -55,23 +55,36 @@ int main()
                         tank.rotateGunAntiClock();
                         break;
                     case sf::Keyboard::Scan::A:
-                        tank.rotateAntiClock();
                         body.rotate(-5.f);
+                        if (body.contains(body2)) {
+                            body.rotate(5.f);
+                            break;
+                        }
+                        tank.rotateAntiClock();
                         break;
                     case sf::Keyboard::Scan::D:
-                        tank.rotateClock();
                         body.rotate(5.f);
+                        if (body.contains(body2)) {
+                            body.rotate(-5.f);
+                            break;
+                        }
+                        tank.rotateClock();
                         break;
                     case sf::Keyboard::Scan::S:
-                        tank.moveBack();
                         body.translate(5.f);
-                        std::cout << "contains: " << (body.contains(body2) ? "true" : "false") << std::endl;
-//                        std::cout << "contains: " << ((body.contains(body2) || body2.contains(body)) ? "true" : "false") << std::endl;
+                        if (body.contains(body2)) {
+                            body.translate(-5.f);
+                            break;
+                        }
+                        tank.moveBack();
                         break;
                     case sf::Keyboard::Scan::W:
-                        tank.moveFront();
                         body.translate(-5.f);
-                        std::cout << "contains: " << (body.contains(body2) ? "true" : "false") << std::endl;
+                        if (body.contains(body2)) {
+                            body.translate(5.f);
+                            break;
+                        }
+                        tank.moveFront();
                         break;
                     default:
                         break;
