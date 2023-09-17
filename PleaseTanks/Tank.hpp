@@ -8,7 +8,7 @@
 #pragma once
 #include "Hull.hpp"
 #include "Gun.hpp"
-#include "Tracks.hpp"
+#include "Track.hpp"
 #include <SFML/Graphics.hpp>
 
 class Tank {
@@ -16,8 +16,8 @@ class Tank {
     sf::Vector2<float> size;
     float speed, angularSpeed, gunAngularSpeed;
     Hull hull;
-    Tracks tracks;
     Gun gun;
+    Track trackA, trackB;
 
 public:
     Tank(sf::Vector2<float> position);
