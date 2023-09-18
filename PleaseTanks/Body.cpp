@@ -7,7 +7,7 @@
 
 #include "Body.hpp"
 
-Body::Body(sf::Vector2f size, const std::string&& texturePath) :
-    PhysicsBody(size),
-    Drawable(size, PhysicsBody::centerWorld, PhysicsBody::rotation, std::move(texturePath))
+Body::Body(sf::Vector2f imageSize, sf::Vector2f physicsBodySize, const std::string&& texturePath) :
+    PhysicsBody(physicsBodySize),
+    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, std::move(texturePath))
 {}

@@ -19,6 +19,8 @@ protected:
     sf::Vector2f centerLocal;
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
+    
+//    static std::vector<PhysicsBody*> allBodies;
 
 public:
     PhysicsBody(sf::Vector2f size);
