@@ -6,11 +6,15 @@
 //
 
 #pragma once
-#include "Drawable.hpp"
+#include "Body.hpp"
 
-class Gun : public Drawable {
+class Gun : public Body {
 private:
-//    float gunAngularSpeed;
+    float angularSpeed;
 public:
-    Gun(sf::Vector2<float> size);
+    Gun(sf::Vector2<float> size, sf::Vector2<float> position);
+    
+    float getAngularSpeed();
+    void rotate(float deltaAngle) override;
+    void rotateAroundParent(float currentAngle, float degrees) override;
 };

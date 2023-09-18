@@ -6,15 +6,17 @@
 //
 
 #pragma once
+
+#include <SFML/Graphics.hpp>
+
 #include "Hull.hpp"
 #include "Gun.hpp"
 #include "Track.hpp"
-#include <SFML/Graphics.hpp>
 
 class Tank {
     sf::Vector2<float> position;
     sf::Vector2<float> size;
-    float speed, angularSpeed, gunAngularSpeed;
+    float speed, angularSpeed;
     Hull hull;
     Gun gun;
     Track trackA, trackB;

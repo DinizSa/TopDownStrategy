@@ -8,7 +8,7 @@
 #include "Drawable.hpp"
 #include <cmath>
 
-Drawable::Drawable(sf::Vector2<float> size, sf::Vector2<float> deltaCenter, const std::string&& texturePath) : deltaCenter(deltaCenter) {
+Drawable::Drawable(sf::Vector2<float> size, sf::Vector2<float> position, const std::string&& texturePath) {
     
     rect.setSize({size.x, size.y});
     if (!texture.loadFromFile(texturePath)) {
@@ -17,14 +17,15 @@ Drawable::Drawable(sf::Vector2<float> size, sf::Vector2<float> deltaCenter, cons
     rect.setTexture(&texture);
     setRotationCenter({size.x/2.f, size.y/2});
     
-    translate(-deltaCenter);
+    translate(position);
 }
 
+void Drawable::setDeltaCenter(sf::Vector2<float> deltaCenter) {
+    translate(-deltaCenter);
+    this->deltaCenter = deltaCenter;
+}
 void Drawable::setRotationCenter(sf::Vector2<float>&& center) {
     rect.setOrigin({center.x, center.y});
-}
-float Drawable::getRotation() {
-    return rect.getRotation();
 }
 void Drawable::translate(float delta) {
     float rot = rect.getRotation();

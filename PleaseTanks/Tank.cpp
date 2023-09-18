@@ -10,8 +10,9 @@
 
 #include "Tank.hpp"
 
-Tank::Tank(sf::Vector2<float> size, sf::Vector2<float> position) : speed(5.f), angularSpeed(5.f), gunAngularSpeed(5.f), size(size), hull(size), gun(size), trackA({size.x/4, size.y}, {(2.f/10.f) * size.x, 0}), trackB({size.x/4, size.y}, {(-2.f/10.f) * size.x, 0}) {
-    translate(std::move(position));
+Tank::Tank(sf::Vector2<float> size, sf::Vector2<float> position) : position(position), speed(5.f), angularSpeed(5.f), size(size), hull(size, position), gun(size, position), trackA({size.x/4, size.y}, position), trackB({size.x/4, size.y}, position) {
+    trackA.setDeltaCenter({(2.f/10.f) * size.x, 0});
+    trackB.setDeltaCenter({(-2.f/10.f) * size.x, 0});
 }
 Tank::~Tank() {
 }
@@ -30,9 +31,11 @@ void Tank::rotateAntiClock() {
 }
 
 void Tank::rotateGunClock() {
+    float gunAngularSpeed = gun.getAngularSpeed();
     gun.rotate(gunAngularSpeed);
 }
 void Tank::rotateGunAntiClock() {
+    float gunAngularSpeed = gun.getAngularSpeed();
     gun.rotate(-gunAngularSpeed);
 }
 
@@ -51,7 +54,7 @@ void Tank::translate(sf::Vector2<float> delta) {
     gun.translate(delta);
 }
 void Tank::translate(float distance) {
-    float rotation = hull.getRotation(); // TODO: save rotation in this class?
+    float rotation = hull.getRotation();
     float rotationDeg = rotation * M_PI / 180;
     float dx = -distance * sin(rotationDeg);
     float dy = distance * cos(rotationDeg);

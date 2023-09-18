@@ -17,13 +17,14 @@ protected:
     sf::Vector2<float> deltaCenter;
     
 public:
-    Drawable(sf::Vector2<float> size, sf::Vector2<float> deltaCenter, const std::string&& texturePath);
-    float getRotation();
-    void setRotationCenter(sf::Vector2<float>&& center);
-    
-    void translate(float delta);
-    void translate(sf::Vector2<float> delta);
+    Drawable(sf::Vector2<float> size, sf::Vector2<float> position, const std::string&& texturePath);
+    virtual void setRotationCenter(sf::Vector2<float>&& center);
+    virtual void setDeltaCenter(sf::Vector2<float> deltaCenter);
+
+    virtual void translate(float delta);
+    virtual void translate(sf::Vector2<float> delta);
     virtual void rotate(float deltaAngle);
     virtual void rotateAroundParent(float currentAngle, float degrees);
+    
     virtual void draw(sf::RenderWindow& window);
 };

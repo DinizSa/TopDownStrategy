@@ -11,16 +11,19 @@
 #include "PhysicsBody.hpp"
 #include "Utils.hpp"
 
-PhysicsBody::PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position, sf::Vector2<float> deltaCenter): deltaCenter(deltaCenter), centerPosition({0.f, 0.f}) {
-    setSize(size);
+PhysicsBody::PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position): centerPosition({0.f, 0.f}) {
+    PhysicsBody::setSize(size);
     
     sf::Vector2<float> leftTopPosition = -size/2.f;
     body.left = leftTopPosition.x;
     body.top = leftTopPosition.y;
     
-    translate(position);
+    PhysicsBody::translate(position);
 }
 
+void PhysicsBody::setDeltaCenter(sf::Vector2<float> deltaCenter) {
+    this->deltaCenter = deltaCenter;
+}
 void PhysicsBody::setSize(sf::Vector2<float> size) {
     body.width = size.x;
     body.height = size.y;
@@ -33,9 +36,6 @@ sf::Vector2<float> PhysicsBody::getCenter() const {
 float PhysicsBody::getRotation() const {
     return rotation;
 }
-const sf::FloatRect& PhysicsBody::getBody() const {
-    return body;
-}
 void PhysicsBody::rotate(float deltaAngle) {
     rotation += deltaAngle;
 }
@@ -43,7 +43,7 @@ void PhysicsBody::translate(float delta) {
     float rotationRadians = rotation * M_PI / 180;
     float x = -delta * sin(rotationRadians);
     float y = delta * cos(rotationRadians);
-    translate({x, y});
+    PhysicsBody::translate({x, y});
 }
 void PhysicsBody::translate(sf::Vector2<float> delta) {
     centerPosition += delta;
@@ -61,8 +61,8 @@ void PhysicsBody::rotateAroundParent(float currentAngle, float deltaAngle) {
     auto p1 = t1.transformPoint(0.f, 0.f);
     auto p2 = p1 - p0;
 
-    rotate(deltaAngle);
-    translate(p2);
+    PhysicsBody::rotate(deltaAngle);
+    PhysicsBody::translate(p2);
 }
 bool PhysicsBody::contains(sf::Vector2<float> point) const {
     sf::Transform t;

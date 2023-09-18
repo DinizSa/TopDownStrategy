@@ -17,10 +17,10 @@ int main()
     Tank tank = Tank(size, position);
     
     sf::Vector2<float> sizeBody = {120.f, 200.f};
-    PhysicsBody body(sizeBody, position, {0.f, 0.f});
+    PhysicsBody body(sizeBody, position);
     
     sf::Vector2<float> position2 = {200.f, 410.f};
-    PhysicsBody body2(sizeBody, position2, {0.f, 0.f});
+    PhysicsBody body2(sizeBody, position2);
     
     Tank tank2 = Tank(size, position2);
     

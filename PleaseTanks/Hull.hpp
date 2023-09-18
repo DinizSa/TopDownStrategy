@@ -6,9 +6,9 @@
 //
 
 #pragma once
-#include "Drawable.hpp"
+#include "Body.hpp"
 
-class Hull : public Drawable {
+class Hull : public Body {
 public:
-    Hull(sf::Vector2<float> size);
+    Hull(sf::Vector2<float> size, sf::Vector2<float> position);
 };

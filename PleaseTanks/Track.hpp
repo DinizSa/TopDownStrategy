@@ -10,5 +10,5 @@
 
 class Track : public Drawable {
 public:
-    Track(sf::Vector2<float> size, sf::Vector2<float> deltaCenter);
+    Track(sf::Vector2<float> size, sf::Vector2<float> position);
 };
