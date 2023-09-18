@@ -14,16 +14,15 @@
 #include "Track.hpp"
 
 class Tank {
-    sf::Vector2<float> position;
-    sf::Vector2<float> size;
+    sf::Vector2f position;
+    sf::Vector2f size;
     float speed, angularSpeed;
     Hull hull;
     Gun gun;
     Track trackA, trackB;
 
 public:
-    Tank(sf::Vector2<float> size, sf::Vector2<float> position);
-    ~Tank();
+    Tank(sf::Vector2f size, sf::Vector2f position);
     void moveFront();
     void moveBack();
     void rotateClock();
@@ -31,8 +30,10 @@ public:
     void rotateGunClock();
     void rotateGunAntiClock();
     void draw(sf::RenderWindow& window);
+    
+    bool contains(sf::Vector2f point) const;
 private:
     void translate(float delta);
-    void translate(sf::Vector2<float> delta);
+    void translate(sf::Vector2f delta);
     void rotate(float degrees);
 };

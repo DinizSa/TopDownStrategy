@@ -6,9 +6,9 @@
 //
 
 #pragma once
-#include "Drawable.hpp"
+#include "Body.hpp"
 
-class Track : public Drawable {
+class Track : public Body {
 public:
-    Track(sf::Vector2<float> size, sf::Vector2<float> position);
+    Track(sf::Vector2f size);
 };

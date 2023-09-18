@@ -12,9 +12,7 @@ class Gun : public Body {
 private:
     float angularSpeed;
 public:
-    Gun(sf::Vector2<float> size, sf::Vector2<float> position);
+    Gun(sf::Vector2f size);
     
     float getAngularSpeed();
-    void rotate(float deltaAngle) override;
-    void rotateAroundParent(float currentAngle, float degrees) override;
 };

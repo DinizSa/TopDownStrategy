@@ -5,22 +5,44 @@
 #include "Tank.hpp"
 #include "PhysicsBody.hpp"
 
+
+#include "Subject.hpp"
+#include "Observer.hpp"
+
 int main()
 {
-    int windowWidth = 1200;
-    int windowHeight = 1200;
+    
+//    Observer observer;
+//    Subject<float> subject;
+//    std::function<void(float)> callback = [](float newValue) {
+//        std::cout << "new value: " << newValue << std::endl;
+//    };
+//    subject.subscribe(&observer, callback);
+//    subject.notify();
+//    subject.unsubscribe(&observer);
+    
+    
+    
+    
+    
+    
+    
+    int windowWidth = 1800;
+    int windowHeight = 800;
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Please Tanks");
     
     
-    sf::Vector2<float> size = {200.f, 200.f};
-    sf::Vector2<float> position = {200.f, 200.f};
+    sf::Vector2f size = {200.f, 200.f};
+    sf::Vector2f position = {200.f, 200.f};
     Tank tank = Tank(size, position);
     
-    sf::Vector2<float> sizeBody = {120.f, 200.f};
-    PhysicsBody body(sizeBody, position);
+    sf::Vector2f sizeBody = {120.f, 200.f};
+    PhysicsBody body(sizeBody);
+    body.translate(position);
     
-    sf::Vector2<float> position2 = {200.f, 410.f};
-    PhysicsBody body2(sizeBody, position2);
+    sf::Vector2f position2 = {200.f, 410.f};
+    PhysicsBody body2(sizeBody);
+    body.translate(position2);
     
     Tank tank2 = Tank(size, position2);
     
@@ -32,13 +54,14 @@ int main()
             if (event.type == sf::Event::MouseButtonPressed){
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
-                    sf::Vector2<float> point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
-                    if (body.contains(point)) {
-                        std::cout << "hit A " << std::endl;
-                    }
-                    if (body2.contains(point)) {
-                        std::cout << "hit B " << std::endl;
-                    }
+                    sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
+                    tank.contains(point);
+//                    if (body.contains(point)) {
+//                        std::cout << "hit A " << std::endl;
+//                    }
+//                    if (body2.contains(point)) {
+//                        std::cout << "hit B " << std::endl;
+//                    }
                 }
             }
             if (event.type == sf::Event::Closed)

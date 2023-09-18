@@ -11,96 +11,87 @@
 #include "PhysicsBody.hpp"
 #include "Utils.hpp"
 
-PhysicsBody::PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position) {
-    centerPosition = {0.f, 0.f};
-    PhysicsBody::setSize(size);
+PhysicsBody::PhysicsBody(sf::Vector2f size) {
+    setSize(size);
     
-    sf::Vector2<float> leftTopPosition = -size/2.f;
+    sf::Vector2f leftTopPosition = -size/2.f;
     body.left = leftTopPosition.x;
     body.top = leftTopPosition.y;
-    
-    PhysicsBody::translate(position);
 }
 
-void PhysicsBody::setDeltaCenter(sf::Vector2<float> deltaCenter) {
+void PhysicsBody::setDeltaCenter(sf::Vector2f deltaCenter) {
     this->deltaCenter = deltaCenter;
 }
-void PhysicsBody::setSize(sf::Vector2<float> size) {
+void PhysicsBody::setSize(sf::Vector2f size) {
     body.width = size.x;
     body.height = size.y;
     maxRadius = Utils::getLength(body.width/2.f, body.height/2.f);
 }
 
-sf::Vector2<float> PhysicsBody::getCenter() const {
-    return centerPosition();
+sf::Vector2f PhysicsBody::getCenter() const {
+    return centerWorld();
 }
 float PhysicsBody::getRotation() const {
     return rotation();
-}
-void PhysicsBody::rotate(float deltaAngle) {
-    float newRotation = rotation() + deltaAngle;
-    rotation = newRotation;
 }
 void PhysicsBody::translate(float delta) {
     float rotationRadians = rotation() * M_PI / 180;
     float x = -delta * sin(rotationRadians);
     float y = delta * cos(rotationRadians);
-    PhysicsBody::translate({x, y});
+    translate({x, y});
 }
-void PhysicsBody::translate(sf::Vector2<float> delta) {
-    centerPosition = centerPosition() + delta;
+void PhysicsBody::translate(sf::Vector2f delta) {
+    centerWorld = centerWorld() + delta;
     body.left += delta.x;
     body.top += delta.y;
 }
-void PhysicsBody::rotateAroundParent(float currentAngle, float deltaAngle) {
-    float rot0 = currentAngle;
-    sf::Transform t0;
-    t0.rotate(rot0, deltaCenter);
-    auto p0 = t0.transformPoint(0.f, 0.f);
-
-    sf::Transform t1;
-    t1.rotate(rot0 + deltaAngle, deltaCenter);
-    auto p1 = t1.transformPoint(0.f, 0.f);
-    auto p2 = p1 - p0;
-
-    PhysicsBody::rotate(deltaAngle);
-    PhysicsBody::translate(p2);
+void PhysicsBody::rotate(float deltaAngle) {
+    float newRotation = rotation() + deltaAngle;
+    rotation = newRotation;
 }
-bool PhysicsBody::contains(sf::Vector2<float> point) const {
+void PhysicsBody::rotateAroundOrigin(float deltaAngle, sf::Vector2f origin) {
+    sf::Transform t0;
+    t0.rotate(deltaAngle, origin);
+    sf::Vector2f rotatedPosition = t0.transformPoint(centerWorld());
+
+    rotate(deltaAngle);
+    translate(rotatedPosition - centerWorld());
+}
+bool PhysicsBody::contains(sf::Vector2f point) const {
     sf::Transform t;
-    t.rotate(-rotation(), centerPosition());
-    sf::Vector2<float> rotatedPoint = t.transformPoint(point);
+    t.rotate(-rotation(), centerWorld());
+    sf::Vector2f rotatedPoint = t.transformPoint(point);
     return body.contains(rotatedPoint);
 }
-std::array<sf::Vector2<float>, 4> PhysicsBody::getVertices() const {
-    std::array<sf::Vector2<float>, 4> vertices = {
-        sf::Vector2<float>({body.left, body.top}),
-        sf::Vector2<float>({body.left + body.width, body.top}),
-        sf::Vector2<float>({body.left, body.top + body.height}),
-        sf::Vector2<float>({body.left + body.width, body.top + body.height})
+std::array<sf::Vector2f, 4> PhysicsBody::getVertices() const {
+    std::array<sf::Vector2f, 4> vertices = {
+        sf::Vector2f({body.left, body.top}),
+        sf::Vector2f({body.left + body.width, body.top}),
+        sf::Vector2f({body.left, body.top + body.height}),
+        sf::Vector2f({body.left + body.width, body.top + body.height})
     };
     
     sf::Transform t;
-    t.rotate(rotation(), centerPosition());
+    t.rotate(rotation(), centerWorld());
     for (auto& v : vertices) {
         v = t.transformPoint(v);
     }
     return vertices;
 }
 bool PhysicsBody::contains(const PhysicsBody& other) const {
-    float distance = Utils::getDistance(centerPosition(), other.centerPosition());
+    float distance = Utils::getDistance(centerWorld(), other.centerWorld());
     if (distance > maxRadius + other.maxRadius) {
         return false;
     }
     
-    std::array<sf::Vector2<float>, 4> vertices = getVertices();
+    std::array<sf::Vector2f, 4> vertices = getVertices();
     for (auto& v : vertices) {
         if (other.contains(v)) {
             return true;
         }
     }
     
-    std::array<sf::Vector2<float>, 4> verticesOther = other.getVertices();
+    std::array<sf::Vector2f, 4> verticesOther = other.getVertices();
     for (auto& v : verticesOther) {
         if (contains(v)) {
             return true;

@@ -8,9 +8,9 @@
 #pragma once
 //#import "IObserver.hpp"
 
-template <typename T>
+//template <typename T>
 class Observer {
 public:
-    virtual ~Observer(){};
-    void update(T newValue);
+    virtual ~Observer() {};
+//    void update(T newValue);
 };

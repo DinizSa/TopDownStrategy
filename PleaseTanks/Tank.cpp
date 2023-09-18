@@ -10,12 +10,14 @@
 
 #include "Tank.hpp"
 
-Tank::Tank(sf::Vector2<float> size, sf::Vector2<float> position) : position(position), speed(5.f), angularSpeed(5.f), size(size), hull(size, position), gun(size, position), trackA({size.x/4, size.y}, position), trackB({size.x/4, size.y}, position) {
-    trackA.setDeltaCenter({(2.f/10.f) * size.x, 0});
-    trackB.setDeltaCenter({(-2.f/10.f) * size.x, 0});
+Tank::Tank(sf::Vector2f size, sf::Vector2f position): speed(5.f), angularSpeed(5.f), size(size), hull(size), gun(size), trackA({size.x/4, size.y}), trackB({size.x/4, size.y}) {
+    
+    trackA.translate({(-2.f/10.f) * size.x, 0});
+    trackB.translate({(2.f/10.f) * size.x, 0});
+    
+    translate(position);
 }
-Tank::~Tank() {
-}
+
 void Tank::moveFront() {
     translate(-speed);
 }
@@ -40,13 +42,13 @@ void Tank::rotateGunAntiClock() {
 }
 
 void Tank::rotate(float deltaAngle) {
-    auto currentRotation = hull.getRotation();
-    trackA.rotateAroundParent(currentRotation, deltaAngle);
-    trackB.rotateAroundParent(currentRotation, deltaAngle);
-    gun.rotateAroundParent(currentRotation, deltaAngle);
+    sf::Vector2f rotationOrigin = hull.getCenter();
+    trackA.rotateAroundOrigin(deltaAngle, rotationOrigin);
+    trackB.rotateAroundOrigin(deltaAngle, rotationOrigin);
+    gun.rotateAroundOrigin(deltaAngle, rotationOrigin);
     hull.rotate(deltaAngle);
 }
-void Tank::translate(sf::Vector2<float> delta) {
+void Tank::translate(sf::Vector2f delta) {
     position += delta;
     hull.translate(delta);
     trackA.translate(delta);
@@ -59,13 +61,30 @@ void Tank::translate(float distance) {
     float dx = -distance * sin(rotationDeg);
     float dy = distance * cos(rotationDeg);
     
-    sf::Vector2<float> delta = {dx, dy};
+    sf::Vector2f delta = {dx, dy};
     hull.translate(delta);
     trackA.translate(delta);
     trackB.translate(delta);
     gun.translate(delta);
     
     position += delta;
+}
+
+bool Tank::contains(sf::Vector2f point) const {
+    bool hitHull = hull.contains(point);
+    if (hitHull)
+        std::cout << "X hull" << std::endl;
+    bool hitGun = gun.contains(point);
+    if (hitGun)
+        std::cout << "X gun" << std::endl;
+    bool hitTrackA = trackA.contains(point);
+    if (hitTrackA)
+        std::cout << "X track A" << std::endl;
+    bool hitTrackB = trackB.contains(point);
+    if (hitTrackB)
+        std::cout << "X track B" << std::endl;
+    
+    return true;
 }
 
 void Tank::draw(sf::RenderWindow& window) {

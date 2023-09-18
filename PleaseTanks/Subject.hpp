@@ -8,12 +8,14 @@
 #pragma once
 #include <iostream>
 #include <set>
+#include <unordered_map>
+
 #import "Observer.hpp"
 
 template <class T>
 class Subject {
-    T value;
-    std::set<Observer<T>*> observers;
+    T value = T();
+    std::unordered_map<const Observer*, std::function<void(T)>> observers;
     
 public:
     virtual ~Subject(){};
@@ -24,9 +26,8 @@ public:
     T operator()() const{
         return value;
     }
-//    const T& get() const;
-//    void set(T val);
-    void subscribe(Observer<T>* observer);
-    void unsubscribe(Observer<T>* observer);
+
+    void subscribe(const Observer* observer, std::function<void(T)> callback);
+    void unsubscribe(const Observer*);
     void notify();
 };

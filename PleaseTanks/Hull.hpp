@@ -10,5 +10,5 @@
 
 class Hull : public Body {
 public:
-    Hull(sf::Vector2<float> size, sf::Vector2<float> position);
+    Hull(sf::Vector2f size);
 };

@@ -8,7 +8,7 @@
 #include "Utils.hpp"
 #include <cmath>
 
-float Utils::getDistance(const sf::Vector2<float>& a, const sf::Vector2<float>& b) {
+float Utils::getDistance(const sf::Vector2f& a, const sf::Vector2f& b) {
     return getLength(b.x - a.x, b.y - a.y);
 }
 float Utils::getLength(float x, float y) {

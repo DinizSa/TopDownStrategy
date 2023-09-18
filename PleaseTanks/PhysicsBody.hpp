@@ -16,27 +16,27 @@ class PhysicsBody {
 protected:
     sf::FloatRect body;
     Subject<float> rotation;
-    sf::Vector2<float> deltaCenter;
-    Subject<sf::Vector2<float>> centerPosition;
+    sf::Vector2f deltaCenter;
+    Subject<sf::Vector2f> centerWorld;
     float maxRadius;
 
 public:
-    PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position);
+    PhysicsBody(sf::Vector2f size);
 
     float getRotation() const;
-    sf::Vector2<float> getCenter() const;
-    virtual void setSize(sf::Vector2<float> size);
-    virtual void setDeltaCenter(sf::Vector2<float> deltaCenter);
+    sf::Vector2f getCenter() const;
+    void setSize(sf::Vector2f size);
+    void setDeltaCenter(sf::Vector2f deltaCenter);
     
-    virtual void translate(float delta);
-    virtual void translate(sf::Vector2<float> delta);
-//    virtual void setRotationCenter(sf::Vector2<float>&& center);
-    virtual void rotate(float deltaAngle);
-    virtual void rotateAroundParent(float currentAngle, float degrees);
+    void translate(float delta);
+    void translate(sf::Vector2f delta);
+//    void setRotationCenter(sf::Vector2f&& center);
+    void rotate(float deltaAngle);
+    void rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
     
-    bool contains(sf::Vector2<float> point) const;
+    bool contains(sf::Vector2f point) const;
     bool contains(const PhysicsBody& other) const;
 
 protected:
-    std::array<sf::Vector2<float>, 4> getVertices() const;
+    std::array<sf::Vector2f, 4> getVertices() const;
 };

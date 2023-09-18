@@ -9,14 +9,7 @@
 #include "Drawable.hpp"
 #include "PhysicsBody.hpp"
 
-class Body : public Drawable, public PhysicsBody {
+class Body : public PhysicsBody, public Drawable {
 public:
-    Body(sf::Vector2<float> size, sf::Vector2<float> position, const std::string&& texturePath);
-
-    void setDeltaCenter(sf::Vector2<float> deltaCenter) override;
-
-    void translate(float delta) override;
-    void translate(sf::Vector2<float> delta) override;
-    void rotate(float deltaAngle) override;
-    void rotateAroundParent(float currentAngle, float degrees) override;
+    Body(sf::Vector2f size, const std::string&& texturePath);
 };

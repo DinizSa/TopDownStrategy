@@ -10,21 +10,16 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-class Drawable {
+#include "Subject.hpp"
+#include "Observer.hpp"
+
+class Drawable : public Observer {
 protected:
     sf::RectangleShape rect;
     sf::Texture texture;
-    sf::Vector2<float> deltaCenter;
     
 public:
-    Drawable(sf::Vector2<float> size, sf::Vector2<float> position, const std::string&& texturePath);
-    virtual void setRotationCenter(sf::Vector2<float>&& center);
-    virtual void setDeltaCenter(sf::Vector2<float> deltaCenter);
+    Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, const std::string&& texturePath);
 
-    virtual void translate(float delta);
-    virtual void translate(sf::Vector2<float> delta);
-    virtual void rotate(float deltaAngle);
-    virtual void rotateAroundParent(float currentAngle, float degrees);
-    
     virtual void draw(sf::RenderWindow& window);
 };

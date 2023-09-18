@@ -7,28 +7,7 @@
 
 #include "Body.hpp"
 
-Body::Body(sf::Vector2<float> size, sf::Vector2<float> position, const std::string&& texturePath) :
-    Drawable(size, position, std::move(texturePath)),
-    PhysicsBody(size, position)
+Body::Body(sf::Vector2f size, const std::string&& texturePath) :
+    PhysicsBody(size),
+    Drawable(size, PhysicsBody::centerWorld, PhysicsBody::rotation, std::move(texturePath))
 {}
-
-void Body::setDeltaCenter(sf::Vector2<float> deltaCenter) {
-    Drawable::setDeltaCenter(deltaCenter);
-    PhysicsBody::setDeltaCenter(deltaCenter);
-}
-void Body::rotate(float deltaAngle) {
-    Drawable::rotate(deltaAngle);
-    PhysicsBody::rotate(deltaAngle);
-}
-void Body::translate(float distance) {
-    Drawable::translate(distance);
-    PhysicsBody::translate(distance);
-}
-void Body::translate(sf::Vector2<float> delta) {
-    Drawable::translate(delta);
-    PhysicsBody::translate(delta);
-}
-void Body::rotateAroundParent(float currentAngle, float deltaAngle) {
-    Drawable::rotateAroundParent(currentAngle, deltaAngle);
-    PhysicsBody::rotateAroundParent(currentAngle, deltaAngle);
-}
