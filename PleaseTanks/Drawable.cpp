@@ -8,7 +8,7 @@
 #include "Drawable.hpp"
 #include <cmath>
 
-Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, const std::string&& texturePath) {
+Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, const std::string&& texturePath): position(position), rotation(rotation) {
     rect.setSize({size.x, size.y});
     if (!texture.loadFromFile(texturePath)) {
         std::cout << "Error loading texture. Path: " << texturePath << " \n";
@@ -18,21 +18,20 @@ Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<f
     rect.setOrigin(size / 2.f);
 
     std::function<void(sf::Vector2f)> callbackPosition = [&](sf::Vector2f newPosition) {
-        sf::Vector2f leftTopPosition = newPosition;
-        std::cout << "new position received: " << newPosition.x << ", " << newPosition.y << std::endl;
-        rect.setPosition(leftTopPosition.x, leftTopPosition.y);
+        rect.setPosition(newPosition.x, newPosition.y);
     };
     position.subscribe(this, callbackPosition);
     
     std::function<void(float)> callbackRotation = [&](float newRotation) {
-        std::cout << "new rotation received: " << newRotation << std::endl;
         rect.setRotation(newRotation);
     };
     rotation.subscribe(this, callbackRotation);
 }
 
-// Todo: manage unsubscriptions
-//Drawable::~Drawable() {}
+Drawable::~Drawable() {
+    rotation.unsubscribe(this);
+    position.unsubscribe(this);
+}
 
 void Drawable::draw(sf::RenderWindow& window) {
     window.draw(rect);

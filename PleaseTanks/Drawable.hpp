@@ -17,8 +17,11 @@ class Drawable : public Observer {
 protected:
     sf::RectangleShape rect;
     sf::Texture texture;
+    Subject<sf::Vector2f>& position;
+    Subject<float>& rotation;
     
 public:
+    virtual ~Drawable();
     Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, const std::string&& texturePath);
 
     virtual void draw(sf::RenderWindow& window);
