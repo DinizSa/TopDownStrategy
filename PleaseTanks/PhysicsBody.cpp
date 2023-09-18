@@ -11,7 +11,8 @@
 #include "PhysicsBody.hpp"
 #include "Utils.hpp"
 
-PhysicsBody::PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position): centerPosition({0.f, 0.f}) {
+PhysicsBody::PhysicsBody(sf::Vector2<float> size, sf::Vector2<float> position) {
+    centerPosition = {0.f, 0.f};
     PhysicsBody::setSize(size);
     
     sf::Vector2<float> leftTopPosition = -size/2.f;
@@ -31,22 +32,23 @@ void PhysicsBody::setSize(sf::Vector2<float> size) {
 }
 
 sf::Vector2<float> PhysicsBody::getCenter() const {
-    return centerPosition;
+    return centerPosition();
 }
 float PhysicsBody::getRotation() const {
-    return rotation;
+    return rotation();
 }
 void PhysicsBody::rotate(float deltaAngle) {
-    rotation += deltaAngle;
+    float newRotation = rotation() + deltaAngle;
+    rotation = newRotation;
 }
 void PhysicsBody::translate(float delta) {
-    float rotationRadians = rotation * M_PI / 180;
+    float rotationRadians = rotation() * M_PI / 180;
     float x = -delta * sin(rotationRadians);
     float y = delta * cos(rotationRadians);
     PhysicsBody::translate({x, y});
 }
 void PhysicsBody::translate(sf::Vector2<float> delta) {
-    centerPosition += delta;
+    centerPosition = centerPosition() + delta;
     body.left += delta.x;
     body.top += delta.y;
 }
@@ -66,7 +68,7 @@ void PhysicsBody::rotateAroundParent(float currentAngle, float deltaAngle) {
 }
 bool PhysicsBody::contains(sf::Vector2<float> point) const {
     sf::Transform t;
-    t.rotate(-rotation, centerPosition);
+    t.rotate(-rotation(), centerPosition());
     sf::Vector2<float> rotatedPoint = t.transformPoint(point);
     return body.contains(rotatedPoint);
 }
@@ -79,14 +81,14 @@ std::array<sf::Vector2<float>, 4> PhysicsBody::getVertices() const {
     };
     
     sf::Transform t;
-    t.rotate(rotation, centerPosition);
+    t.rotate(rotation(), centerPosition());
     for (auto& v : vertices) {
         v = t.transformPoint(v);
     }
     return vertices;
 }
 bool PhysicsBody::contains(const PhysicsBody& other) const {
-    float distance = Utils::getDistance(centerPosition, other.centerPosition);
+    float distance = Utils::getDistance(centerPosition(), other.centerPosition());
     if (distance > maxRadius + other.maxRadius) {
         return false;
     }

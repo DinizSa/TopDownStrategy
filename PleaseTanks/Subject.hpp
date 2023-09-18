@@ -17,7 +17,15 @@ class Subject {
     
 public:
     virtual ~Subject(){};
-    const T& get();
+    void operator=(T newValue){
+        value = newValue;
+        notify();
+    }
+    T operator()() const{
+        return value;
+    }
+//    const T& get() const;
+//    void set(T val);
     void subscribe(Observer<T>* observer);
     void unsubscribe(Observer<T>* observer);
     void notify();

@@ -15,9 +15,9 @@
 class PhysicsBody {
 protected:
     sf::FloatRect body;
-    float rotation;
+    Subject<float> rotation;
     sf::Vector2<float> deltaCenter;
-    sf::Vector2<float> centerPosition;
+    Subject<sf::Vector2<float>> centerPosition;
     float maxRadius;
 
 public:
