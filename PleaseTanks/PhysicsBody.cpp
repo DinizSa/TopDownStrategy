@@ -19,8 +19,8 @@ PhysicsBody::PhysicsBody(sf::Vector2f size) {
     body.top = leftTopPosition.y;
 }
 
-void PhysicsBody::setDeltaCenter(sf::Vector2f deltaCenter) {
-    this->deltaCenter = deltaCenter;
+void PhysicsBody::setCenterLocal(sf::Vector2f center) {
+    centerLocal = center;
 }
 void PhysicsBody::setSize(sf::Vector2f size) {
     body.width = size.x;
@@ -46,15 +46,20 @@ void PhysicsBody::translate(sf::Vector2f delta) {
     body.top += delta.y;
 }
 void PhysicsBody::rotate(float deltaAngle) {
-    float newRotation = rotation() + deltaAngle;
-    rotation = newRotation;
+    sf::Transform t;
+    t.rotate(rotation());
+    sf::Vector2f rotationOrigin = t.transformPoint(centerLocal.x, centerLocal.y);
+    sf::Vector2f rotationCenter = centerWorld() + rotationOrigin;
+    
+    rotateAroundOrigin(deltaAngle, rotationCenter);
 }
+
 void PhysicsBody::rotateAroundOrigin(float deltaAngle, sf::Vector2f origin) {
     sf::Transform t0;
     t0.rotate(deltaAngle, origin);
     sf::Vector2f rotatedPosition = t0.transformPoint(centerWorld());
 
-    rotate(deltaAngle);
+    rotation = rotation() + deltaAngle;
     translate(rotatedPosition - centerWorld());
 }
 bool PhysicsBody::contains(sf::Vector2f point) const {

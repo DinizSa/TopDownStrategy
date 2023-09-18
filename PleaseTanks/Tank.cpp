@@ -9,6 +9,7 @@
 #include <cmath>
 
 #include "Tank.hpp"
+#include "Utils.hpp"
 
 Tank::Tank(sf::Vector2f size, sf::Vector2f position): speed(5.f), angularSpeed(5.f), size(size), hull(size), gun(size), trackA({size.x/4, size.y}), trackB({size.x/4, size.y}) {
     

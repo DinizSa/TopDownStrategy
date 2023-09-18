@@ -12,22 +12,8 @@
 int main()
 {
     
-//    Observer observer;
-//    Subject<float> subject;
-//    std::function<void(float)> callback = [](float newValue) {
-//        std::cout << "new value: " << newValue << std::endl;
-//    };
-//    subject.subscribe(&observer, callback);
-//    subject.notify();
-//    subject.unsubscribe(&observer);
     
-    
-    
-    
-    
-    
-    
-    int windowWidth = 1800;
+    int windowWidth = 800;
     int windowHeight = 800;
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Please Tanks");
     

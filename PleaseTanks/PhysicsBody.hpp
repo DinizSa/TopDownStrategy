@@ -16,7 +16,7 @@ class PhysicsBody {
 protected:
     sf::FloatRect body;
     Subject<float> rotation;
-    sf::Vector2f deltaCenter;
+    sf::Vector2f centerLocal;
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
 
@@ -26,11 +26,10 @@ public:
     float getRotation() const;
     sf::Vector2f getCenter() const;
     void setSize(sf::Vector2f size);
-    void setDeltaCenter(sf::Vector2f deltaCenter);
+    void setCenterLocal(sf::Vector2f centerLocal);
     
     void translate(float delta);
     void translate(sf::Vector2f delta);
-//    void setRotationCenter(sf::Vector2f&& center);
     void rotate(float deltaAngle);
     void rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
     
