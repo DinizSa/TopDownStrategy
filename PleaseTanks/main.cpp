@@ -22,14 +22,7 @@ int main()
     sf::Vector2f position = {200.f, 200.f};
     Tank tank = Tank(size, position);
     
-    sf::Vector2f sizeBody = {120.f, 200.f};
-    PhysicsBody body(sizeBody);
-    body.translate(position);
-    
     sf::Vector2f position2 = {200.f, 410.f};
-    PhysicsBody body2(sizeBody);
-    body.translate(position2);
-    
     Tank tank2 = Tank(size, position2);
     
     while (window.isOpen())
@@ -42,12 +35,6 @@ int main()
                     std::cout << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
                     tank.contains(point);
-//                    if (body.contains(point)) {
-//                        std::cout << "hit A " << std::endl;
-//                    }
-//                    if (body2.contains(point)) {
-//                        std::cout << "hit B " << std::endl;
-//                    }
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -64,35 +51,15 @@ int main()
                         tank.rotateGunAntiClock();
                         break;
                     case sf::Keyboard::Scan::A:
-                        body.rotate(-5.f);
-                        if (body.contains(body2)) {
-                            body.rotate(5.f);
-                            break;
-                        }
                         tank.rotateAntiClock();
                         break;
                     case sf::Keyboard::Scan::D:
-                        body.rotate(5.f);
-                        if (body.contains(body2)) {
-                            body.rotate(-5.f);
-                            break;
-                        }
                         tank.rotateClock();
                         break;
                     case sf::Keyboard::Scan::S:
-                        body.translate(5.f);
-                        if (body.contains(body2)) {
-                            body.translate(-5.f);
-                            break;
-                        }
                         tank.moveBack();
                         break;
                     case sf::Keyboard::Scan::W:
-                        body.translate(-5.f);
-                        if (body.contains(body2)) {
-                            body.translate(5.f);
-                            break;
-                        }
                         tank.moveFront();
                         break;
                     default:

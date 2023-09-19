@@ -17,6 +17,12 @@ Tank::Tank(sf::Vector2f size, sf::Vector2f position): speed(5.f), angularSpeed(5
     trackB.translate({(2.f/10.f) * size.x, 0});
     
     translate(position);
+    
+    int id = PhysicsBody::getAndIncrementId();
+    trackA.setId(id);
+    trackB.setId(id);
+    hull.setId(id);
+    gun.setId(id);
 }
 
 void Tank::moveFront() {
@@ -50,11 +56,12 @@ void Tank::rotate(float deltaAngle) {
     hull.rotate(deltaAngle);
 }
 void Tank::translate(sf::Vector2f delta) {
-    position += delta;
-    hull.translate(delta);
-    trackA.translate(delta);
-    trackB.translate(delta);
-    gun.translate(delta);
+    if (hull.translate(delta)) {
+        position += delta;
+        trackA.translate(delta);
+        trackB.translate(delta);
+        gun.translate(delta);
+    }
 }
 void Tank::translate(float distance) {
     float rotation = hull.getRotation();
@@ -63,12 +70,13 @@ void Tank::translate(float distance) {
     float dy = distance * cos(rotationDeg);
     
     sf::Vector2f delta = {dx, dy};
-    hull.translate(delta);
-    trackA.translate(delta);
-    trackB.translate(delta);
-    gun.translate(delta);
     
-    position += delta;
+    if (hull.translate(delta)) {
+        trackA.translate(delta);
+        trackB.translate(delta);
+        gun.translate(delta);
+        position += delta;
+    }
 }
 
 bool Tank::contains(sf::Vector2f point) const {
