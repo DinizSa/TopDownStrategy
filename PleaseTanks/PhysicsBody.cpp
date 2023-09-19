@@ -83,7 +83,6 @@ void PhysicsBody::rotateAroundOrigin(float deltaAngle, sf::Vector2f origin) {
 bool PhysicsBody::contains(sf::Vector2f point) const {
     sf::Transform t;
     t.rotate(-rotation(), {body.left + body.width/2, body.top + body.height/2});
-//    t.rotate(-rotation(), centerWorld());
     sf::Vector2f rotatedPoint = t.transformPoint(point);
     return body.contains(rotatedPoint);
 }
@@ -94,16 +93,6 @@ std::array<sf::Vector2f, 4> PhysicsBody::getVertices() const {
         sf::Vector2f({body.left, body.top + body.height}),
         sf::Vector2f({body.left + body.width, body.top + body.height})
     };
-//    float halfSizeX = body.width/2.f;
-//    float halfSizeY = body.height/2.f;
-//    sf::Vector2f pos = centerWorld();
-//
-//    std::array<sf::Vector2f, 4> vertices = {
-//        sf::Vector2f({pos.x - halfSizeX, pos.y - halfSizeY}),
-//        sf::Vector2f({pos.x + halfSizeX, pos.y - halfSizeY}),
-//        sf::Vector2f({pos.x - halfSizeX, pos.y + halfSizeY}),
-//        sf::Vector2f({pos.x + halfSizeX, pos.y + halfSizeY})
-//    };
     
     sf::Transform t;
     t.rotate(rotation(), {body.left + body.width/2, body.top + body.height/2});
