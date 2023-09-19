@@ -60,6 +60,7 @@ bool PhysicsBody::translate(sf::Vector2f delta) {
         return false;
     }
     centerWorld = centerWorld() + delta;
+    centerWorld.notify();
     return true;
 }
 bool PhysicsBody::rotate(float deltaAngle) {
@@ -76,12 +77,12 @@ bool PhysicsBody::rotateAroundOrigin(float deltaAngle, sf::Vector2f origin) {
     t0.rotate(deltaAngle, origin);
     sf::Vector2f rotatedPosition = t0.transformPoint(centerWorld());
 
-//    todo: setting will trigger observable 2 times
     rotation = rotation() + deltaAngle;
     if (!translate(rotatedPosition - centerWorld())) {
         rotation = rotation() - deltaAngle;
         return false;
     }
+    rotation.notify();
     return true;
 }
 

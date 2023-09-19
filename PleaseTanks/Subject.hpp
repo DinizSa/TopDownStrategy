@@ -21,7 +21,6 @@ public:
     virtual ~Subject(){};
     void operator=(T newValue){
         value = newValue;
-        notify();
     }
     T operator()() const{
         return value;
