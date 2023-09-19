@@ -50,10 +50,11 @@ void Tank::rotateGunAntiClock() {
 
 void Tank::rotate(float deltaAngle) {
     sf::Vector2f rotationOrigin = hull.getCenter();
-    trackA.rotateAroundOrigin(deltaAngle, rotationOrigin);
-    trackB.rotateAroundOrigin(deltaAngle, rotationOrigin);
-    gun.rotateAroundOrigin(deltaAngle, rotationOrigin);
-    hull.rotate(deltaAngle);
+    if (hull.rotate(deltaAngle)) {
+        trackA.rotateAroundOrigin(deltaAngle, rotationOrigin);
+        trackB.rotateAroundOrigin(deltaAngle, rotationOrigin);
+        gun.rotateAroundOrigin(deltaAngle, rotationOrigin);
+    }
 }
 void Tank::translate(sf::Vector2f delta) {
     if (hull.translate(delta)) {
@@ -80,16 +81,16 @@ void Tank::translate(float distance) {
 }
 
 bool Tank::contains(sf::Vector2f point) const {
-    bool hitHull = hull.contains(point);
+    bool hitHull = hull.instersects(point);
     if (hitHull)
         std::cout << "X hull" << std::endl;
-    bool hitGun = gun.contains(point);
+    bool hitGun = gun.instersects(point);
     if (hitGun)
         std::cout << "X gun" << std::endl;
-    bool hitTrackA = trackA.contains(point);
+    bool hitTrackA = trackA.instersects(point);
     if (hitTrackA)
         std::cout << "X track A" << std::endl;
-    bool hitTrackB = trackB.contains(point);
+    bool hitTrackB = trackB.instersects(point);
     if (hitTrackB)
         std::cout << "X track B" << std::endl;
     

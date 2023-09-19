@@ -62,25 +62,30 @@ bool PhysicsBody::translate(sf::Vector2f delta) {
     centerWorld = centerWorld() + delta;
     return true;
 }
-void PhysicsBody::rotate(float deltaAngle) {
+bool PhysicsBody::rotate(float deltaAngle) {
     sf::Transform t;
     t.rotate(rotation());
     sf::Vector2f rotationOrigin = t.transformPoint(centerLocal.x, centerLocal.y);
     sf::Vector2f rotationCenter = centerWorld() + rotationOrigin;
     
-    rotateAroundOrigin(deltaAngle, rotationCenter);
+    return rotateAroundOrigin(deltaAngle, rotationCenter);
 }
 
-void PhysicsBody::rotateAroundOrigin(float deltaAngle, sf::Vector2f origin) {
+bool PhysicsBody::rotateAroundOrigin(float deltaAngle, sf::Vector2f origin) {
     sf::Transform t0;
     t0.rotate(deltaAngle, origin);
     sf::Vector2f rotatedPosition = t0.transformPoint(centerWorld());
 
+//    todo: setting will trigger observable 2 times
     rotation = rotation() + deltaAngle;
-    translate(rotatedPosition - centerWorld());
+    if (!translate(rotatedPosition - centerWorld())) {
+        rotation = rotation() - deltaAngle;
+        return false;
+    }
+    return true;
 }
 
-bool PhysicsBody::contains(sf::Vector2f point) const {
+bool PhysicsBody::instersects(sf::Vector2f point) const {
     sf::Transform t;
     t.rotate(-rotation(), {body.left + body.width/2, body.top + body.height/2});
     sf::Vector2f rotatedPoint = t.transformPoint(point);
@@ -101,7 +106,7 @@ std::array<sf::Vector2f, 4> PhysicsBody::getVertices() const {
     }
     return vertices;
 }
-bool PhysicsBody::contains(const PhysicsBody& other) const {
+bool PhysicsBody::instersects(const PhysicsBody& other) const {
     float distance = Utils::getDistance(centerWorld(), other.centerWorld());
     if (distance > maxRadius + other.maxRadius) {
         return false;
@@ -109,14 +114,14 @@ bool PhysicsBody::contains(const PhysicsBody& other) const {
     
     std::array<sf::Vector2f, 4> vertices = getVertices();
     for (auto& v : vertices) {
-        if (other.contains(v)) {
+        if (other.instersects(v)) {
             return true;
         }
     }
     
     std::array<sf::Vector2f, 4> verticesOther = other.getVertices();
     for (auto& v : verticesOther) {
-        if (contains(v)) {
+        if (instersects(v)) {
             return true;
         }
     }
@@ -135,7 +140,7 @@ bool PhysicsBody::collidedMovement() const {
         if (!body->movementCollisions)
             continue;
 
-        if (this->contains(*body)) {
+        if (this->instersects(*body)) {
             return true;
         }
     }

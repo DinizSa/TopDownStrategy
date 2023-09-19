@@ -42,11 +42,11 @@ public:
     
     bool translate(float delta);
     bool translate(sf::Vector2f delta);
-    void rotate(float deltaAngle);
-    void rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
+    bool rotate(float deltaAngle);
+    bool rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
     
-    bool contains(sf::Vector2f point) const;
-    bool contains(const PhysicsBody& other) const;
+    bool instersects(sf::Vector2f point) const;
+    bool instersects(const PhysicsBody& other) const;
     
     void setId(int id);
 
