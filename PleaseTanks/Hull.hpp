@@ -10,5 +10,5 @@
 
 class Hull : public Body {
 public:
-    Hull(sf::Vector2f size);
+    Hull(sf::Vector2f size, int spriteIndex);
 };

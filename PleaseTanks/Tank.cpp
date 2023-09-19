@@ -11,10 +11,10 @@
 #include "Tank.hpp"
 #include "Utils.hpp"
 
-Tank::Tank(sf::Vector2f size, sf::Vector2f position): speed(5.f), angularSpeed(5.f), size(size), hull(size), gun(size), trackA({size.x/4, size.y}), trackB({size.x/4, size.y}) {
+Tank::Tank(sf::Vector2f size, sf::Vector2f position): speed(5.f), angularSpeed(5.f), size(size), hull(size, 5), gun(size, 1), trackA({size.x/4, size.y*1.03f}, 2), trackB({size.x/4, size.y*1.03f}, 2) {
     
-    trackA.translate({(-2.f/10.f) * size.x, 0});
-    trackB.translate({(2.f/10.f) * size.x, 0});
+    trackA.translate({(-2.2f/10.f) * size.x, 2.5f});
+    trackB.translate({(2.2f/10.f) * size.x, 2.5f});
     
     translate(position);
     

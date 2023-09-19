@@ -11,5 +11,5 @@
 
 class Body : public PhysicsBody, public Drawable {
 public:
-    Body(sf::Vector2f imageSize, sf::Vector2f physicsBodySize, const std::string&& texturePath);
+    Body(sf::Vector2f imageSize, sf::Vector2f physicsBodySize, SpriteNames sprite, int spriteIndex);
 };

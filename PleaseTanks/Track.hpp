@@ -13,7 +13,7 @@ private:
     int index;
     float traveledDistance;
 public:
-    Track(sf::Vector2f size);
+    Track(sf::Vector2f size, int spriteIndex);
     
     bool translate(sf::Vector2f delta) override;
 };

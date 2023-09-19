@@ -12,7 +12,7 @@ class Gun : public Body {
 private:
     float angularSpeed;
 public:
-    Gun(sf::Vector2f size);
+    Gun(sf::Vector2f size, int spriteIndex);
     
     float getAngularSpeed();
 };

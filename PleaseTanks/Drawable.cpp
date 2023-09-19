@@ -5,15 +5,20 @@
 //  Created by Diniz Sá on 14/09/2023.
 //
 
-#include "Drawable.hpp"
 #include <cmath>
 
-Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, const std::string&& texturePath): position(position), rotation(rotation) {
+#include "AssetManager.hpp"
+
+#include "Drawable.hpp"
+
+Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), originSpriteIndex(spriteIndex) {
     rect.setSize({size.x, size.y});
-    if (!texture.loadFromFile(texturePath)) {
-        std::cout << "Error loading texture. Path: " << texturePath << " \n";
-    }
-    rect.setTexture(&texture);
+    
+    const Sprite* sp = AssetManager::get()->getSprite(spriteName);
+    texture = sp->getTexture();
+    rect.setTexture(texture);
+    setTextureSize(sp->singleImageSize);
+    setSprite(spriteIndex);
     
     rect.setOrigin(size / 2.f);
 
@@ -26,23 +31,21 @@ Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<f
         rect.setRotation(newRotation);
     };
     rotation.subscribe(this, callbackRotation);
-    
 }
 
 Drawable::~Drawable() {
     rotation.unsubscribe(this);
     position.unsubscribe(this);
 }
-
 void Drawable::draw(sf::RenderWindow& window) {
     window.draw(rect);
 }
-void Drawable::setTextureSize(sf::Vector2f size) {
+void Drawable::setTextureSize(const sf::Vector2f& size) {
     textureRect.width = size.x;
     textureRect.height = size.y;
+    rect.setTextureRect(textureRect);
 }
-void Drawable::setTextureRect(int index) {
-    
+void Drawable::setSprite(int index) {
     textureRect.left = textureRect.width * index;
     rect.setTextureRect(textureRect);
 }

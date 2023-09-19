@@ -12,6 +12,7 @@
 
 #include "Subject.hpp"
 #include "Observer.hpp"
+#include "AssetManager.hpp"
 
 class Drawable : public Observer {
 private:
@@ -20,16 +21,19 @@ private:
 
 protected:
     sf::RectangleShape rect;
-    sf::Texture texture;
+    const sf::Texture* texture;
     sf::Rect<int> textureRect;
+    const int originSpriteIndex;
+
+private:
+    void setTextureSize(const sf::Vector2f& size);
 
 protected:
-    void setTextureSize(sf::Vector2f);
-    void setTextureRect(int index);
-    
+    void setSprite(int index);
+
 public:
     virtual ~Drawable();
-    Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, const std::string&& texturePath);
-
+    Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex);
+    
     virtual void draw(sf::RenderWindow& window);
 };
