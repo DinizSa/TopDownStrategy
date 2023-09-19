@@ -9,6 +9,11 @@
 #include "Body.hpp"
 
 class Track : public Body {
+private:
+    int index;
+    float traveledDistance;
 public:
     Track(sf::Vector2f size);
+    
+    bool translate(sf::Vector2f delta) override;
 };

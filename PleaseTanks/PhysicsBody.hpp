@@ -41,7 +41,7 @@ public:
     void setCenterLocal(sf::Vector2f centerLocal);
     
     bool translate(float delta);
-    bool translate(sf::Vector2f delta);
+    virtual bool translate(sf::Vector2f delta);
     bool rotate(float deltaAngle);
     bool rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
     

@@ -26,6 +26,7 @@ Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<f
         rect.setRotation(newRotation);
     };
     rotation.subscribe(this, callbackRotation);
+    
 }
 
 Drawable::~Drawable() {
@@ -35,4 +36,13 @@ Drawable::~Drawable() {
 
 void Drawable::draw(sf::RenderWindow& window) {
     window.draw(rect);
+}
+void Drawable::setTextureSize(sf::Vector2f size) {
+    textureRect.width = size.x;
+    textureRect.height = size.y;
+}
+void Drawable::setTextureRect(int index) {
+    
+    textureRect.left = textureRect.width * index;
+    rect.setTextureRect(textureRect);
 }

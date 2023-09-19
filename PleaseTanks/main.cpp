@@ -25,6 +25,19 @@ int main()
     sf::Vector2f position2 = {200.f, 410.f};
     Tank tank2 = Tank(size, position2);
     
+    
+    sf::RectangleShape rect;
+    sf::Texture texture;
+    rect.setSize({42.f, 246.f});
+    texture.loadFromFile("/Users/Shared/merda/PleaseTanks/images/tracksSprites.png");
+    rect.setTexture(&texture);
+    sf::Rect<int> r;
+    r.width = 42;
+    r.height = 246;
+    r.left = 0;
+    r.top = 0;
+    rect.setTextureRect(r);
+    
     while (window.isOpen())
     {
         sf::Event event;
@@ -46,6 +59,8 @@ int main()
                         break;
                     case sf::Keyboard::Scan::E:
                         tank.rotateGunClock();
+                        r.left = 42;
+                        rect.setTextureRect(r);
                         break;
                     case sf::Keyboard::Scan::Q:
                         tank.rotateGunAntiClock();
@@ -72,6 +87,7 @@ int main()
         window.clear();
         tank.draw(window);
         tank2.draw(window);
+//        window.draw(rect);
         window.display();
     }
 

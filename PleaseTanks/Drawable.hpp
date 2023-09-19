@@ -21,7 +21,12 @@ private:
 protected:
     sf::RectangleShape rect;
     sf::Texture texture;
+    sf::Rect<int> textureRect;
 
+protected:
+    void setTextureSize(sf::Vector2f);
+    void setTextureRect(int index);
+    
 public:
     virtual ~Drawable();
     Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, const std::string&& texturePath);
