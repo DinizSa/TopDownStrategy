@@ -17,13 +17,19 @@ int main()
     int windowHeight = 800;
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Please Tanks");
     
-    
     sf::Vector2f size = {200.f, 200.f};
     sf::Vector2f position = {200.f, 200.f};
     Tank tank = Tank(size, position);
     
     sf::Vector2f position2 = {200.f, 410.f};
     Tank tank2 = Tank(size, position2);
+    
+    bool forwardPressed = false;
+    bool turnClockPressed = false;
+    bool turnAnticlockPressed = false;
+    bool backwardPressed = false;
+    bool turnClockGunPressed = false;
+    bool turnAnticlockGunPressed = false;
     
     
     sf::RectangleShape rect;
@@ -57,31 +63,66 @@ int main()
                     case sf::Keyboard::Scan::Escape:
                         window.close();
                         break;
-                    case sf::Keyboard::Scan::E:
-                        tank.rotateGunClock();
-                        r.left = 42;
-                        rect.setTextureRect(r);
-                        break;
-                    case sf::Keyboard::Scan::Q:
-                        tank.rotateGunAntiClock();
-                        break;
-                    case sf::Keyboard::Scan::A:
-                        tank.rotateAntiClock();
-                        break;
-                    case sf::Keyboard::Scan::D:
-                        tank.rotateClock();
+                    case sf::Keyboard::Scan::W:
+                        forwardPressed = true;
                         break;
                     case sf::Keyboard::Scan::S:
-                        tank.moveBack();
+                        backwardPressed = true;
                         break;
+                    case sf::Keyboard::Scan::A:
+                        turnAnticlockPressed = true;
+                        break;
+                    case sf::Keyboard::Scan::D:
+                        turnClockPressed = true;
+                        break;
+                    case sf::Keyboard::Scan::E:
+                        turnClockGunPressed = true;
+                        break;
+                    case sf::Keyboard::Scan::Q:
+                        turnAnticlockGunPressed = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (event.type == sf::Event::KeyReleased) {
+                switch (event.key.scancode) {
                     case sf::Keyboard::Scan::W:
-                        tank.moveFront();
+                        forwardPressed = false;
+                        break;
+                    case sf::Keyboard::Scan::S:
+                        backwardPressed = false;
+                        break;
+                    case sf::Keyboard::Scan::A:
+                        turnAnticlockPressed = false;
+                        break;
+                    case sf::Keyboard::Scan::D:
+                        turnClockPressed = false;
+                        break;
+                    case sf::Keyboard::Scan::E:
+                        turnClockGunPressed = false;
+                        break;
+                    case sf::Keyboard::Scan::Q:
+                        turnAnticlockGunPressed = false;
                         break;
                     default:
                         break;
                 }
             }
         }
+        if (forwardPressed)
+            tank.moveFront();
+        if (backwardPressed)
+            tank.moveBack();
+        if (turnClockPressed)
+            tank.rotateClock();
+        if (turnAnticlockPressed)
+            tank.rotateAntiClock();
+        if (turnClockGunPressed)
+            tank.rotateGunClock();
+        if (turnAnticlockGunPressed)
+            tank.rotateGunAntiClock();
+        
         
 
         window.clear();

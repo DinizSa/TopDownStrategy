@@ -1,5 +1,5 @@
 //
-//  ISubject.hpp
+//  Subject.hpp
 //  PleaseTanks
 //
 //  Created by Diniz Sá on 18/09/2023.

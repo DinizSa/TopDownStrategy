@@ -1,5 +1,5 @@
 //
-//  AssetManager.hpp
+//  Sprite.hpp
 //  PleaseTanks
 //
 //  Created by Diniz Sá on 19/09/2023.
