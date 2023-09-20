@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
+#include <chrono>
+#include <ctime>
+#include <thread>
 
 #include "Tank.hpp"
 #include "PhysicsBody.hpp"
@@ -31,18 +34,19 @@ int main()
     bool turnClockGunPressed = false;
     bool turnAnticlockGunPressed = false;
     
+    sf::Text framesText;
+    framesText.setCharacterSize(30);
+    sf::Font font;
+    font.loadFromFile("/Users/Shared/merda/PleaseTanks/fonts/Drunk & Proud.otf");
+    framesText.setFont(font);
+    framesText.setPosition(50.f, 50.f);
+    framesText.setFillColor(sf::Color(255, 0, 0));
+    int frames = 0;
+    const int fps = 60;
+    const int millisecondsInOneSecond = 1000;
     
-    sf::RectangleShape rect;
-    sf::Texture texture;
-    rect.setSize({42.f, 246.f});
-    texture.loadFromFile("/Users/Shared/merda/PleaseTanks/images/tracksSprites.png");
-    rect.setTexture(&texture);
-    sf::Rect<int> r;
-    r.width = 42;
-    r.height = 246;
-    r.left = 0;
-    r.top = 0;
-    rect.setTextureRect(r);
+    using clock = std::chrono::steady_clock;
+    auto next_frame = clock::now();
     
     while (window.isOpen())
     {
@@ -122,13 +126,16 @@ int main()
             tank.rotateGunClock();
         if (turnAnticlockGunPressed)
             tank.rotateGunAntiClock();
-        
-        
+
+        next_frame += std::chrono::milliseconds(millisecondsInOneSecond / fps);
+        std::this_thread::sleep_until(next_frame);
+        framesText.setString(std::to_string(frames));
+        frames++;
 
         window.clear();
         tank.draw(window);
         tank2.draw(window);
-//        window.draw(rect);
+        window.draw(framesText);
         window.display();
     }
 
