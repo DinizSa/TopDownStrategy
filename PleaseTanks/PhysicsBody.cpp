@@ -21,7 +21,7 @@ void PhysicsBody::setId(int id) {
     this->id = id;
     allBodies.push_back(this);
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): movementCollisions(false) {
+PhysicsBody::PhysicsBody(sf::Vector2f size): movementCollisions(false), traveledDistance(0.f) {
     setSize(size);
     
     sf::Vector2f leftTopPosition = -size/2.f;

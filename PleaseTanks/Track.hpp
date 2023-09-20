@@ -11,7 +11,7 @@
 class Track : public Body {
 private:
     int index;
-    float traveledDistance;
+    float distanceToChangeSprite;
 public:
     Track(sf::Vector2f size, int spriteIndex);
     

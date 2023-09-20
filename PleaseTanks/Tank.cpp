@@ -11,7 +11,7 @@
 #include "Tank.hpp"
 #include "Utils.hpp"
 
-Tank::Tank(sf::Vector2f size, sf::Vector2f position): speed(5.f), angularSpeed(5.f), size(size), hull(size, 5), gun(size, 1), trackA({size.x/4, size.y*1.03f}, 2), trackB({size.x/4, size.y*1.03f}, 2) {
+Tank::Tank(sf::Vector2f size, sf::Vector2f position): speed(5.f), angularSpeed(5.f), size(size), hull(size, 7), gun(size, 4), trackA({size.x/4, size.y*1.03f}, 6), trackB({size.x/4, size.y*1.03f}, 6) {
     
     trackA.translate({(-2.2f/10.f) * size.x, 2.5f});
     trackB.translate({(2.2f/10.f) * size.x, 2.5f});

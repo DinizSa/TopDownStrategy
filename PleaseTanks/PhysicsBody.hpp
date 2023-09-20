@@ -29,6 +29,7 @@ protected:
     
     int id;
     bool movementCollisions;
+    float traveledDistance;
 
 public:
     PhysicsBody(sf::Vector2f size);
