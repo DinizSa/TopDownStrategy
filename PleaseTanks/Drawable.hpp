@@ -23,13 +23,16 @@ protected:
     sf::RectangleShape rect;
     const sf::Texture* texture;
     sf::Rect<int> textureRect;
-    const int originSpriteIndex;
+    const int minSprite;
+    const int maxSprite;
+    int currentSprite;
 
 private:
     void setTextureSize(const sf::Vector2f& size);
 
 protected:
     void setSprite(int index);
+    void setNextSprite();
 
 public:
     virtual ~Drawable();

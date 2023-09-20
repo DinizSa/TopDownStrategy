@@ -11,14 +11,14 @@
 
 #include "Drawable.hpp"
 
-Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), originSpriteIndex(spriteIndex) {
+Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), minSprite(spriteIndex), maxSprite(spriteIndex+1), currentSprite(minSprite) {
     rect.setSize({size.x, size.y});
     
     const Sprite* sp = AssetManager::get()->getSprite(spriteName);
     texture = sp->getTexture();
     rect.setTexture(texture);
     setTextureSize(sp->singleImageSize);
-    setSprite(spriteIndex);
+    setSprite(currentSprite);
     
     rect.setOrigin(size / 2.f);
 
@@ -48,4 +48,12 @@ void Drawable::setTextureSize(const sf::Vector2f& size) {
 void Drawable::setSprite(int index) {
     textureRect.left = textureRect.width * index;
     rect.setTextureRect(textureRect);
+}
+void Drawable::setNextSprite() {
+    if (currentSprite == maxSprite) {
+        currentSprite = minSprite;
+    } else {
+        currentSprite++;
+    }
+    setSprite(currentSprite);
 }
