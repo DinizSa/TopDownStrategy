@@ -12,7 +12,7 @@
 
 #include "Sprite.hpp"
 
-enum SpriteNames { tracks, hulls, guns};
+enum SpriteNames { tracks, hulls, guns, effects};
 
 class AssetManager {
 private:
