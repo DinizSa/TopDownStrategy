@@ -28,8 +28,9 @@ private:
     int durationSpriteMs;
     bool spriteLoop;
     const Sprite* sprite;
-    
     std::chrono::time_point<clock> spriteAnimationStart;
+    
+    bool dirty;
 
 protected:
     sf::RectangleShape rect;
@@ -47,6 +48,7 @@ protected:
 public:
     virtual ~Drawable();
     Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex);
+    bool isDirty();
     
     void setSpriteIndexRange(int minSpriteIndex, int maxSpriteIndex);
     void setDynamicSprite(int timePerSpriteMs, bool spriteLoop);

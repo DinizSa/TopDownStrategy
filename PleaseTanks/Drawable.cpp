@@ -11,7 +11,7 @@
 
 #include "Drawable.hpp"
 
-Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), currentSpriteIndex(spriteIndex), minSpriteIndex(spriteIndex), maxSpriteIndex(spriteIndex), durationSpriteMs(0), spriteAnimationStart(std::chrono::milliseconds(0)), spriteLoop(false)
+Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), currentSpriteIndex(spriteIndex), minSpriteIndex(spriteIndex), maxSpriteIndex(spriteIndex), durationSpriteMs(0), spriteAnimationStart(std::chrono::milliseconds(0)), spriteLoop(false), dirty(false)
 {
     rect.setSize({size.x, size.y});
     
@@ -38,6 +38,9 @@ Drawable::~Drawable() {
     rotation.unsubscribe(this);
     position.unsubscribe(this);
 }
+bool Drawable::isDirty() {
+    return dirty;
+}
 void Drawable::setTextureSize(const sf::Vector2f& size) {
     textureRect.width = size.x;
     textureRect.height = size.y;
@@ -55,6 +58,7 @@ void Drawable::setNextSprite() {
             currentSpriteIndex = minSpriteIndex;
         } else if (durationSpriteMs > 0) {
             currentSpriteIndex = -1;
+            dirty = true;
             return;
         } else {
             currentSpriteIndex = minSpriteIndex;

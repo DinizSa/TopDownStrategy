@@ -42,7 +42,7 @@ int main()
     
     using clock = std::chrono::steady_clock;
     
-    Explosion explosion = Explosion(size, position);
+    Explosion* explosion = new Explosion(size, position);
     
     std::chrono::time_point<clock> next_frame = clock::now();
     while (window.isOpen())
@@ -128,7 +128,15 @@ int main()
         window.clear();
         tank.draw(window);
         tank2.draw(window);
-        explosion.draw(window);
+        
+        if (explosion != nullptr) {
+            if (explosion->isDirty()) {
+                delete explosion;
+                explosion = nullptr;
+            } else {
+                explosion->draw(window);
+            }
+        }
         window.draw(framesText);
         window.display();
         

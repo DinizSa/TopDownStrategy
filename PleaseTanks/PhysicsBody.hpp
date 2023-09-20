@@ -14,11 +14,13 @@
 #include "Subject.hpp"
 
 class PhysicsBody {
-    static std::vector<PhysicsBody*> allBodies;
-    static int nextId;
-    
 private:
+    static std::vector<PhysicsBody*> allBodies;
+    static int nextMaskId;
+    int collisionMaskId; // ignore collisions between elements with same mask id
+    
     float traveledDistance;
+    bool hasMovementCollisions;
     
 protected:
     sf::FloatRect body;
@@ -26,13 +28,10 @@ protected:
     sf::Vector2f centerLocal;
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
-    
-    int id;
-    bool movementCollisions;
-    
 
 private:
     bool collidedMovement() const;
+    void removeCollider();
 
 protected:
     std::array<sf::Vector2f, 4> getVertices() const;
@@ -41,9 +40,10 @@ protected:
 
 public:
     PhysicsBody(sf::Vector2f size);
+    ~PhysicsBody();
     
-    static int getAndIncrementId();
-    void setId(int id);
+    static int getAndIncrementMaskId();
+    void setCollisionMaskId(int id);
     
     float getRotation() const;
     sf::Vector2f getCenter() const;

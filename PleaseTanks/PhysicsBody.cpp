@@ -7,26 +7,33 @@
 
 #include <array>
 #include <cmath>
+#include <algorithm>
 
 #include "PhysicsBody.hpp"
 #include "Utils.hpp"
 
-int PhysicsBody::nextId = 0;
+int PhysicsBody::nextMaskId = 1;
 std::vector<PhysicsBody*> PhysicsBody::allBodies;
-int PhysicsBody::getAndIncrementId() {
-    return PhysicsBody::nextId++;
+int PhysicsBody::getAndIncrementMaskId() {
+    return PhysicsBody::nextMaskId++;
 }
 
-void PhysicsBody::setId(int id) {
-    this->id = id;
-    allBodies.push_back(this);
+void PhysicsBody::setCollisionMaskId(int groupId) {
+    collisionMaskId = groupId;
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): movementCollisions(false), traveledDistance(0.f) {
+void PhysicsBody::removeCollider() {
+    allBodies.erase(std::remove(allBodies.begin(), allBodies.end(), this), allBodies.end());
+}
+PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), traveledDistance(0.f), collisionMaskId(0) {
     setSize(size);
+    allBodies.push_back(this);
     
     sf::Vector2f leftTopPosition = -size/2.f;
     body.left = leftTopPosition.x;
     body.top = leftTopPosition.y;
+}
+PhysicsBody::~PhysicsBody() {
+    removeCollider();
 }
 
 void PhysicsBody::setCenterLocal(sf::Vector2f center) {
@@ -132,14 +139,15 @@ bool PhysicsBody::instersects(const PhysicsBody& other) const {
 }
 
 bool PhysicsBody::collidedMovement() const {
-    if (!movementCollisions) {
+    if (!hasMovementCollisions) {
         return false;
     }
     for (PhysicsBody* body : PhysicsBody::allBodies) {
-        if (body->id == this->id)
+
+        if (this->collisionMaskId != 0 && body->collisionMaskId == this->collisionMaskId)
             continue;
         
-        if (!body->movementCollisions)
+        if (!body->hasMovementCollisions)
             continue;
 
         if (this->instersects(*body)) {
@@ -150,7 +158,7 @@ bool PhysicsBody::collidedMovement() const {
 }
 
 void PhysicsBody::setMovementCollisions(bool hasCollisions) {
-    movementCollisions = hasCollisions;
+    hasMovementCollisions = hasCollisions;
 }
 float PhysicsBody::getTraveledDistance() {
     return traveledDistance;
