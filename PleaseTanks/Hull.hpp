@@ -6,9 +6,10 @@
 //
 
 #pragma once
-#include "Body.hpp"
+#include "Drawable.hpp"
+#include "PhysicsBody.hpp"
 
-class Hull : public Body {
+class Hull : public PhysicsBody, public Drawable {
 public:
     Hull(sf::Vector2f size, int spriteIndex);
 };

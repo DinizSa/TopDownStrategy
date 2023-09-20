@@ -8,11 +8,13 @@
 #include "Track.hpp"
 #include "Utils.hpp"
 
-Track::Track(sf::Vector2f size, int spriteIndex) : Body(size, size, SpriteNames::tracks, spriteIndex), index(0), distanceToChangeSprite(2.f) {
-}
+Track::Track(sf::Vector2f imageSize, int spriteIndex) :
+    PhysicsBody(imageSize),
+    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, SpriteNames::tracks, spriteIndex)
+{}
 
 bool Track::translate(sf::Vector2f delta) {
-    bool translated = Body::translate(delta);
+    bool translated = PhysicsBody::translate(delta);
     if (translated) {
         traveledDistance += Utils::getLength(delta.x, delta.y);
         if (fmod((traveledDistance / distanceToChangeSprite), 2.f) < 1.f) {

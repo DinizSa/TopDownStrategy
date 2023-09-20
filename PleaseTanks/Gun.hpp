@@ -6,9 +6,10 @@
 //
 
 #pragma once
-#include "Body.hpp"
+#include "Drawable.hpp"
+#include "PhysicsBody.hpp"
 
-class Gun : public Body {
+class Gun : public PhysicsBody, public Drawable {
 private:
     float angularSpeed;
 public:

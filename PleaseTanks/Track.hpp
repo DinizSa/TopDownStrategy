@@ -6,11 +6,11 @@
 //
 
 #pragma once
-#include "Body.hpp"
+#include "Drawable.hpp"
+#include "PhysicsBody.hpp"
 
-class Track : public Body {
+class Track : public PhysicsBody, public Drawable {
 private:
-    int index;
     float distanceToChangeSprite;
 public:
     Track(sf::Vector2f size, int spriteIndex);

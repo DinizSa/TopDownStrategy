@@ -7,6 +7,9 @@
 
 #include "Hull.hpp"
 
-Hull::Hull(sf::Vector2f size, int spriteIndex) : Body(size, {size.x*(6.f/10.f), size.y}, SpriteNames::hulls, spriteIndex) {
+Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
+    PhysicsBody({imageSize.x * (6.f/10.f), imageSize.y}),
+    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, SpriteNames::hulls, spriteIndex)
+{
     setMovementCollisions(true);
 }
