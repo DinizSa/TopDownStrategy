@@ -11,14 +11,15 @@
 
 #include "Drawable.hpp"
 
-Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), minSprite(spriteIndex), maxSprite(spriteIndex+1), currentSprite(minSprite) {
+Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), currentSpriteIndex(spriteIndex), minSpriteIndex(spriteIndex), maxSpriteIndex(spriteIndex), durationSpriteMs(0), spriteAnimationStart(std::chrono::milliseconds(0)), spriteLoop(false)
+{
     rect.setSize({size.x, size.y});
     
-    const Sprite* sp = AssetManager::get()->getSprite(spriteName);
-    texture = sp->getTexture();
+    sprite = AssetManager::get()->getSprite(spriteName);
+    texture = sprite->getTexture();
     rect.setTexture(texture);
-    setTextureSize(sp->singleImageSize);
-    setSprite(currentSprite);
+    setTextureSize(sprite->singleImageSize);
+    setSprite(currentSpriteIndex);
     
     rect.setOrigin(size / 2.f);
 
@@ -37,23 +38,63 @@ Drawable::~Drawable() {
     rotation.unsubscribe(this);
     position.unsubscribe(this);
 }
-void Drawable::draw(sf::RenderWindow& window) {
-    window.draw(rect);
-}
 void Drawable::setTextureSize(const sf::Vector2f& size) {
     textureRect.width = size.x;
     textureRect.height = size.y;
     rect.setTextureRect(textureRect);
 }
 void Drawable::setSprite(int index) {
-    textureRect.left = textureRect.width * index;
+    sf::Vector2f spritePosition = sprite->getPosition(index);
+    textureRect.left = spritePosition.x;
+    textureRect.top = spritePosition.y;
     rect.setTextureRect(textureRect);
 }
 void Drawable::setNextSprite() {
-    if (currentSprite == maxSprite) {
-        currentSprite = minSprite;
+    if (currentSpriteIndex == maxSpriteIndex) {
+        if (spriteLoop) {
+            currentSpriteIndex = minSpriteIndex;
+        } else if (durationSpriteMs > 0) {
+            currentSpriteIndex = -1;
+            return;
+        } else {
+            currentSpriteIndex = minSpriteIndex;
+        }
     } else {
-        currentSprite++;
+        currentSpriteIndex++;
     }
-    setSprite(currentSprite);
+    setSprite(currentSpriteIndex);
+}
+
+void Drawable::setSpriteIndexRange(int min, int max) {
+    currentSpriteIndex = min;
+    minSpriteIndex = min;
+    maxSpriteIndex = max;
+}
+void Drawable::setDynamicSprite(int timeMs, bool loop) {
+    durationSpriteMs = timeMs;
+    spriteLoop = loop;
+    
+    if (durationSpriteMs > 0) {
+        spriteAnimationStart = clock::now();
+    }
+}
+
+void Drawable::updateSpriteAnimation() {
+    auto delta = clock::now() - spriteAnimationStart;
+    auto deltaMs = delta.count() / pow(10, 6);
+    
+    if (deltaMs > durationSpriteMs) {
+        setNextSprite();
+        spriteAnimationStart = clock::now();
+    }
+}
+
+void Drawable::draw(sf::RenderWindow& window) {
+    if (currentSpriteIndex > 0) {
+        if (durationSpriteMs > 0) {
+            updateSpriteAnimation();
+        }
+        
+        window.draw(rect);
+    }
 }

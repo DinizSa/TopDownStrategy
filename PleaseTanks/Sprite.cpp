@@ -5,6 +5,7 @@
 //  Created by Diniz Sá on 19/09/2023.
 //
 
+#include <cmath>
 #include "Sprite.hpp"
 
 Sprite::Sprite(int columns, int rows, std::string path, sf::Vector2f singleImageSize): columns(columns), rows(rows), singleImageSize(singleImageSize) {
@@ -13,6 +14,13 @@ Sprite::Sprite(int columns, int rows, std::string path, sf::Vector2f singleImage
 }
 const sf::Texture* Sprite::getTexture() const {
     return texture;
+}
+
+sf::Vector2f Sprite::getPosition(int index) const {
+    int row = floor(index / columns);
+    int column = index % columns;
+    sf::Vector2f position = sf::Vector2f({column * singleImageSize.x, row * singleImageSize.y});
+    return position;
 }
 Sprite::~Sprite() {
     delete texture;

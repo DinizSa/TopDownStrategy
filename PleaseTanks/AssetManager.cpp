@@ -15,7 +15,7 @@ AssetManager::AssetManager() {
     sprites.insert_or_assign(SpriteNames::tracks, new Sprite({8, 1, "/Users/Shared/merda/PleaseTanks/images/tracksSprites.png", sf::Vector2f({42.f, 246.f})}));
     sprites.insert_or_assign(SpriteNames::guns, new Sprite({8, 1, "/Users/Shared/merda/PleaseTanks/images/gunsSprites.png", sf::Vector2f({256.f, 256.f})}));
     sprites.insert_or_assign(SpriteNames::hulls, new Sprite({8, 1, "/Users/Shared/merda/PleaseTanks/images/hullsSprites.png", sf::Vector2f({256.f, 256.f})}));
-    sprites.insert_or_assign(SpriteNames::effects, new Sprite({8, 7, "/Users/Shared/merda/PleaseTanks/images/hullsSprites.png", sf::Vector2f({266.f, 266.f})}));
+    sprites.insert_or_assign(SpriteNames::effects, new Sprite({8, 7, "/Users/Shared/merda/PleaseTanks/images/effectsSprites.png", sf::Vector2f({266.f, 266.f})}));
 }
 AssetManager::~AssetManager() {
     for (auto& sprite : sprites) {

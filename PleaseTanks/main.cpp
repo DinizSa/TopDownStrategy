@@ -1,16 +1,11 @@
 #include <SFML/Graphics.hpp>
 
 #include <iostream>
-#include <chrono>
 #include <ctime>
 #include <thread>
 
 #include "Tank.hpp"
-#include "PhysicsBody.hpp"
-
-
-#include "Subject.hpp"
-#include "Observer.hpp"
+#include "Explosion.hpp"
 
 int main()
 {
@@ -43,11 +38,13 @@ int main()
     framesText.setFillColor(sf::Color(255, 0, 0));
     int frames = 0;
     const int fps = 60;
-    const int millisecondsInOneSecond = 1000;
+    const int secondsMs = pow(10, 3);
     
     using clock = std::chrono::steady_clock;
-    auto next_frame = clock::now();
     
+    Explosion explosion = Explosion(size, position);
+    
+    std::chrono::time_point<clock> next_frame = clock::now();
     while (window.isOpen())
     {
         sf::Event event;
@@ -114,6 +111,7 @@ int main()
                 }
             }
         }
+
         if (forwardPressed)
             tank.moveFront();
         if (backwardPressed)
@@ -127,16 +125,17 @@ int main()
         if (turnAnticlockGunPressed)
             tank.rotateGunAntiClock();
 
-        next_frame += std::chrono::milliseconds(millisecondsInOneSecond / fps);
-        std::this_thread::sleep_until(next_frame);
-        framesText.setString(std::to_string(frames));
-        frames++;
-
         window.clear();
         tank.draw(window);
         tank2.draw(window);
+        explosion.draw(window);
         window.draw(framesText);
         window.display();
+        
+        next_frame += std::chrono::milliseconds(secondsMs / fps);
+        std::this_thread::sleep_until(next_frame);
+        framesText.setString(std::to_string(frames));
+        frames++;
     }
 
     return 0;

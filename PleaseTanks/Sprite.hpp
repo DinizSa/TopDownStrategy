@@ -20,5 +20,6 @@ public:
 public:
     Sprite(int columns, int rows, std::string path, sf::Vector2f singleImageSize);
     const sf::Texture* getTexture() const;
+    sf::Vector2f getPosition(int index) const;
     virtual ~Sprite();
 };

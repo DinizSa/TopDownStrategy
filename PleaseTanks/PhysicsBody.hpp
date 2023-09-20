@@ -18,8 +18,8 @@ class PhysicsBody {
     static int nextId;
     
 private:
-    bool collidedMovement() const;
-
+    float traveledDistance;
+    
 protected:
     sf::FloatRect body;
     Subject<float> rotation;
@@ -29,18 +29,27 @@ protected:
     
     int id;
     bool movementCollisions;
-    float traveledDistance;
+    
+
+private:
+    bool collidedMovement() const;
+
+protected:
+    std::array<sf::Vector2f, 4> getVertices() const;
+    void setMovementCollisions(bool hasCollisions);
+    float getTraveledDistance();
 
 public:
     PhysicsBody(sf::Vector2f size);
     
     static int getAndIncrementId();
+    void setId(int id);
     
     float getRotation() const;
     sf::Vector2f getCenter() const;
     void setSize(sf::Vector2f size);
     void setCenterLocal(sf::Vector2f centerLocal);
-    
+
     bool translate(float delta);
     virtual bool translate(sf::Vector2f delta);
     bool rotate(float deltaAngle);
@@ -48,10 +57,4 @@ public:
     
     bool instersects(sf::Vector2f point) const;
     bool instersects(const PhysicsBody& other) const;
-    
-    void setId(int id);
-
-protected:
-    std::array<sf::Vector2f, 4> getVertices() const;
-    void setMovementCollisions(bool hasCollisions);
 };

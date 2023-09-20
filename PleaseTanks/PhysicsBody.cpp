@@ -61,6 +61,7 @@ bool PhysicsBody::translate(sf::Vector2f delta) {
     }
     centerWorld = centerWorld() + delta;
     centerWorld.notify();
+    traveledDistance += Utils::getLength(delta.x, delta.y);
     return true;
 }
 bool PhysicsBody::rotate(float deltaAngle) {
@@ -150,4 +151,7 @@ bool PhysicsBody::collidedMovement() const {
 
 void PhysicsBody::setMovementCollisions(bool hasCollisions) {
     movementCollisions = hasCollisions;
+}
+float PhysicsBody::getTraveledDistance() {
+    return traveledDistance;
 }
