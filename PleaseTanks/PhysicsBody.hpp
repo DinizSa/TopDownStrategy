@@ -25,7 +25,7 @@ private:
 protected:
     sf::FloatRect body;
     Subject<float> rotation;
-    sf::Vector2f centerLocal;
+    sf::Vector2f localRotaionCenter;
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
 
@@ -48,7 +48,7 @@ public:
     float getRotation() const;
     sf::Vector2f getCenter() const;
     void setSize(sf::Vector2f size);
-    void setCenterLocal(sf::Vector2f centerLocal);
+    void setLocalRotationCenter(sf::Vector2f localRotaionCenter);
 
     bool translate(float delta);
     virtual bool translate(sf::Vector2f delta);

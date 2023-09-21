@@ -36,8 +36,8 @@ PhysicsBody::~PhysicsBody() {
     removeCollider();
 }
 
-void PhysicsBody::setCenterLocal(sf::Vector2f center) {
-    centerLocal = center;
+void PhysicsBody::setLocalRotationCenter(sf::Vector2f center) {
+    localRotaionCenter = center;
 }
 void PhysicsBody::setSize(sf::Vector2f size) {
     body.width = size.x;
@@ -74,7 +74,7 @@ bool PhysicsBody::translate(sf::Vector2f delta) {
 bool PhysicsBody::rotate(float deltaAngle) {
     sf::Transform t;
     t.rotate(rotation());
-    sf::Vector2f rotationOrigin = t.transformPoint(centerLocal.x, centerLocal.y);
+    sf::Vector2f rotationOrigin = t.transformPoint(localRotaionCenter.x, localRotaionCenter.y);
     sf::Vector2f rotationCenter = centerWorld() + rotationOrigin;
     
     return rotateAroundOrigin(deltaAngle, rotationCenter);

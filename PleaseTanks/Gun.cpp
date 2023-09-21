@@ -13,7 +13,7 @@ Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     angularSpeed(5.f)
 {
     translate({0.f, imageSize.y * (0.f/10.f)});
-    setCenterLocal({0.f, imageSize.y * (1.5f/10.f)});
+    setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
 }
 
 float Gun::getAngularSpeed() {
