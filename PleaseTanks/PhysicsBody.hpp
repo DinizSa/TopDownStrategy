@@ -20,6 +20,7 @@ private:
     int collisionMaskId; // ignore collisions of elements with the same mask id and different from zero
     
     bool hasMovementCollisions;
+    sf::Vector2f velocity;
     
 protected:
     sf::FloatRect body;
@@ -50,6 +51,8 @@ public:
     void setSize(sf::Vector2f size);
     void setLocalRotationCenter(sf::Vector2f localRotaionCenter);
 
+    void setVelocity(sf::Vector2f velocity);
+    bool applyVelocity();
     bool translate(float delta, bool isTravel = true);
     bool translate(sf::Vector2f delta, bool isTravel = true);
     bool rotate(float deltaAngle);

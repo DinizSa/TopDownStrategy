@@ -32,6 +32,9 @@ public:
     void draw(sf::RenderWindow& window);
     
     bool contains(sf::Vector2f point) const;
+    
+    void update();
+    void setVelocity(sf::Vector2f velocity);
 private:
     void translate(float delta);
     void translate(sf::Vector2f delta);

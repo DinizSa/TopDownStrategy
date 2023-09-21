@@ -52,6 +52,16 @@ sf::Vector2f PhysicsBody::getCenter() const {
 float PhysicsBody::getRotation() const {
     return rotation();
 }
+void PhysicsBody::setVelocity(sf::Vector2f velocity) {
+    this->velocity = velocity;
+}
+bool PhysicsBody::applyVelocity() {
+    float dV = Utils::getLength(velocity);
+    if (dV > 0.f) {
+        return translate(velocity);
+    }
+    return false;
+}
 bool PhysicsBody::translate(float delta, bool isTravel) {
     float rotationRadians = rotation() * M_PI / 180;
     float x = -delta * sin(rotationRadians);
@@ -71,7 +81,7 @@ bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
     centerWorld.notify();
     
     if (isTravel) {
-        traveledDistance = traveledDistance() + Utils::getLength(delta.x, delta.y);
+        traveledDistance = traveledDistance() + Utils::getLength(delta);
         traveledDistance.notify();
     }
     return true;

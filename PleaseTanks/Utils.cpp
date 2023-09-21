@@ -14,3 +14,6 @@ float Utils::getDistance(const sf::Vector2f& a, const sf::Vector2f& b) {
 float Utils::getLength(float x, float y) {
     return sqrt(pow(x, 2) + pow(y, 2));
 }
+float Utils::getLength(const sf::Vector2f& v) {
+    return sqrt(pow(v.x, 2) + pow(v.y, 2));
+}

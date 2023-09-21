@@ -21,8 +21,7 @@ Tank::Tank(sf::Vector2f size, sf::Vector2f position): speed(5.f), angularSpeed(5
     
     bool isTravel = false;
     sf::Vector2f deltaGun = sf::Vector2f({0.f, size.y * (0.f/10.f)});
-    sf::Vector2f deltaTracks = {(2.2f/10.f) * size.x, 2.5f};
-    
+    sf::Vector2f deltaTracks = {(2.2f/10.f) * size.x, 0};
     hull.translate(position, isTravel);
     gun.translate(position + deltaGun, isTravel);
     trackA.translate(position - deltaTracks, isTravel);
@@ -83,7 +82,20 @@ void Tank::translate(float distance) {
         position += delta;
     }
 }
+void Tank::update() {
+    if (hull.applyVelocity()) {
+        gun.applyVelocity();
+        trackA.applyVelocity();
+        trackB.applyVelocity();
+    }
+}
 
+void Tank::setVelocity(sf::Vector2f velocity) {
+    hull.setVelocity(velocity);
+    gun.setVelocity(velocity);
+    trackA.setVelocity(velocity);
+    trackB.setVelocity(velocity);
+}
 bool Tank::contains(sf::Vector2f point) const {
     bool hitHull = hull.instersects(point);
     if (hitHull)

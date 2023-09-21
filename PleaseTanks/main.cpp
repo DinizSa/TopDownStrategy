@@ -19,7 +19,7 @@ int main()
     sf::Vector2f position = {200.f, 200.f};
     Tank tank = Tank(size, position);
     
-    sf::Vector2f position2 = {200.f, 410.f};
+    sf::Vector2f position2 = {200.f, 450.f};
     Tank tank2 = Tank(size, position2);
     
     bool forwardPressed = false;
@@ -45,8 +45,11 @@ int main()
     Explosion* explosion = new Explosion(size, position);
     
     std::chrono::time_point<clock> next_frame = clock::now();
-    while (window.isOpen())
-    {
+    
+    sf::Vector2f velocity = {0.f, -1.f};
+    tank2.setVelocity(velocity);
+    
+    while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -124,7 +127,10 @@ int main()
             tank.rotateGunClock();
         if (turnAnticlockGunPressed)
             tank.rotateGunAntiClock();
-
+        
+        tank.update();
+        tank2.update();
+        
         window.clear();
         tank.draw(window);
         tank2.draw(window);
