@@ -17,7 +17,7 @@ class PhysicsBody {
 private:
     static std::vector<PhysicsBody*> allBodies;
     static int nextMaskId;
-    int collisionMaskId; // ignore collisions between elements with same mask id
+    int collisionMaskId; // ignore collisions of elements with the same mask id and different from zero
     
     float traveledDistance;
     bool hasMovementCollisions;

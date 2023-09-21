@@ -12,6 +12,6 @@ Explosion::Explosion(sf::Vector2f size, sf::Vector2f position) :
     Drawable(size, PhysicsBody::centerWorld, PhysicsBody::rotation, SpriteNames::effects, 24)
 {
     translate(position);
-    setSpriteIndexRange(24, 30);
-    setDynamicSprite(60, false);
+    setSpriteRange(24, 30);
+    setAutomaticSprite(60, false);
 }

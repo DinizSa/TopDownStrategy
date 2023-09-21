@@ -50,8 +50,8 @@ public:
     Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex);
     bool isDirty();
     
-    void setSpriteIndexRange(int minSpriteIndex, int maxSpriteIndex);
-    void setDynamicSprite(int timePerSpriteMs, bool spriteLoop);
+    void setSpriteRange(int minSpriteIndex, int maxSpriteIndex);
+    void setAutomaticSprite(int timePerSpriteMs, bool spriteLoop);
     
     virtual void draw(sf::RenderWindow& window);
 };

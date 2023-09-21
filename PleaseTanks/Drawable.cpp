@@ -57,7 +57,6 @@ void Drawable::setNextSprite() {
         if (spriteLoop) {
             currentSpriteIndex = minSpriteIndex;
         } else if (durationSpriteMs > 0) {
-            currentSpriteIndex = -1;
             dirty = true;
             return;
         } else {
@@ -69,12 +68,12 @@ void Drawable::setNextSprite() {
     setSprite(currentSpriteIndex);
 }
 
-void Drawable::setSpriteIndexRange(int min, int max) {
+void Drawable::setSpriteRange(int min, int max) {
     currentSpriteIndex = min;
     minSpriteIndex = min;
     maxSpriteIndex = max;
 }
-void Drawable::setDynamicSprite(int timeMs, bool loop) {
+void Drawable::setAutomaticSprite(int timeMs, bool loop) {
     durationSpriteMs = timeMs;
     spriteLoop = loop;
     
@@ -94,11 +93,12 @@ void Drawable::updateSpriteAnimation() {
 }
 
 void Drawable::draw(sf::RenderWindow& window) {
-    if (currentSpriteIndex > 0) {
-        if (durationSpriteMs > 0) {
-            updateSpriteAnimation();
-        }
-        
-        window.draw(rect);
+    if (dirty)
+        return;
+    
+    if (durationSpriteMs > 0) {
+        updateSpriteAnimation();
     }
+    
+    window.draw(rect);
 }

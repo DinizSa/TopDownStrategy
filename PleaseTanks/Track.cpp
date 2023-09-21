@@ -13,7 +13,7 @@ Track::Track(sf::Vector2f imageSize, int spriteIndex) :
     Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, SpriteNames::tracks, spriteIndex),
     distanceToChangeSprite(20.f)
 {
-    setSpriteIndexRange(spriteIndex, spriteIndex+1);
+    setSpriteRange(spriteIndex, spriteIndex+1);
 }
 
 bool Track::translate(sf::Vector2f delta) {
