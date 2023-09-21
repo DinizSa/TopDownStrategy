@@ -24,7 +24,8 @@ void PhysicsBody::setCollisionMaskId(int groupId) {
 void PhysicsBody::removeCollider() {
     allBodies.erase(std::remove(allBodies.begin(), allBodies.end(), this), allBodies.end());
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), traveledDistance(0.f), collisionMaskId(0) {
+PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0) {
+    traveledDistance = 0.f;
     setSize(size);
     allBodies.push_back(this);
     
@@ -51,13 +52,13 @@ sf::Vector2f PhysicsBody::getCenter() const {
 float PhysicsBody::getRotation() const {
     return rotation();
 }
-bool PhysicsBody::translate(float delta) {
+bool PhysicsBody::translate(float delta, bool isTravel) {
     float rotationRadians = rotation() * M_PI / 180;
     float x = -delta * sin(rotationRadians);
     float y = delta * cos(rotationRadians);
-    return translate({x, y});
+    return translate({x, y}, isTravel);
 }
-bool PhysicsBody::translate(sf::Vector2f delta) {
+bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
     body.left += delta.x;
     body.top += delta.y;
     
@@ -68,7 +69,11 @@ bool PhysicsBody::translate(sf::Vector2f delta) {
     }
     centerWorld = centerWorld() + delta;
     centerWorld.notify();
-    traveledDistance += Utils::getLength(delta.x, delta.y);
+    
+    if (isTravel) {
+        traveledDistance = traveledDistance() + Utils::getLength(delta.x, delta.y);
+        traveledDistance.notify();
+    }
     return true;
 }
 bool PhysicsBody::rotate(float deltaAngle) {
@@ -161,5 +166,5 @@ void PhysicsBody::setMovementCollisions(bool hasCollisions) {
     hasMovementCollisions = hasCollisions;
 }
 float PhysicsBody::getTraveledDistance() {
-    return traveledDistance;
+    return traveledDistance();
 }

@@ -19,7 +19,6 @@ private:
     static int nextMaskId;
     int collisionMaskId; // ignore collisions of elements with the same mask id and different from zero
     
-    float traveledDistance;
     bool hasMovementCollisions;
     
 protected:
@@ -28,6 +27,7 @@ protected:
     sf::Vector2f localRotaionCenter;
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
+    Subject<float> traveledDistance;
 
 private:
     bool collidedMovement() const;
@@ -40,7 +40,7 @@ protected:
 
 public:
     PhysicsBody(sf::Vector2f size);
-    ~PhysicsBody();
+    virtual ~PhysicsBody();
     
     static int getAndIncrementMaskId();
     void setCollisionMaskId(int id);
@@ -50,8 +50,8 @@ public:
     void setSize(sf::Vector2f size);
     void setLocalRotationCenter(sf::Vector2f localRotaionCenter);
 
-    bool translate(float delta);
-    virtual bool translate(sf::Vector2f delta);
+    bool translate(float delta, bool isTravel = true);
+    bool translate(sf::Vector2f delta, bool isTravel = true);
     bool rotate(float deltaAngle);
     bool rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
     

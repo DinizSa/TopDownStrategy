@@ -13,16 +13,20 @@
 
 Tank::Tank(sf::Vector2f size, sf::Vector2f position): speed(5.f), angularSpeed(5.f), size(size), hull(size, 7), gun(size, 4), trackA({size.x/4, size.y*1.03f}, 6), trackB({size.x/4, size.y*1.03f}, 6) {
     
-    trackA.translate({(-2.2f/10.f) * size.x, 2.5f});
-    trackB.translate({(2.2f/10.f) * size.x, 2.5f});
-    
     int id = PhysicsBody::getAndIncrementMaskId();
     trackA.setCollisionMaskId(id);
     trackB.setCollisionMaskId(id);
     hull.setCollisionMaskId(id);
     gun.setCollisionMaskId(id);
     
-    translate(position);
+    bool isTravel = false;
+    sf::Vector2f deltaGun = sf::Vector2f({0.f, size.y * (0.f/10.f)});
+    sf::Vector2f deltaTracks = {(2.2f/10.f) * size.x, 2.5f};
+    
+    hull.translate(position, isTravel);
+    gun.translate(position + deltaGun, isTravel);
+    trackA.translate(position - deltaTracks, isTravel);
+    trackB.translate(position + deltaTracks, isTravel);
 }
 
 void Tank::moveFront() {
