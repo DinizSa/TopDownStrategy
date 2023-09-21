@@ -14,15 +14,14 @@ Track::Track(sf::Vector2f imageSize, int spriteIndex) :
     distanceToChangeSprite(20.f)
 {
     setSpriteRange(spriteIndex, spriteIndex+1);
-}
-
-bool Track::translate(sf::Vector2f delta) {
-    bool translated = PhysicsBody::translate(delta);
-    if (translated) {
-        float traveledDistance = getTraveledDistance();
-        if (fmod((traveledDistance / distanceToChangeSprite), 2.f) < 1.f) {
+    
+    traveledDistance.subscribe(this, [&](float distance) {
+        if (fmod((distance / distanceToChangeSprite), 2.f) < 1.f) {
             setNextSprite();
         }
-    }
-    return translated;
+    });
+}
+
+Track::~Track() {
+    traveledDistance.unsubscribe(this);
 }

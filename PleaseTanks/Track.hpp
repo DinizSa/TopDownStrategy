@@ -14,6 +14,5 @@ private:
     float distanceToChangeSprite;
 public:
     Track(sf::Vector2f size, int spriteIndex);
-    
-    bool translate(sf::Vector2f delta) override;
+    virtual ~Track();
 };
