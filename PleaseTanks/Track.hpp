@@ -12,6 +12,7 @@
 class Track : public PhysicsBody, public Drawable {
 private:
     float distanceToChangeSprite;
+    float previousChangeDistance;
 public:
     Track(sf::Vector2f size, int spriteIndex);
     virtual ~Track();
