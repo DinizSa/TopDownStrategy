@@ -93,8 +93,6 @@ void Drawable::updateSpriteAnimation() {
 }
 
 void Drawable::draw(sf::RenderWindow& window) {
-    if (dirty)
-        return;
     
     if (durationSpriteMs > 0) {
         updateSpriteAnimation();

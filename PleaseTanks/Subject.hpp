@@ -18,6 +18,8 @@ class Subject {
     std::unordered_map<const Observer*, std::function<void(T)>> observers;
     
 public:
+    Subject() = default;
+    Subject(T v);
     virtual ~Subject(){};
     void operator=(T newValue){
         value = newValue;

@@ -9,6 +9,9 @@
 
 #include "Subject.hpp"
 
+template <class T> Subject<T>::Subject(T v) {
+    value = v;
+}
 template <class T> void Subject<T>::subscribe(const Observer* observer, std::function<void(T)> callback) {
     observers.insert_or_assign(observer, callback);
 }

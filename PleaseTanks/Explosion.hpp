@@ -11,5 +11,5 @@
 
 class Explosion : public PhysicsBody, public Drawable {
 public:
-    Explosion(sf::Vector2f size, sf::Vector2f position);
+    Explosion(sf::Vector2f size, sf::Vector2f position, int startSprite, int endSprite);
 };

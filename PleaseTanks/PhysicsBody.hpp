@@ -17,7 +17,6 @@ class PhysicsBody {
 private:
     static std::vector<PhysicsBody*> allBodies;
     static int nextMaskId;
-    int collisionMaskId; // ignore collisions of elements with the same mask id and different from zero
     
     bool hasMovementCollisions;
     sf::Vector2f velocity;
@@ -29,6 +28,7 @@ protected:
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
     Subject<float> traveledDistance;
+    int collisionMaskId; // ignore collisions of elements with the same mask id and different from zero
 
 private:
     bool collidedMovement() const;

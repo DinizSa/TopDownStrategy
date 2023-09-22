@@ -42,8 +42,6 @@ int main()
     
     using clock = std::chrono::steady_clock;
     
-    Explosion* explosion = new Explosion(size, position);
-    
     std::chrono::time_point<clock> next_frame = clock::now();
     
     sf::Vector2f velocity = {0.f, -1.f};
@@ -138,14 +136,6 @@ int main()
         tank.draw(window);
         tank2.draw(window);
         
-        if (explosion != nullptr) {
-            if (explosion->isDirty()) {
-                delete explosion;
-                explosion = nullptr;
-            } else {
-                explosion->draw(window);
-            }
-        }
         window.draw(framesText);
         window.display();
         

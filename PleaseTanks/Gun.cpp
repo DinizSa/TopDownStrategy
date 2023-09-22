@@ -25,24 +25,38 @@ float Gun::getAngularSpeed() {
 }
 
 void Gun::update() {
-    for (auto projectile : projectiles) {
-        projectile->applyVelocity();
+    for (auto it = projectiles.begin(); it != projectiles.end(); ) {
+        Projectile* projectile = *it;
+        bool hit = !projectile->applyVelocity();
+        if (hit) {
+            Explosion* explosion = projectile->onHit();
+            explosions.push_back(explosion);
+            projectiles.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    for (auto it = explosions.begin(); it != explosions.end(); ) {
+        Explosion* explosion = *it;
+        bool isDirty = explosion->isDirty();
+        if (isDirty) {
+            explosions.erase(it);
+        } else {
+            ++it;
+        }
     }
 }
 
 void Gun::shot() {
     float currentRotation = PhysicsBody::rotation();
     
-    sf::Vector2f size = {100.f, 100.f};
+    sf::Vector2f size = {150.f, 150.f};
     
     float radius = body.width > body.height ? body.width : body.height;
     sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
     sf::Vector2f pos = centerWorld() + deltaPos;
     
-    float velocityScalar = 8;
-    sf::Vector2f velocity = Utils::getVector(currentRotation, velocityScalar);
-    
-    Projectile* projectile = new Projectile(size, pos, velocity);
+    Projectile* projectile = new Projectile(size, pos, currentRotation, collisionMaskId);
     projectiles.emplace_back(projectile);
 }
 
@@ -50,5 +64,8 @@ void Gun::draw(sf::RenderWindow& window) {
     Drawable::draw(window);
     for (auto projectile : projectiles) {
         projectile->draw(window);
+    }
+    for (auto explosion : explosions) {
+        explosion->draw(window);
     }
 }
