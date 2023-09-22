@@ -31,7 +31,9 @@ void Gun::update() {
         if (hit) {
             Explosion* explosion = projectile->onHit();
             explosions.push_back(explosion);
+            delete projectile;
             projectiles.erase(it);
+            explosion->applyHit();
         } else {
             ++it;
         }

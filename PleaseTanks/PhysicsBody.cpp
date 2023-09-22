@@ -161,6 +161,9 @@ bool PhysicsBody::collidedMovement() const {
         return false;
     }
     for (PhysicsBody* body : PhysicsBody::allBodies) {
+        
+        if (this == body)
+            continue;
 
         if (this->collisionMaskId != 0 && body->collisionMaskId == this->collisionMaskId)
             continue;
@@ -178,7 +181,10 @@ std::vector<PhysicsBody*> PhysicsBody::getCollided() const {
     std::vector<PhysicsBody*> collided;
     
     for (PhysicsBody* body : PhysicsBody::allBodies) {
-
+        
+        if (this == body)
+            continue;
+        
         if (this->collisionMaskId != 0 && body->collisionMaskId == this->collisionMaskId)
             continue;
 
