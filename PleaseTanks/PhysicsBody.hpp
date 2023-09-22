@@ -42,6 +42,7 @@ protected:
 public:
     PhysicsBody(sf::Vector2f size);
     virtual ~PhysicsBody();
+    virtual void update(){};
     
     static int getAndIncrementMaskId();
     void setCollisionMaskId(int id);
@@ -52,6 +53,7 @@ public:
     void setLocalRotationCenter(sf::Vector2f localRotaionCenter);
 
     void setVelocity(sf::Vector2f velocity);
+    sf::Vector2f getVelocity();
     bool applyVelocity();
     bool translate(float delta, bool isTravel = true);
     bool translate(sf::Vector2f delta, bool isTravel = true);
@@ -60,4 +62,5 @@ public:
     
     bool instersects(sf::Vector2f point) const;
     bool instersects(const PhysicsBody& other) const;
+    std::vector<PhysicsBody*> getCollided() const;
 };

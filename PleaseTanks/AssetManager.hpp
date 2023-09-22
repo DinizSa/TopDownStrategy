@@ -17,7 +17,7 @@ enum SpriteNames { tracks, hulls, guns, effects};
 class AssetManager {
 private:
     std::unordered_map<SpriteNames, Sprite*> sprites;
-    
+
 private:
     AssetManager();
     ~AssetManager();

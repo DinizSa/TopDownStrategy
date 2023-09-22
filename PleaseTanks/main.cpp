@@ -85,6 +85,9 @@ int main()
                     case sf::Keyboard::Scan::Q:
                         turnAnticlockGunPressed = true;
                         break;
+                    case sf::Keyboard::Scan::Space:
+                        tank.shot();
+                        break;
                     default:
                         break;
                 }

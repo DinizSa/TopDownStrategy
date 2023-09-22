@@ -83,11 +83,18 @@ void Tank::translate(float distance) {
     }
 }
 void Tank::update() {
-    if (hull.applyVelocity()) {
-        gun.applyVelocity();
-        trackA.applyVelocity();
-        trackB.applyVelocity();
+    if (Utils::getLength(hull.getVelocity()) > 0.f) {
+        if (hull.applyVelocity()) {
+            gun.applyVelocity();
+            trackA.applyVelocity();
+            trackB.applyVelocity();
+        }
     }
+    
+    hull.update();
+    gun.update();
+    trackA.update();
+    trackB.update();
 }
 
 void Tank::setVelocity(sf::Vector2f velocity) {
@@ -95,6 +102,9 @@ void Tank::setVelocity(sf::Vector2f velocity) {
     gun.setVelocity(velocity);
     trackA.setVelocity(velocity);
     trackB.setVelocity(velocity);
+}
+void Tank::shot() {
+    gun.shot();
 }
 bool Tank::contains(sf::Vector2f point) const {
     bool hitHull = hull.instersects(point);

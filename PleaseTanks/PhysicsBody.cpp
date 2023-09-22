@@ -52,8 +52,11 @@ sf::Vector2f PhysicsBody::getCenter() const {
 float PhysicsBody::getRotation() const {
     return rotation();
 }
-void PhysicsBody::setVelocity(sf::Vector2f velocity) {
-    this->velocity = velocity;
+void PhysicsBody::setVelocity(sf::Vector2f v) {
+    velocity = v;
+}
+sf::Vector2f PhysicsBody::getVelocity() {
+    return velocity;
 }
 bool PhysicsBody::applyVelocity() {
     float dV = Utils::getLength(velocity);
@@ -170,6 +173,20 @@ bool PhysicsBody::collidedMovement() const {
         }
     }
     return false;
+}
+std::vector<PhysicsBody*> PhysicsBody::getCollided() const {
+    std::vector<PhysicsBody*> collided;
+    
+    for (PhysicsBody* body : PhysicsBody::allBodies) {
+
+        if (this->collisionMaskId != 0 && body->collisionMaskId == this->collisionMaskId)
+            continue;
+
+        if (this->instersects(*body)) {
+            collided.push_back(body);
+        }
+    }
+    return collided;
 }
 
 void PhysicsBody::setMovementCollisions(bool hasCollisions) {

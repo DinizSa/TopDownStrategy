@@ -35,6 +35,7 @@ public:
     
     void update();
     void setVelocity(sf::Vector2f velocity);
+    void shot();
 private:
     void translate(float delta);
     void translate(sf::Vector2f delta);
