@@ -9,7 +9,7 @@
 
 Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x * (6.f/10.f), imageSize.y}),
-    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, SpriteNames::hulls, spriteIndex)
+    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, 2.f, SpriteNames::hulls, spriteIndex)
 {
     setMovementCollisions(true);
 }

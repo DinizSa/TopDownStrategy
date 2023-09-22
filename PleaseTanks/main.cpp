@@ -12,7 +12,7 @@ int main()
     
     
     int windowWidth = 800;
-    int windowHeight = 800;
+    int windowHeight = 1200;
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Please Tanks");
     
     sf::Vector2f size = {200.f, 200.f};
@@ -44,7 +44,7 @@ int main()
     
     std::chrono::time_point<clock> next_frame = clock::now();
     
-    sf::Vector2f velocity = {0.f, -1.f};
+    sf::Vector2f velocity = {0.5f, 0.5f};
     tank2.setVelocity(velocity);
     
     while (window.isOpen()) {
@@ -132,9 +132,11 @@ int main()
         tank.update();
         tank2.update();
         
+        Drawable::updateDrawables();
+        
         window.clear();
-        tank.draw(window);
-        tank2.draw(window);
+        
+        Drawable::drawAll(window);
         
         window.draw(framesText);
         window.display();

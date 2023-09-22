@@ -24,11 +24,11 @@ private:
 protected:
     sf::FloatRect body;
     Subject<float> rotation;
-    sf::Vector2f localRotaionCenter;
+    sf::Vector2f localRotationCenter;
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
     Subject<float> traveledDistance;
-    int collisionMaskId; // ignore collisions of elements with the same mask id and different from zero
+    int collisionMaskId;
 
 private:
     bool collidedMovement() const;
@@ -50,9 +50,10 @@ public:
     float getRotation() const;
     sf::Vector2f getCenter() const;
     void setSize(sf::Vector2f size);
-    void setLocalRotationCenter(sf::Vector2f localRotaionCenter);
+    void setLocalRotationCenter(sf::Vector2f localRotationCenter);
 
     void setVelocity(sf::Vector2f velocity);
+    void setVelocityAndRotate(sf::Vector2f velocity);
     sf::Vector2f getVelocity();
     bool applyVelocity();
     bool translate(float delta, bool isTravel = true);

@@ -10,7 +10,7 @@
 
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),
-    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, SpriteNames::guns, spriteIndex),
+    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, 3.f, SpriteNames::guns, spriteIndex),
     angularSpeed(5.f)
 {
     setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
@@ -60,14 +60,4 @@ void Gun::shot() {
     
     Projectile* projectile = new Projectile(size, pos, currentRotation, collisionMaskId);
     projectiles.emplace_back(projectile);
-}
-
-void Gun::draw(sf::RenderWindow& window) {
-    Drawable::draw(window);
-    for (auto projectile : projectiles) {
-        projectile->draw(window);
-    }
-    for (auto explosion : explosions) {
-        explosion->draw(window);
-    }
 }

@@ -10,7 +10,7 @@
 
 Track::Track(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody(imageSize),
-    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, SpriteNames::tracks, spriteIndex),
+    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, 1.f, SpriteNames::tracks, spriteIndex),
     distanceToChangeSprite(17.f), previousChangeDistance(0.f)
 {
     setSpriteRange(spriteIndex, spriteIndex+1);

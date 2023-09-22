@@ -29,7 +29,6 @@ public:
     void rotateAntiClock();
     void rotateGunClock();
     void rotateGunAntiClock();
-    void draw(sf::RenderWindow& window);
     
     bool contains(sf::Vector2f point) const;
     

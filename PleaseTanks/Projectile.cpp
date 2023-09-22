@@ -11,7 +11,7 @@
 
 Projectile::Projectile(sf::Vector2f size, sf::Vector2f position, float angleDegrees, int maskId) :
     PhysicsBody(size/100.f),
-    Drawable(size, PhysicsBody::centerWorld, PhysicsBody::rotation, SpriteNames::effects, 11),
+    Drawable(size, PhysicsBody::centerWorld, PhysicsBody::rotation, 4.f, SpriteNames::effects, 11),
     velocityScalar(10.f)
 {
     setCollisionMaskId(maskId);
@@ -19,15 +19,10 @@ Projectile::Projectile(sf::Vector2f size, sf::Vector2f position, float angleDegr
     setSpriteRange(10, 19);
     setAutomaticSprite(50, true);
     
-    
     sf::Vector2f velocity = Utils::getVector(angleDegrees, velocityScalar);
-    setVelocity(velocity);
-    float imageInitialAngle = 90.f;
-    
-    
-    float angle = imageInitialAngle + Utils::getAngle(velocity);
+    setVelocityAndRotate(velocity);
+
     setMovementCollisions(true);
-    rotate(angle);
 }
 
 Explosion* Projectile::onHit() {

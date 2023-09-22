@@ -11,7 +11,33 @@
 
 #include "Drawable.hpp"
 
-Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), currentSpriteIndex(spriteIndex), minSpriteIndex(spriteIndex), maxSpriteIndex(spriteIndex), durationSpriteMs(0), spriteAnimationStart(std::chrono::milliseconds(0)), spriteLoop(false), dirty(false)
+std::multimap<float, Drawable*> Drawable::drawables;
+
+void Drawable::addDrawable(Drawable* drawable, float zIndex) {
+    Drawable::drawables.insert(std::pair{zIndex, drawable});
+}
+void Drawable::removeDrawable(Drawable* drawable) {
+    std::erase_if(Drawable::drawables, [drawable](const auto& pair) {
+        auto const& [key, value] = pair;
+        return value == drawable;
+    });
+}
+void Drawable::updateDrawables() {
+    for (auto drawable : Drawable::drawables) {
+        drawable.second->updateDrawable();
+    }
+    std::erase_if(Drawable::drawables, [](const auto& pair) {
+        auto const& [zIndex, drawable] = pair;
+        return drawable->isDirty();
+    });
+}
+void Drawable::drawAll(sf::RenderWindow& window) {
+    for (auto drawable : Drawable::drawables) {
+        drawable.second->draw(window);
+    }
+}
+
+Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), currentSpriteIndex(spriteIndex), minSpriteIndex(spriteIndex), maxSpriteIndex(spriteIndex), durationSpriteMs(0), spriteAnimationStart(std::chrono::milliseconds(0)), spriteLoop(false), dirty(false), zIndex(zIndex)
 {
     rect.setSize({size.x, size.y});
     
@@ -32,14 +58,24 @@ Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<f
         rect.setRotation(newRotation);
     };
     rotation.subscribe(this, callbackRotation);
+    
+    Drawable::addDrawable(this, zIndex);
 }
 
 Drawable::~Drawable() {
     rotation.unsubscribe(this);
     position.unsubscribe(this);
+    
+    Drawable::removeDrawable(this);
 }
 bool Drawable::isDirty() {
     return dirty;
+}
+void Drawable::setZIndex(int index) {
+    zIndex = index;
+}
+float Drawable::getZIndex() {
+    return zIndex;
 }
 void Drawable::setTextureSize(const sf::Vector2f& size) {
     textureRect.width = size.x;
@@ -58,6 +94,7 @@ void Drawable::setNextSprite() {
             currentSpriteIndex = minSpriteIndex;
         } else if (durationSpriteMs > 0) {
             dirty = true;
+//            Drawable::removeDrawable(this);
             return;
         } else {
             currentSpriteIndex = minSpriteIndex;
@@ -83,6 +120,9 @@ void Drawable::setAutomaticSprite(int timeMs, bool loop) {
 }
 
 void Drawable::updateSpriteAnimation() {
+    if (durationSpriteMs == 0)
+        return;
+    
     auto delta = clock::now() - spriteAnimationStart;
     auto deltaMs = delta.count() / pow(10, 6);
     
@@ -92,11 +132,10 @@ void Drawable::updateSpriteAnimation() {
     }
 }
 
+void Drawable::updateDrawable() {
+    updateSpriteAnimation();
+};
+
 void Drawable::draw(sf::RenderWindow& window) {
-    
-    if (durationSpriteMs > 0) {
-        updateSpriteAnimation();
-    }
-    
     window.draw(rect);
 }

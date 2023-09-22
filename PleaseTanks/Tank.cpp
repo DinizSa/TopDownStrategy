@@ -102,6 +102,11 @@ void Tank::setVelocity(sf::Vector2f velocity) {
     gun.setVelocity(velocity);
     trackA.setVelocity(velocity);
     trackB.setVelocity(velocity);
+    
+    float imagesInitialAngle = 90.f;
+    float velocityAngle = Utils::getAngle(velocity);
+    float angle = imagesInitialAngle + velocityAngle;
+    rotate(angle);
 }
 void Tank::shot() {
     gun.shot();
@@ -121,11 +126,4 @@ bool Tank::contains(sf::Vector2f point) const {
         std::cout << "X track B" << std::endl;
     
     return true;
-}
-
-void Tank::draw(sf::RenderWindow& window) {
-    trackA.draw(window);
-    trackB.draw(window);
-    hull.draw(window);
-    gun.draw(window);
 }

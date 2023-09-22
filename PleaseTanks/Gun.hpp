@@ -6,6 +6,7 @@
 //
 
 #pragma once
+
 #include "Drawable.hpp"
 #include "PhysicsBody.hpp"
 #include "Projectile.hpp"
@@ -23,5 +24,4 @@ public:
     void shot();
     
     float getAngularSpeed();
-    virtual void draw(sf::RenderWindow& window) override;
 };

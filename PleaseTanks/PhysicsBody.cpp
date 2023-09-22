@@ -38,7 +38,7 @@ PhysicsBody::~PhysicsBody() {
 }
 
 void PhysicsBody::setLocalRotationCenter(sf::Vector2f center) {
-    localRotaionCenter = center;
+    localRotationCenter = center;
 }
 void PhysicsBody::setSize(sf::Vector2f size) {
     body.width = size.x;
@@ -53,6 +53,15 @@ float PhysicsBody::getRotation() const {
     return rotation();
 }
 void PhysicsBody::setVelocity(sf::Vector2f v) {
+    velocity = v;
+}
+void PhysicsBody::setVelocityAndRotate(sf::Vector2f v) {
+    float imagesInitialAngle = 90.f;
+    
+    float velocityAngle = Utils::getAngle(v);
+    float angle = imagesInitialAngle + velocityAngle;
+    rotate(angle);
+
     velocity = v;
 }
 sf::Vector2f PhysicsBody::getVelocity() {
@@ -92,7 +101,7 @@ bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
 bool PhysicsBody::rotate(float deltaAngle) {
     sf::Transform t;
     t.rotate(rotation());
-    sf::Vector2f rotationOrigin = t.transformPoint(localRotaionCenter.x, localRotaionCenter.y);
+    sf::Vector2f rotationOrigin = t.transformPoint(localRotationCenter.x, localRotationCenter.y);
     sf::Vector2f rotationCenter = centerWorld() + rotationOrigin;
     
     return rotateAroundOrigin(deltaAngle, rotationCenter);
