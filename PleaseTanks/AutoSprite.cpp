@@ -11,9 +11,35 @@
 
 #include "AutoSprite.hpp"
 
+std::vector<AutoSprite*> AutoSprite::autoSprites;
 
-AutoSprite::AutoSprite(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, Sprite sprite): Drawable(size, position, rotation, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0))
-{}
+void AutoSprite::addAutoSprite(AutoSprite* autoSprite) {
+    AutoSprite::autoSprites.push_back(autoSprite);
+}
+void AutoSprite::removeAutoSprite(AutoSprite* autoSprite) {
+    AutoSprite::autoSprites.erase(std::remove(AutoSprite::autoSprites.begin(), AutoSprite::autoSprites.end(), autoSprite), AutoSprite::autoSprites.end());
+}
+void AutoSprite::updateAutoSprites() {
+    for (auto autoSprite : AutoSprite::autoSprites) {
+        autoSprite->updateSpriteAnimation();
+    }
+    for (auto it = AutoSprite::autoSprites.begin(); it != AutoSprite::autoSprites.end();) {
+        AutoSprite* autoSprite = *it;
+        if (autoSprite->isDirty()) {
+            delete autoSprite;
+        } else {
+            it++;
+        }
+    }
+}
+
+AutoSprite::AutoSprite(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, Sprite sprite): Drawable(size, position, rotation, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0)), dirty(false)
+{
+    AutoSprite::addAutoSprite(this);
+}
+AutoSprite::~AutoSprite() {
+    AutoSprite::removeAutoSprite(this);
+}
 void AutoSprite::setNextSprite() {
     if (currentSpriteIndex == sprite.maxIndex) {
         if (sprite.loop) {
@@ -30,6 +56,9 @@ void AutoSprite::setNextSprite() {
     setSprite(currentSpriteIndex);
 }
 
+bool AutoSprite::isDirty() {
+    return dirty;
+}
 void AutoSprite::setSpriteRange(int min, int max) {
     currentSpriteIndex = min;
     sprite.minIndex = min;
@@ -43,9 +72,6 @@ void AutoSprite::setAutomaticSprite(int timeMs, bool loop) {
         spriteAnimationStart = clock::now();
     }
 }
-void AutoSprite::updateDrawable() {
-    updateSpriteAnimation();
-};
 void AutoSprite::updateSpriteAnimation() {
     if (sprite.singleImageDurationMs == 0)
         return;

@@ -16,7 +16,15 @@
 
 class AutoSprite : public Drawable {
     using clock = std::chrono::steady_clock;
-
+    
+private:
+    static std::vector<AutoSprite*> autoSprites;
+    bool dirty;
+public:
+    static void addAutoSprite(AutoSprite* autoSprite);
+    static void removeAutoSprite(AutoSprite* autoSprite);
+    static void updateAutoSprites();
+    
 private:
     Sprite sprite;
     std::chrono::time_point<clock> spriteAnimationStart;
@@ -27,10 +35,11 @@ private:
 
 protected:
     void setNextSprite();
-    void updateDrawable() override;
+    bool isDirty();
 
 public:
     AutoSprite(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, Sprite sprite);
+    ~AutoSprite();
     void setSpriteRange(int minSpriteIndex, int maxSpriteIndex);
     void setAutomaticSprite(int timePerSpriteMs, bool spriteLoop);
 };

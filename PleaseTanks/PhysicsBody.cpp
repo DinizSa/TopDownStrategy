@@ -24,7 +24,7 @@ void PhysicsBody::setCollisionMaskId(int groupId) {
 void PhysicsBody::removeCollider() {
     allBodies.erase(std::remove(allBodies.begin(), allBodies.end(), this), allBodies.end());
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0) {
+PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}) {
     traveledDistance = 0.f;
     setSize(size);
     allBodies.push_back(this);

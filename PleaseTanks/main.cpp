@@ -5,6 +5,7 @@
 #include <thread>
 
 #include "Tank.hpp"
+#include "Detonable.hpp"
 
 int main()
 {
@@ -50,8 +51,8 @@ int main()
     
     std::chrono::time_point<clock> next_frame = clock::now();
     
-    sf::Vector2f velocity = {0.5f, 0.5f};
-    tank2.setVelocity(velocity);
+//    sf::Vector2f velocity = {0.5f, 0.5f};
+//    tank2.setVelocity(velocity);
     
     
     
@@ -64,6 +65,7 @@ int main()
                     std::cout << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
                     tank.contains(point);
+                    tank2.contains(point);
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -140,7 +142,8 @@ int main()
         tank.update();
         tank2.update();
         
-        Drawable::updateDrawables();
+        AutoSprite::updateAutoSprites();
+        Detonable::updateDetonables();
         
         window.clear();
         

@@ -22,22 +22,13 @@ void Drawable::removeDrawable(Drawable* drawable) {
         return value == drawable;
     });
 }
-void Drawable::updateDrawables() {
-    for (auto drawable : Drawable::drawables) {
-        drawable.second->updateDrawable();
-    }
-    std::erase_if(Drawable::drawables, [](const auto& pair) {
-        auto const& [zIndex, drawable] = pair;
-        return drawable->isDirty();
-    });
-}
 void Drawable::drawAll(sf::RenderWindow& window) {
     for (auto drawable : Drawable::drawables) {
         drawable.second->draw(window);
     }
 }
 
-Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), currentSpriteIndex(spriteIndex), dirty(false), zIndex(zIndex)
+Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), currentSpriteIndex(spriteIndex), zIndex(zIndex)
 {
     rect.setSize({size.x, size.y});
     
@@ -67,9 +58,6 @@ Drawable::~Drawable() {
     position.unsubscribe(this);
     
     Drawable::removeDrawable(this);
-}
-bool Drawable::isDirty() {
-    return dirty;
 }
 void Drawable::setZIndex(int index) {
     zIndex = index;
