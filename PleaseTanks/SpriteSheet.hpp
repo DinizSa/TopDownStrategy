@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include <unordered_map>
 #include <SFML/Graphics.hpp>
+#include "Sprite.hpp"
 
 class SpriteSheet {
 private:

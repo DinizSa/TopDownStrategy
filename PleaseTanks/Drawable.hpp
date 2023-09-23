@@ -12,6 +12,7 @@
 #include <ctime>
 #include <map>
 
+#include "Sprite.hpp"
 #include "Subject.hpp"
 #include "Observer.hpp"
 #include "AssetManager.hpp"

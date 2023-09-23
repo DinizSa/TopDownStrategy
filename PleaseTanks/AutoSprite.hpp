@@ -14,14 +14,6 @@
 
 #include "Drawable.hpp"
 
-struct Sprite {
-    SpriteNames spriteName;
-    int minIndex;
-    int maxIndex;
-    int singleImageDurationMs;
-    bool loop;
-};
-
 class AutoSprite : public Drawable {
     using clock = std::chrono::steady_clock;
 

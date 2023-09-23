@@ -12,8 +12,6 @@
 
 #include "SpriteSheet.hpp"
 
-enum SpriteNames { tracks, hulls, guns, effects};
-
 class AssetManager {
 private:
     std::unordered_map<SpriteNames, SpriteSheet*> spriteSheets;

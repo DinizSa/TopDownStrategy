@@ -1,0 +1,18 @@
+//
+//  Sprite.hpp
+//  PleaseTanks
+//
+//  Created by Diniz Sá on 23/09/2023.
+//
+
+#pragma once
+
+enum SpriteNames { tracks, hulls, guns, effects};
+
+struct Sprite {
+    SpriteNames spriteName;
+    int minIndex;
+    int maxIndex;
+    int singleImageDurationMs;
+    bool loop;
+};
