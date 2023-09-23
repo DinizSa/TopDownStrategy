@@ -10,11 +10,9 @@
 
 Track::Track(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody(imageSize),
-    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, 1.f, SpriteNames::tracks, spriteIndex),
+    AutoSprite(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, 1.f, {SpriteNames::tracks, spriteIndex, spriteIndex+1, 0, false}),
     distanceToChangeSprite(17.f), previousChangeDistance(0.f)
 {
-    setSpriteRange(spriteIndex, spriteIndex+1);
-    
     traveledDistance.subscribe(this, [&](float distance) {
         if (distance > previousChangeDistance + distanceToChangeSprite ) {
             setNextSprite();

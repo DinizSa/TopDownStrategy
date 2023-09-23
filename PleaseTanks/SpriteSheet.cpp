@@ -6,22 +6,22 @@
 //
 
 #include <cmath>
-#include "Sprite.hpp"
+#include "SpriteSheet.hpp"
 
-Sprite::Sprite(int columns, int rows, std::string path, sf::Vector2f singleImageSize): columns(columns), rows(rows), singleImageSize(singleImageSize) {
+SpriteSheet::SpriteSheet(int columns, int rows, std::string path, sf::Vector2f singleImageSize): columns(columns), rows(rows), singleImageSize(singleImageSize) {
     texture = new sf::Texture;
     texture->loadFromFile(path);
 }
-const sf::Texture* Sprite::getTexture() const {
+const sf::Texture* SpriteSheet::getTexture() const {
     return texture;
 }
 
-sf::Vector2f Sprite::getPosition(int index) const {
+sf::Vector2f SpriteSheet::getPosition(int index) const {
     int row = floor(index / columns);
     int column = index % columns;
     sf::Vector2f position = sf::Vector2f({column * singleImageSize.x, row * singleImageSize.y});
     return position;
 }
-Sprite::~Sprite() {
+SpriteSheet::~SpriteSheet() {
     delete texture;
 }

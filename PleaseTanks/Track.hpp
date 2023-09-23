@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include "Drawable.hpp"
 #include "PhysicsBody.hpp"
+#include "AutoSprite.hpp"
 
-class Track : public PhysicsBody, public Drawable {
+class Track : public PhysicsBody, public AutoSprite {
 private:
     float distanceToChangeSprite;
     float previousChangeDistance;

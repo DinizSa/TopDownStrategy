@@ -27,22 +27,12 @@ float Gun::getAngularSpeed() {
 void Gun::update() {
     for (auto it = projectiles.begin(); it != projectiles.end(); ) {
         Projectile* projectile = *it;
-        bool hit = !projectile->applyVelocity();
-        if (hit) {
-            Explosion* explosion = projectile->onHit();
-            explosions.push_back(explosion);
+        bool collided = !projectile->applyVelocity();
+        if (collided) {
+            Projectile* explosion = projectile->onHit();
             delete projectile;
             projectiles.erase(it);
-            explosion->applyHit();
-        } else {
-            ++it;
-        }
-    }
-    for (auto it = explosions.begin(); it != explosions.end(); ) {
-        Explosion* explosion = *it;
-        bool isDirty = explosion->isDirty();
-        if (isDirty) {
-            explosions.erase(it);
+            explosion->onHit();
         } else {
             ++it;
         }
@@ -58,6 +48,7 @@ void Gun::shot() {
     sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
     sf::Vector2f pos = centerWorld() + deltaPos;
     
-    Projectile* projectile = new Projectile(size, pos, currentRotation, collisionMaskId);
+    Sprite sp = Sprite({SpriteNames::effects, 10, 19, 80, true});
+    Projectile* projectile = new Projectile(size, pos, currentRotation, collisionMaskId, sp);
     projectiles.emplace_back(projectile);
 }

@@ -5,14 +5,14 @@
 #include <thread>
 
 #include "Tank.hpp"
-#include "Explosion.hpp"
 
 int main()
 {
     
     
-    int windowWidth = 800;
-    int windowHeight = 1200;
+    int windowWidth = 1000;
+    int windowHeight = 1000;
+    sf::Vector2f windowDimensions = {(float)windowWidth, (float)windowHeight };
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Please Tanks");
     
     sf::Vector2f size = {200.f, 200.f};
@@ -21,6 +21,12 @@ int main()
     
     sf::Vector2f position2 = {200.f, 450.f};
     Tank tank2 = Tank(size, position2);
+    
+    sf::RectangleShape bg;
+    sf::Texture textureBg;
+    textureBg.loadFromFile("/Users/Shared/merda/PleaseTanks/images/grass.png");
+    bg.setTexture(&textureBg);
+    bg.setSize(windowDimensions);
     
     bool forwardPressed = false;
     bool turnClockPressed = false;
@@ -46,6 +52,8 @@ int main()
     
     sf::Vector2f velocity = {0.5f, 0.5f};
     tank2.setVelocity(velocity);
+    
+    
     
     while (window.isOpen()) {
         sf::Event event;
@@ -136,8 +144,8 @@ int main()
         
         window.clear();
         
+        window.draw(bg);
         Drawable::drawAll(window);
-        
         window.draw(framesText);
         window.display();
         

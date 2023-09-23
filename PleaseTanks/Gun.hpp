@@ -10,13 +10,11 @@
 #include "Drawable.hpp"
 #include "PhysicsBody.hpp"
 #include "Projectile.hpp"
-#include "Explosion.hpp"
 
 class Gun : public PhysicsBody, public Drawable {
 private:
     float angularSpeed;
     std::vector<Projectile*> projectiles;
-    std::vector<Explosion*> explosions;
 public:
     Gun(sf::Vector2f size, int spriteIndex);
     ~Gun();

@@ -8,11 +8,11 @@
 #pragma once
 #include "Drawable.hpp"
 #include "PhysicsBody.hpp"
-#include "Explosion.hpp"
+#include "AutoSprite.hpp"
 
-class Projectile : public PhysicsBody, public Drawable {
+class Projectile : public PhysicsBody, public AutoSprite {
     float velocityScalar;
 public:
-    Projectile(sf::Vector2f size, sf::Vector2f position, float angleDegrees, int collisionMaskId);
-    Explosion* onHit();
+    Projectile(sf::Vector2f size, sf::Vector2f position, float angleDegrees, int collisionMaskId, Sprite sprite);
+    Projectile* onHit();
 };

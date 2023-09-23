@@ -10,13 +10,13 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 
-#include "Sprite.hpp"
+#include "SpriteSheet.hpp"
 
 enum SpriteNames { tracks, hulls, guns, effects};
 
 class AssetManager {
 private:
-    std::unordered_map<SpriteNames, Sprite*> sprites;
+    std::unordered_map<SpriteNames, SpriteSheet*> spriteSheets;
 
 private:
     AssetManager();
@@ -26,5 +26,5 @@ private:
     
 public:
     static AssetManager* get();
-    Sprite* getSprite(SpriteNames sprite);
+    SpriteSheet* getSprite(SpriteNames spriteSheet);
 };

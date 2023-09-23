@@ -12,16 +12,16 @@ AssetManager* AssetManager::get() {
     return &instance;
 }
 AssetManager::AssetManager() {
-    sprites.insert_or_assign(SpriteNames::tracks, new Sprite({8, 1, "/Users/Shared/merda/PleaseTanks/images/tracksSprites.png", sf::Vector2f({42.f, 246.f})}));
-    sprites.insert_or_assign(SpriteNames::guns, new Sprite({8, 1, "/Users/Shared/merda/PleaseTanks/images/gunsSprites.png", sf::Vector2f({256.f, 256.f})}));
-    sprites.insert_or_assign(SpriteNames::hulls, new Sprite({8, 1, "/Users/Shared/merda/PleaseTanks/images/hullsSprites.png", sf::Vector2f({256.f, 256.f})}));
-    sprites.insert_or_assign(SpriteNames::effects, new Sprite({7, 7, "/Users/Shared/merda/PleaseTanks/images/effectsSprites.png", sf::Vector2f({266.f, 266.f})}));
+    spriteSheets.insert_or_assign(SpriteNames::tracks, new SpriteSheet({8, 1, "/Users/Shared/merda/PleaseTanks/images/tracksSprites.png", sf::Vector2f({42.f, 246.f})}));
+    spriteSheets.insert_or_assign(SpriteNames::guns, new SpriteSheet({8, 1, "/Users/Shared/merda/PleaseTanks/images/gunsSprites.png", sf::Vector2f({256.f, 256.f})}));
+    spriteSheets.insert_or_assign(SpriteNames::hulls, new SpriteSheet({8, 1, "/Users/Shared/merda/PleaseTanks/images/hullsSprites.png", sf::Vector2f({256.f, 256.f})}));
+    spriteSheets.insert_or_assign(SpriteNames::effects, new SpriteSheet({7, 7, "/Users/Shared/merda/PleaseTanks/images/effectsSprites.png", sf::Vector2f({266.f, 266.f})}));
 }
 AssetManager::~AssetManager() {
-    for (auto& sprite : sprites) {
+    for (auto& sprite : spriteSheets) {
         delete sprite.second;
     }
 }
-Sprite* AssetManager::getSprite(SpriteNames sprite) {
-    return sprites.at(sprite);
+SpriteSheet* AssetManager::getSprite(SpriteNames sprite) {
+    return spriteSheets.at(sprite);
 }

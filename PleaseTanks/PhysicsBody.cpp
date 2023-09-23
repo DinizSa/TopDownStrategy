@@ -62,7 +62,7 @@ void PhysicsBody::setVelocityAndRotate(sf::Vector2f v) {
     float angle = imagesInitialAngle + velocityAngle;
     rotate(angle);
 
-    velocity = v;
+    setVelocity(v);
 }
 sf::Vector2f PhysicsBody::getVelocity() {
     return velocity;
