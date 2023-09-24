@@ -25,8 +25,9 @@ public:
     static void removeAutoSprite(AutoSprite* autoSprite);
     static void updateAutoSprites();
     
-private:
+protected:
     Sprite sprite;
+private:
     std::chrono::time_point<clock> spriteAnimationStart;
 
 private:
@@ -36,10 +37,9 @@ private:
 protected:
     void setNextSprite();
     bool isDirty();
+    void updateDrawable() override;
 
 public:
-    AutoSprite(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, Sprite sprite);
+    AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite);
     ~AutoSprite();
-    void setSpriteRange(int minSpriteIndex, int maxSpriteIndex);
-    void setAutomaticSprite(int timePerSpriteMs, bool spriteLoop);
 };

@@ -21,13 +21,15 @@ class Drawable : public Observer {
     
 private:
     static std::multimap<float, Drawable*> drawables;
+private:
+    Subject<sf::Vector2f>* positionSub;
+    Subject<float>* rotationSub;
 public:
     static void addDrawable(Drawable* shape, float zIndex);
     static void removeDrawable(Drawable* shape);
     static void drawAll(sf::RenderWindow& window);
+    static void updateDrawables();
     
-    Subject<sf::Vector2f>& position;
-    Subject<float>& rotation;
 
 protected:
     sf::RectangleShape rect;
@@ -42,11 +44,16 @@ private:
 
 protected:
     void setSprite(int index);
+    virtual void updateDrawable(){};
 
 public:
     virtual ~Drawable();
-    Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, SpriteNames spriteName, int spriteIndex);
+    Drawable(sf::Vector2f size, float zIndex, SpriteNames spriteName, int spriteIndex);
+    void setOpacity(sf::Uint8 opacity);
+    sf::Uint8 getOpacity();
     void draw(sf::RenderWindow& window);
+    void setPosition(Subject<sf::Vector2f>* position, Subject<float>* rotation);
+    void setPosition(sf::Vector2f position, float rotation);
 
     void setZIndex(int index);
     

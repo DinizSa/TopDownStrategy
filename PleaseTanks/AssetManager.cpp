@@ -16,6 +16,7 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::guns, new SpriteSheet({8, 1, "/Users/Shared/merda/PleaseTanks/images/gunsSprites.png", sf::Vector2f({256.f, 256.f})}));
     spriteSheets.insert_or_assign(SpriteNames::hulls, new SpriteSheet({8, 1, "/Users/Shared/merda/PleaseTanks/images/hullsSprites.png", sf::Vector2f({256.f, 256.f})}));
     spriteSheets.insert_or_assign(SpriteNames::effects, new SpriteSheet({7, 7, "/Users/Shared/merda/PleaseTanks/images/effectsSprites.png", sf::Vector2f({266.f, 266.f})}));
+    spriteSheets.insert_or_assign(SpriteNames::effects2, new SpriteSheet({6, 4, "/Users/Shared/merda/PleaseTanks/images/effectsSprites2.png", sf::Vector2f({128.f, 128.f})}));
 }
 AssetManager::~AssetManager() {
     for (auto& sprite : spriteSheets) {

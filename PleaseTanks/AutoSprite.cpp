@@ -20,9 +20,6 @@ void AutoSprite::removeAutoSprite(AutoSprite* autoSprite) {
     AutoSprite::autoSprites.erase(std::remove(AutoSprite::autoSprites.begin(), AutoSprite::autoSprites.end(), autoSprite), AutoSprite::autoSprites.end());
 }
 void AutoSprite::updateAutoSprites() {
-    for (auto autoSprite : AutoSprite::autoSprites) {
-        autoSprite->updateSpriteAnimation();
-    }
     for (auto it = AutoSprite::autoSprites.begin(); it != AutoSprite::autoSprites.end();) {
         AutoSprite* autoSprite = *it;
         if (autoSprite->isDirty()) {
@@ -33,8 +30,10 @@ void AutoSprite::updateAutoSprites() {
     }
 }
 
-AutoSprite::AutoSprite(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, Sprite sprite): Drawable(size, position, rotation, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0)), dirty(false)
+AutoSprite::AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite): Drawable(size, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0)), dirty(false)
 {
+    spriteAnimationStart = clock::now();
+    
     AutoSprite::addAutoSprite(this);
 }
 AutoSprite::~AutoSprite() {
@@ -59,23 +58,10 @@ void AutoSprite::setNextSprite() {
 bool AutoSprite::isDirty() {
     return dirty;
 }
-void AutoSprite::setSpriteRange(int min, int max) {
-    currentSpriteIndex = min;
-    sprite.minIndex = min;
-    sprite.maxIndex = max;
-}
-void AutoSprite::setAutomaticSprite(int timeMs, bool loop) {
-    sprite.singleImageDurationMs = timeMs;
-    sprite.loop = loop;
-    
-    if (sprite.singleImageDurationMs > 0) {
-        spriteAnimationStart = clock::now();
-    }
-}
 void AutoSprite::updateSpriteAnimation() {
     if (sprite.singleImageDurationMs == 0)
         return;
-    
+
     auto delta = clock::now() - spriteAnimationStart;
     auto deltaMs = delta.count() / pow(10, 6);
     
@@ -83,4 +69,8 @@ void AutoSprite::updateSpriteAnimation() {
         setNextSprite();
         spriteAnimationStart = clock::now();
     }
+}
+
+void AutoSprite::updateDrawable() {
+    updateSpriteAnimation();
 }

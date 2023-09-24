@@ -11,8 +11,9 @@
 
 Explosion::Explosion(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, int maskId, Sprite sprite):
     PhysicsBody(physicsBodySize),
-    AutoSprite(size, PhysicsBody::centerWorld, PhysicsBody::rotation, 4.f, sprite)
+    AutoSprite(size, 4.f, sprite)
 {
+    setPosition(&centerWorld, &rotation);
     setCollisionMaskId(maskId);
     translate(position, false);
     setMovementCollisions(true);
@@ -24,4 +25,3 @@ FireExplosion::FireExplosion(sf::Vector2f position, int collisionMaskId):
     auto collided = getCollided();
     std::cout << "collided: " << collided.size() << '\n';
 }
-

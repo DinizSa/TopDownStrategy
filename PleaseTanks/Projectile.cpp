@@ -12,10 +12,10 @@
 
 Projectile::Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int maskId, Sprite sprite, float velocityScalar):
     PhysicsBody(physicsBodySize),
-    AutoSprite(size, PhysicsBody::centerWorld, PhysicsBody::rotation, 4.f, sprite),
+    AutoSprite(size, 4.f, sprite),
     velocityScalar(velocityScalar)
 {
-    
+    setPosition(&centerWorld, &rotation);
     setCollisionMaskId(maskId);
     
     translate(position, false);
@@ -31,14 +31,14 @@ Projectile::~Projectile() {
 }
 void Projectile::update() {
     if (getTraveledDistance() > 1000.f) {
-        dead = true;
+        expired = true;
         return;
     }
     
     bool collided = !applyVelocity();
     if (collided) {
         new FireExplosion(centerWorld(), collisionMaskId);
-        dead = true;
+        expired = true;
     }
 }
 

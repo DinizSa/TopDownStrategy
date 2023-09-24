@@ -11,9 +11,10 @@
 
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),
-    Drawable(imageSize, PhysicsBody::centerWorld, PhysicsBody::rotation, 3.f, SpriteNames::guns, spriteIndex),
+    Drawable(imageSize, 3.f, SpriteNames::guns, spriteIndex),
     angularSpeed(5.f)
 {
+    setPosition(&centerWorld, &rotation);
     setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
 }
 float Gun::getAngularSpeed() {

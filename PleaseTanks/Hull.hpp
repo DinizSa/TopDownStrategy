@@ -6,10 +6,14 @@
 //
 
 #pragma once
-#include "Drawable.hpp"
+#include "AutoSprite.hpp"
 #include "PhysicsBody.hpp"
 
 class Hull : public PhysicsBody, public Drawable {
+private:
+    AutoSprite* exhaust;
+    Subject<sf::Vector2f> exhaustPosition;
 public:
     Hull(sf::Vector2f size, int spriteIndex);
+    ~Hull();
 };

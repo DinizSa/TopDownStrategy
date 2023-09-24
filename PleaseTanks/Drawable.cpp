@@ -27,11 +27,16 @@ void Drawable::drawAll(sf::RenderWindow& window) {
         drawable.second->draw(window);
     }
 }
+void Drawable::updateDrawables() {
+    for (auto drawable : Drawable::drawables) {
+        drawable.second->updateDrawable();
+    }
+}
 
-Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<float>& rotation, float zIndex, SpriteNames spriteName, int spriteIndex): position(position), rotation(rotation), currentSpriteIndex(spriteIndex), zIndex(zIndex)
+Drawable::Drawable(sf::Vector2f size, float zIndex, SpriteNames spriteName, int spriteIndex): currentSpriteIndex(spriteIndex), zIndex(zIndex), rotationSub(nullptr), positionSub(nullptr)
 {
     rect.setSize({size.x, size.y});
-    
+
     spriteSheet = AssetManager::get()->getSprite(spriteName);
     texture = spriteSheet->getTexture();
     rect.setTexture(texture);
@@ -40,22 +45,33 @@ Drawable::Drawable(sf::Vector2f size, Subject<sf::Vector2f>& position, Subject<f
     
     rect.setOrigin(size / 2.f);
 
+    Drawable::addDrawable(this, zIndex);
+}
+void Drawable::setPosition(Subject<sf::Vector2f>* pos, Subject<float>* rot) {
+    positionSub = pos;
     std::function<void(sf::Vector2f)> callbackPosition = [&](sf::Vector2f newPosition) {
         rect.setPosition(newPosition.x, newPosition.y);
     };
-    position.subscribe(this, callbackPosition);
+    positionSub->subscribe(this, callbackPosition);
     
+    rotationSub = rot;
     std::function<void(float)> callbackRotation = [&](float newRotation) {
         rect.setRotation(newRotation);
     };
-    rotation.subscribe(this, callbackRotation);
-    
-    Drawable::addDrawable(this, zIndex);
+    rotationSub->subscribe(this, callbackRotation);
+}
+void Drawable::setPosition(sf::Vector2f pos, float rot){
+//    pos -= (rect.getSize()/2.f);
+    rect.setPosition(pos.x, pos.y);
+    rect.setRotation(rot);
 }
 
 Drawable::~Drawable() {
-    rotation.unsubscribe(this);
-    position.unsubscribe(this);
+    if (rotationSub != nullptr)
+        rotationSub->unsubscribe(this);
+    
+    if (positionSub != nullptr)
+        positionSub->unsubscribe(this);
     
     Drawable::removeDrawable(this);
 }
@@ -75,6 +91,14 @@ void Drawable::setSprite(int index) {
     textureRect.left = spritePosition.x;
     textureRect.top = spritePosition.y;
     rect.setTextureRect(textureRect);
+}
+void Drawable::setOpacity(sf::Uint8 opacity) {
+    auto color = sf::Color(255, 255, 255, opacity);
+    rect.setFillColor(color);
+}
+sf::Uint8 Drawable::getOpacity() {
+    auto color = rect.getFillColor();
+    return color.a;
 }
 
 void Drawable::draw(sf::RenderWindow& window) {

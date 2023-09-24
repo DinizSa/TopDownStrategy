@@ -27,15 +27,15 @@ void PhysicsBody::updatePhysicsBodys() {
     
     for (auto it = PhysicsBody::physicBodies.begin(); it != PhysicsBody::physicBodies.end();) {
         PhysicsBody* physicsBody = *it;
-        if (physicsBody->isDead()) {
+        if (physicsBody->isExpired()) {
             delete physicsBody;
         } else {
             it++;
         }
     }
 }
-bool PhysicsBody::isDead() {
-    return dead;
+bool PhysicsBody::isExpired() {
+    return expired;
 }
 
 
@@ -98,17 +98,15 @@ sf::Vector2f PhysicsBody::getVelocity() {
 bool PhysicsBody::applyVelocity() {
     float dV = Utils::getLength(velocity);
     if (dV > 0.f) {
-        return translate(velocity);
+        return translate(velocity, true);
     }
     return false;
 }
-bool PhysicsBody::translate(float delta, bool isTravel) {
-    float rotationRadians = rotation() * M_PI / 180;
-    float x = -delta * sin(rotationRadians);
-    float y = delta * cos(rotationRadians);
-    return translate({x, y}, isTravel);
-}
 bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
+    if (isTravel) {
+        traveledDistance = traveledDistance() + Utils::getLength(delta);
+        traveledDistance.notify();
+    }
     body.left += delta.x;
     body.top += delta.y;
     
@@ -120,10 +118,6 @@ bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
     centerWorld = centerWorld() + delta;
     centerWorld.notify();
     
-    if (isTravel) {
-        traveledDistance = traveledDistance() + Utils::getLength(delta);
-        traveledDistance.notify();
-    }
     return true;
 }
 bool PhysicsBody::rotate(float deltaAngle) {
@@ -140,9 +134,9 @@ bool PhysicsBody::rotateAroundOrigin(float deltaAngle, sf::Vector2f origin) {
     t0.rotate(deltaAngle, origin);
     sf::Vector2f rotatedPosition = t0.transformPoint(centerWorld());
 
-    rotation = rotation() + deltaAngle;
+    rotation = remainder(rotation() + deltaAngle, 360.f);
     if (!translate(rotatedPosition - centerWorld())) {
-        rotation = rotation() - deltaAngle;
+        rotation = remainder(rotation() - deltaAngle, 360.f);
         return false;
     }
     rotation.notify();

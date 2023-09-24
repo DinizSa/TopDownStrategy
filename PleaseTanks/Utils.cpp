@@ -20,7 +20,7 @@ float Utils::getLength(const sf::Vector2f& v) {
 float Utils::getAngle(const sf::Vector2f& v) {
     float length = Utils::getLength(v);
     auto ang = (acos(v.x / length)) * 180 / M_PI;
-    bool firstSecondQuadrant = v.y > 0.f;
+    bool firstSecondQuadrant = v.y >= 0.f;
     return firstSecondQuadrant ? ang : -ang;
 }
 sf::Vector2f Utils::getVector(float rotationDegrees, float hypotenusa) {

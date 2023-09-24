@@ -51,8 +51,8 @@ int main()
     
     std::chrono::time_point<clock> next_frame = clock::now();
     
-//    sf::Vector2f velocity = {0.5f, 0.5f};
-//    tank2.setVelocity(velocity);
+    sf::Vector2f velocity = {0.5f, 0.5f};
+    tank2.setVelocity(velocity);
     
     
     
@@ -142,6 +142,7 @@ int main()
         tank.update();
         tank2.update();
         
+        Drawable::updateDrawables();
         AutoSprite::updateAutoSprites();
         PhysicsBody::updatePhysicsBodys();
         
