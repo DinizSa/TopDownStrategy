@@ -12,6 +12,34 @@
 #include "PhysicsBody.hpp"
 #include "Utils.hpp"
 
+std::vector<PhysicsBody*> PhysicsBody::physicBodies;
+
+void PhysicsBody::addPhysicsBody(PhysicsBody* physicsBody) {
+    PhysicsBody::physicBodies.push_back(physicsBody);
+}
+void PhysicsBody::removePhysicsBody(PhysicsBody* physicsBody) {
+    PhysicsBody::physicBodies.erase(std::remove(PhysicsBody::physicBodies.begin(), PhysicsBody::physicBodies.end(), physicsBody), PhysicsBody::physicBodies.end());
+}
+void PhysicsBody::updatePhysicsBodys() {
+    for (auto physicsBody : PhysicsBody::physicBodies) {
+        physicsBody->update();
+    }
+    
+    for (auto it = PhysicsBody::physicBodies.begin(); it != PhysicsBody::physicBodies.end();) {
+        PhysicsBody* physicsBody = *it;
+        if (physicsBody->isDead()) {
+            delete physicsBody;
+        } else {
+            it++;
+        }
+    }
+}
+bool PhysicsBody::isDead() {
+    return dead;
+}
+
+
+
 int PhysicsBody::nextMaskId = 1;
 std::vector<PhysicsBody*> PhysicsBody::allBodies;
 int PhysicsBody::getAndIncrementMaskId() {

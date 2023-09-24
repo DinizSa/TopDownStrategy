@@ -7,7 +7,7 @@
 
 #include "Gun.hpp"
 #include "Utils.hpp"
-#include "Detonable.hpp"
+#include "Projectile.hpp"
 
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),

@@ -14,6 +14,15 @@
 #include "Subject.hpp"
 
 class PhysicsBody {
+protected:
+    static std::vector<PhysicsBody*> physicBodies;
+    static void addPhysicsBody(PhysicsBody* physicBody);
+    static void removePhysicsBody(PhysicsBody* physicBody);
+    bool dead = false;
+public:
+    static void updatePhysicsBodys();
+    bool isDead();
+    
 private:
     static std::vector<PhysicsBody*> allBodies;
     static int nextMaskId;

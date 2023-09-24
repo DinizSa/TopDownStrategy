@@ -5,7 +5,7 @@
 #include <thread>
 
 #include "Tank.hpp"
-#include "Detonable.hpp"
+#include "Projectile.hpp"
 
 int main()
 {
@@ -143,7 +143,7 @@ int main()
         tank2.update();
         
         AutoSprite::updateAutoSprites();
-        Detonable::updateDetonables();
+        PhysicsBody::updatePhysicsBodys();
         
         window.clear();
         
