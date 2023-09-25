@@ -53,7 +53,7 @@ public:
     sf::Uint8 getOpacity();
     void draw(sf::RenderWindow& window);
     void setPosition(Subject<sf::Vector2f>* position, Subject<float>* rotation);
-    void setPosition(sf::Vector2f position, float rotation);
+    void setPosition(sf::Vector2f position, float rotation, bool centerWithSize = false);
 
     void setZIndex(int index);
     

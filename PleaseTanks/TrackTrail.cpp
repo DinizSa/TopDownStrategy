@@ -9,7 +9,7 @@
 #include "Utils.hpp"
 
 TrackTrail::TrackTrail(int spriteIndex, sf::Vector2f position, float rotation) :
-AutoSprite({100.f, 100.f}, 0.f, {SpriteNames::effects2, 21, 21, 10000, false}), currentOpacity(255), deltaOpacity(255.f/(60*(sprite.singleImageDurationMs/1000)))
+AutoSprite({100.f, 100.f}, 0.f, {SpriteNames::effects2, 21, 21, 10000, false}), currentOpacity(155.f), deltaOpacity(currentOpacity/(60*(sprite.singleImageDurationMs/1000)))
 {
     setOpacity(currentOpacity);
     setPosition(position, rotation);
@@ -18,6 +18,5 @@ AutoSprite({100.f, 100.f}, 0.f, {SpriteNames::effects2, 21, 21, 10000, false}), 
 void TrackTrail::updateDrawable() {
     AutoSprite::updateDrawable();
     currentOpacity -= deltaOpacity;
-    std::cout << currentOpacity << '\n';
     setOpacity(round(currentOpacity));
 }

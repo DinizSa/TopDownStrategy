@@ -60,8 +60,10 @@ void Drawable::setPosition(Subject<sf::Vector2f>* pos, Subject<float>* rot) {
     };
     rotationSub->subscribe(this, callbackRotation);
 }
-void Drawable::setPosition(sf::Vector2f pos, float rot){
-//    pos -= (rect.getSize()/2.f);
+void Drawable::setPosition(sf::Vector2f pos, float rot, bool centerWithSize){
+    if (centerWithSize) {
+        pos -= (rect.getSize()/2.f);
+    }
     rect.setPosition(pos.x, pos.y);
     rect.setRotation(rot);
 }

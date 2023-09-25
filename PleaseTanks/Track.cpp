@@ -17,7 +17,6 @@ Track::Track(sf::Vector2f imageSize, int spriteIndex) :
     setPosition(&centerWorld, &rotation);
 
     traveledDistance.subscribe(this, [&](float distance) {
-        std::cout << distance << '\n';
         if (distance > previousTrailDistance + deltaTrack ) {
             setNextSprite();
             previousTrailDistance = distance;
