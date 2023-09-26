@@ -13,8 +13,10 @@
 #include "AutoSprite.hpp"
 
 class Explosion : public PhysicsBody, public AutoSprite {
+protected:
+    int damage;
 public:
-    Explosion(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, int collisionMaskId, Sprite sprite);
+    Explosion(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, int collisionMaskId, Sprite sprite, int damage);
 };
 
 class FireExplosion : public Explosion {

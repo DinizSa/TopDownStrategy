@@ -53,6 +53,8 @@ public:
     virtual ~PhysicsBody();
     virtual void update(){};
     
+    virtual void receiveDamage(int damage){};
+    
     static int getAndIncrementMaskId();
     void setCollisionMaskId(int id);
     

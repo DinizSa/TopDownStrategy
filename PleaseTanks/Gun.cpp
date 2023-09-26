@@ -12,13 +12,16 @@
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),
     Drawable(imageSize, 3.f, SpriteNames::guns, spriteIndex),
-    angularSpeed(2.f)
+    Health(100), angularSpeed(2.f)
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
 }
-float Gun::getAngularSpeed() {
-    return angularSpeed;
+void Gun::rotateClock() {
+    rotate(angularSpeed);
+}
+void Gun::rotateAntiClock() {
+    rotate(-angularSpeed);
 }
 
 void Gun::shot() {
@@ -35,4 +38,8 @@ void Gun::shot() {
     Sprite sp = Sprite({SpriteNames::shotEffect, 0, 5, 80, false});
     AutoSprite* shotEffect = new AutoSprite({100.f, 100.f}, 4.f, sp);
     shotEffect->setPosition(pos, currentRotation + 90);
+}
+
+void Gun::receiveDamage(int damage) {
+    updateHealth(-damage);
 }

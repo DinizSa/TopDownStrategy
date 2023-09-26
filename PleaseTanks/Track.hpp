@@ -9,8 +9,9 @@
 
 #include "PhysicsBody.hpp"
 #include "AutoSprite.hpp"
+#include "Health.hpp"
 
-class Track : public PhysicsBody, public AutoSprite {
+class Track : public PhysicsBody, public AutoSprite, private Health {
 private:
     float deltaTrack;
     float previousTrackDistance;
@@ -20,4 +21,5 @@ private:
     
 public:
     Track(sf::Vector2f size, int spriteIndex);
+    void receiveDamage(int damage) override;
 };

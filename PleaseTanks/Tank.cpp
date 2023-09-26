@@ -43,12 +43,10 @@ void Tank::rotateAntiClock() {
 }
 
 void Tank::rotateGunClock() {
-    float gunAngularSpeed = gun.getAngularSpeed();
-    gun.rotate(gunAngularSpeed);
+    gun.rotateClock();
 }
 void Tank::rotateGunAntiClock() {
-    float gunAngularSpeed = gun.getAngularSpeed();
-    gun.rotate(-gunAngularSpeed);
+    gun.rotateAntiClock();
 }
 
 void Tank::rotate(float deltaAngle) {

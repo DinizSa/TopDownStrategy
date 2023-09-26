@@ -9,13 +9,15 @@
 
 #include "Drawable.hpp"
 #include "PhysicsBody.hpp"
+#include "Health.hpp"
 
-class Gun : public PhysicsBody, public Drawable {
+class Gun : public PhysicsBody, public Drawable, private Health {
 private:
     float angularSpeed;
 public:
     Gun(sf::Vector2f size, int spriteIndex);
     void shot();
-    
-    float getAngularSpeed();
+    void rotateClock();
+    void rotateAntiClock();
+    void receiveDamage(int damage) override;
 };
