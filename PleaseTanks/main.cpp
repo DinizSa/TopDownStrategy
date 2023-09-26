@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include <iostream>
 #include <ctime>
@@ -64,7 +65,6 @@ int main()
     int tilesRow = 8;
     int tilesColumn = 8;
     terrain.load("/Users/Shared/merda/PleaseTanks/images/grassTiled.png", sf::Vector2u(windowWidth/tilesRow, windowWidth/tilesColumn), terrainMap, tilesRow, tilesColumn);
-    
     
     while (window.isOpen()) {
         sf::Event event;

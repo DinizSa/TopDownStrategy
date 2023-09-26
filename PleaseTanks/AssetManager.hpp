@@ -8,13 +8,20 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <unordered_map>
+#include <vector>
 
 #include "SpriteSheet.hpp"
+
+enum SoundNames { steadyTank, damagedTank, rotationGun };
 
 class AssetManager {
 private:
     std::unordered_map<SpriteNames, SpriteSheet*> spriteSheets;
+    
+    std::unordered_map<SoundNames, sf::SoundBuffer*> soundBuffers;
+    std::vector<sf::Sound*> sounds;
 
 private:
     AssetManager();
@@ -25,4 +32,6 @@ private:
 public:
     static AssetManager* get();
     SpriteSheet* getSprite(SpriteNames spriteSheet);
+    void playSound(SoundNames soundName);
+    void stopSound(SoundNames soundName);
 };
