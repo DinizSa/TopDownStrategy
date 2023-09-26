@@ -30,13 +30,11 @@ void Gun::shot() {
     float radius = body.width > body.height ? body.width : body.height;
     sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
     sf::Vector2f pos = centerWorld() + deltaPos;
-    sf::Vector2f posEffect = centerWorld() + Utils::getVector(currentRotation, radius/1.4f);
     
-    std::cout << posEffect.x << ", " << posEffect.y << '\n';
     new FireProjectile(pos, currentRotation, collisionMaskId);
     
     Sprite sp = Sprite({SpriteNames::shotEffect, 0, 5, 80, false});
-    AutoSprite* shotEffect = new AutoSprite({100.f, 100.f}, 4.f, sp);
+    AutoSprite* shotEffect = new AutoSprite({50.f, 50.f}, 4.f, sp);
     shotEffect->setPosition(pos, currentRotation + 90);
 }
 

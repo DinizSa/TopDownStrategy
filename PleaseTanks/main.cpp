@@ -46,7 +46,7 @@ int main()
     
     std::chrono::time_point<clock> next_frame = clock::now();
     
-    sf::Vector2f velocity = {0.5f, 0.5f};
+    sf::Vector2f velocity = {0.2f, 0.2f};
     tank2.setVelocity(velocity);
     
     const int terrainMap[] =

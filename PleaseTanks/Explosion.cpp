@@ -19,14 +19,12 @@ Explosion::Explosion(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector
     setPosition(&centerWorld, &rotation);
     setCollisionMaskId(maskId);
     translate(position, false);
-    setMovementCollisions(true);
 }
 
 FireExplosion::FireExplosion(sf::Vector2f position, int collisionMaskId):
-    Explosion({200.f, 200.f}, {50.f, 50.f}, position, collisionMaskId, {SpriteNames::effects, 21, 28, 80, false}, 30)
+    Explosion({100.f, 100.f}, {50.f, 50.f}, position, collisionMaskId, {SpriteNames::effects, 21, 28, 80, false}, 30)
 {
     std::vector<PhysicsBody*> collided = getCollided();
-    std::cout << "collided: " << collided.size() << '\n';
     
     for (auto body : collided) {
         body->receiveDamage(damage);

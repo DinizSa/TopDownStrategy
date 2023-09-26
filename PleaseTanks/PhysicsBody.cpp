@@ -39,7 +39,6 @@ bool PhysicsBody::isExpired() {
 }
 
 
-
 int PhysicsBody::nextMaskId = 1;
 std::vector<PhysicsBody*> PhysicsBody::allBodies;
 int PhysicsBody::getAndIncrementMaskId() {
@@ -187,6 +186,21 @@ bool PhysicsBody::instersects(const PhysicsBody& other) const {
     return false;
 }
 
+bool PhysicsBody::collidedAny() const {
+    for (PhysicsBody* body : PhysicsBody::allBodies) {
+        
+        if (this == body)
+            continue;
+
+        if (this->collisionMaskId != 0 && body->collisionMaskId == this->collisionMaskId)
+            continue;
+
+        if (this->instersects(*body)) {
+            return true;
+        }
+    }
+    return false;
+}
 bool PhysicsBody::collidedMovement() const {
     if (!hasMovementCollisions) {
         return false;

@@ -74,4 +74,5 @@ public:
     bool instersects(sf::Vector2f point) const;
     bool instersects(const PhysicsBody& other) const;
     std::vector<PhysicsBody*> getCollided() const;
+    bool collidedAny() const;
 };

@@ -107,6 +107,8 @@ void Tank::setVelocity(sf::Vector2f velocity) {
     rotate(angle);
 }
 void Tank::shot() {
+    bool gunAlignedWithHull = fabs(hull.getRotation() - gun.getRotation()) < 90;
+    gunAlignedWithHull ? moveBack() : moveFront();
     gun.shot();
 }
 bool Tank::contains(sf::Vector2f point) const {

@@ -21,8 +21,6 @@ Projectile::Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vect
     translate(position, false);
     sf::Vector2f velocity = Utils::getVector(angleDegrees, velocityScalar);
     setVelocityAndRotate(velocity);
-
-    setMovementCollisions(true);
     
     PhysicsBody::addPhysicsBody(this);
 }
@@ -35,7 +33,8 @@ void Projectile::update() {
         return;
     }
     
-    bool collided = !applyVelocity();
+    applyVelocity();
+    bool collided = collidedAny();
     if (collided) {
         new FireExplosion(centerWorld(), collisionMaskId);
         expired = true;
