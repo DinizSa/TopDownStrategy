@@ -14,14 +14,14 @@
 
 #include "SpriteSheet.hpp"
 
-enum SoundNames { steadyTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop };
+enum SoundNames { steadyTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop, metalDamage, metalExplosion };
 
 class AssetManager {
 private:
     std::unordered_map<SpriteNames, SpriteSheet*> spriteSheets;
     
     std::unordered_map<SoundNames, sf::SoundBuffer*> soundBuffers;
-    std::vector<sf::Sound*> sounds;
+    std::unordered_map<int, std::vector<sf::Sound*>> sounds;
 
 private:
     AssetManager();
@@ -34,6 +34,6 @@ private:
 public:
     static AssetManager* get();
     SpriteSheet* getSprite(SpriteNames spriteSheet);
-    sf::Sound* playSound(SoundNames soundName);
-    void stopSound(SoundNames soundName);
+    sf::Sound* playSound(SoundNames soundName, int audioPlayerId);
+    void stopSound(SoundNames soundName, int audioPlayerId);
 };

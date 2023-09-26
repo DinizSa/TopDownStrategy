@@ -136,8 +136,10 @@ int main()
             }
         }
 
-        if (forwardPressed)
+        if (forwardPressed){
             tank.moveFront();
+//            tank2.rotateGunClock();
+        }
         if (backwardPressed)
             tank.moveBack();
         if (turnClockPressed)

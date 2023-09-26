@@ -11,7 +11,7 @@
 Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x * (6.f/10.f), imageSize.y}),
     Drawable(imageSize, 2.f, SpriteNames::hulls, spriteIndex),
-    Health(200)
+    Health(200), movingCounter(0)
 {
     setMovementCollisions(true);
     
@@ -27,6 +27,14 @@ Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
         exhaustPosition = center - deltaPos;
         exhaustPosition.notify();
     });
+    
+    PhysicsBody::traveledDistance.subscribe(exhaust, [&](float distance) {
+        if (movingCounter == 0) {
+            sf::Sound* sound = AssetManager::get()->playSound(SoundNames::steadyTank, audioPlayerId);
+            sound->setLoop(true);
+        }
+        movingCounter = 2;
+    });
 }
 
 Hull::~Hull() {
@@ -35,4 +43,15 @@ Hull::~Hull() {
 
 void Hull::receiveDamage(int damage) {
     updateHealth(-damage);
+}
+
+void Hull::update() {
+    PhysicsBody::update();
+
+    if (movingCounter > 0) {
+        --movingCounter;
+        if (movingCounter == 0) {
+            AssetManager::get()->stopSound(SoundNames::steadyTank, audioPlayerId);
+        }
+    }
 }
