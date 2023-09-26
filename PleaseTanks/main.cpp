@@ -13,7 +13,7 @@ int main()
 {
     
     
-    int windowWidth = 800;
+    int windowWidth = 1200;
     int windowHeight = 800;
     sf::Vector2f windowDimensions = {(float)windowWidth, (float)windowHeight };
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Please Tanks");
@@ -47,8 +47,8 @@ int main()
     
     std::chrono::time_point<clock> next_frame = clock::now();
     
-    sf::Vector2f velocity = {0.2f, 0.2f};
-    tank2.setVelocity(velocity);
+//    sf::Vector2f velocity = {0.2f, 0.2f};
+//    tank2.setVelocity(velocity);
     
     const int terrainMap[] =
     {

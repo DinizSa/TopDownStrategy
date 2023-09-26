@@ -29,4 +29,7 @@ FireExplosion::FireExplosion(sf::Vector2f position, int collisionMaskId):
     for (auto body : collided) {
         body->receiveDamage(damage);
     }
+    
+    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::metalExplosion, audioPlayerId);
+    sound->setLoop(false);
 }

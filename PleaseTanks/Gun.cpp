@@ -26,10 +26,11 @@ void Gun::rotateAntiClock() {
 }
 void Gun::rotateGun(float speed) {
     if (rotationCounter == 0) {
-        sf::Sound* sound = AssetManager::get()->playSound(SoundNames::rotationGunStart, audioPlayerId);
-        sound->setLoop(false);
-        sf::Sound* soundMoving = AssetManager::get()->playSound(SoundNames::rotationGunMoving, audioPlayerId);
+//        sf::Sound* sound = AssetManager::get()->playSound(SoundNames::rotationGunStart, audioPlayerId);
+//        sound->setLoop(false);
+        sf::Sound* soundMoving = AssetManager::get()->playSound(SoundNames::rotationGun, audioPlayerId);
         soundMoving->setLoop(true);
+        soundMoving->setVolume(40.f);
     }
     rotationCounter = 2;
     
@@ -59,10 +60,10 @@ void Gun::update() {
     if (rotationCounter > 0) {
         --rotationCounter;
         if (rotationCounter == 0) {
-            AssetManager::get()->stopSound(SoundNames::rotationGunMoving, audioPlayerId);
-            AssetManager::get()->stopSound(SoundNames::rotationGunStart, audioPlayerId);
+            AssetManager::get()->stopSound(SoundNames::rotationGun, audioPlayerId);
             auto gunStopSound = AssetManager::get()->playSound(SoundNames::rotationGunStop, audioPlayerId);
             gunStopSound->setLoop(false);
+            gunStopSound->setVolume(10.f);
         }
     }
 }

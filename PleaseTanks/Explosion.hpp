@@ -11,8 +11,9 @@
 
 #include "PhysicsBody.hpp"
 #include "AutoSprite.hpp"
+#include "AudioPlayer.hpp"
 
-class Explosion : public PhysicsBody, public AutoSprite {
+class Explosion : public PhysicsBody, public AutoSprite, protected AudioPlayer {
 protected:
     int damage;
 public:

@@ -11,8 +11,9 @@
 
 #include "PhysicsBody.hpp"
 #include "AutoSprite.hpp"
+#include "AudioPlayer.hpp"
 
-class Projectile : public PhysicsBody, public AutoSprite {
+class Projectile : public PhysicsBody, public AutoSprite, protected AudioPlayer {
 protected:
     float velocityScalar;
 public:
