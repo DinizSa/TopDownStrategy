@@ -8,8 +8,8 @@
 #include "TrackTrail.hpp"
 #include "Utils.hpp"
 
-TrackTrail::TrackTrail(int spriteIndex, sf::Vector2f position, float rotation) :
-AutoSprite({100.f, 100.f}, 0.f, {SpriteNames::effects2, 21, 21, 10000, false}), currentOpacity(155.f), deltaOpacity(currentOpacity/(60*(sprite.singleImageDurationMs/1000)))
+TrackTrail::TrackTrail(sf::Vector2f size, int spriteIndex, sf::Vector2f position, float rotation) :
+AutoSprite(size, 0.f, {SpriteNames::effects2, 21, 21, 5000, false}), currentOpacity(155.f), deltaOpacity(currentOpacity/(60*(sprite.singleImageDurationMs/1000)))
 {
     setOpacity(currentOpacity);
     setPosition(position, rotation);

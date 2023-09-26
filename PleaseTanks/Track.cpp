@@ -12,7 +12,7 @@
 Track::Track(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody(imageSize),
     AutoSprite(imageSize, 1.f, {SpriteNames::tracks, spriteIndex, spriteIndex+1, 0, false}),
-    deltaTrack(17.f), previousTrackDistance(0.f), previousTrailDistance(0.f), deltaTrail(50)
+    deltaTrack(17.f), previousTrackDistance(0.f), previousTrailDistance(0.f), deltaTrail(25)
 {
     setPosition(&centerWorld, &rotation);
 
@@ -22,7 +22,8 @@ Track::Track(sf::Vector2f imageSize, int spriteIndex) :
             previousTrailDistance = distance;
         }
         if (distance > previousTrackDistance + deltaTrail ) {
-            new TrackTrail(21, centerWorld(), rotation());
+            sf::Vector2f size = rect.getSize();
+            new TrackTrail(size, 21, centerWorld(), rotation());
             previousTrackDistance = distance;
         }
     });

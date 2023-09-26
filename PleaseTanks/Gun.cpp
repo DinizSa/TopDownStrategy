@@ -12,7 +12,7 @@
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),
     Drawable(imageSize, 3.f, SpriteNames::guns, spriteIndex),
-    angularSpeed(5.f)
+    angularSpeed(2.f)
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
@@ -32,7 +32,7 @@ void Gun::shot() {
     std::cout << posEffect.x << ", " << posEffect.y << '\n';
     new FireProjectile(pos, currentRotation, collisionMaskId);
     
-    Sprite sp = Sprite({SpriteNames::shotEffect, 0, 22, 50, false});
+    Sprite sp = Sprite({SpriteNames::shotEffect, 0, 5, 80, false});
     AutoSprite* shotEffect = new AutoSprite({100.f, 100.f}, 4.f, sp);
     shotEffect->setPosition(pos, currentRotation + 90);
 }

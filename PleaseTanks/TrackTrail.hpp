@@ -19,5 +19,5 @@ protected:
     void updateDrawable() override;
     
 public:
-    TrackTrail(int spriteIndex, sf::Vector2f position, float rotation);
+    TrackTrail(sf::Vector2f size, int spriteIndex, sf::Vector2f position, float rotation);
 };
