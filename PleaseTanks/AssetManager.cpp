@@ -6,6 +6,7 @@
 //
 
 #include "AssetManager.hpp"
+#include <iostream>
 
 AssetManager* AssetManager::get() {
     static AssetManager instance = AssetManager();
@@ -19,20 +20,23 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::effects, new SpriteSheet({7, 7, imagesPath + "effectsSprites.png", sf::Vector2f({266.f, 266.f})}));
     spriteSheets.insert_or_assign(SpriteNames::effects2, new SpriteSheet({6, 4, imagesPath + "effectsSprites2.png", sf::Vector2f({125.f, 128.f})}));
     spriteSheets.insert_or_assign(SpriteNames::shotEffect, new SpriteSheet({3, 3, imagesPath + "shotSprite.png", sf::Vector2f({93.f, 93.f})}));
+
+    loadSoundBuffer(SoundNames::steadyTank, "steadyTank.mp3");
+    loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");
+    loadSoundBuffer(SoundNames::rotationGun, "rotateGun.mp3");
+    loadSoundBuffer(SoundNames::rotationGunStart, "rotateGunStart.mp3");
+    loadSoundBuffer(SoundNames::rotationGunMoving, "rotateGunMoving.mp3");
+    loadSoundBuffer(SoundNames::rotationGunStop, "rotateGunStop.mp3");
+}
+void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& fileName) {
+    const static std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";
+    auto buffer = new sf::SoundBuffer();
+    auto oi = soundsPrefix + fileName;
+    if (!buffer->loadFromFile(oi)) {
+        std::cout << "Error loading sound: " << oi << std::endl;
+    }
+    soundBuffers.insert_or_assign(soundName, buffer);
     
-    const std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";
-    
-    auto steadyTankBuffer = new sf::SoundBuffer();
-    steadyTankBuffer->loadFromFile(soundsPrefix + "steadyTank.mp3");
-    soundBuffers.insert_or_assign(SoundNames::steadyTank, steadyTankBuffer);
-    
-    auto damagedTankBuffer = new sf::SoundBuffer();
-    damagedTankBuffer->loadFromFile(soundsPrefix + "damagedTank.mp3");
-    soundBuffers.insert_or_assign(SoundNames::damagedTank, damagedTankBuffer);
-    
-    auto rotateGunBuffer = new sf::SoundBuffer();
-    rotateGunBuffer->loadFromFile(soundsPrefix + "rotateGun.mp3");
-    soundBuffers.insert_or_assign(SoundNames::rotationGun, rotateGunBuffer);
 }
 AssetManager::~AssetManager() {
     for (auto& sprite : spriteSheets) {
@@ -46,7 +50,7 @@ SpriteSheet* AssetManager::getSprite(SpriteNames sprite) {
     return spriteSheets.at(sprite);
 }
 
-void AssetManager::playSound(SoundNames soundName) {
+sf::Sound* AssetManager::playSound(SoundNames soundName) {
     sf::SoundBuffer* soundBuffer = soundBuffers.at(soundName);
     for (auto sound : sounds) {
         if (sound->getStatus() == sf::Sound::Stopped) {
@@ -54,7 +58,7 @@ void AssetManager::playSound(SoundNames soundName) {
                 sound->setBuffer(*soundBuffers.at(soundName));
             }
             sound->play();
-            return;
+            return sound;
         }
     }
     
@@ -62,6 +66,7 @@ void AssetManager::playSound(SoundNames soundName) {
     sound->setBuffer(*soundBuffer);
     sound->play();
     sounds.push_back(sound);
+    return sound;
 }
 
 void AssetManager::stopSound(SoundNames soundName) {
