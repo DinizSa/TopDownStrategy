@@ -30,8 +30,13 @@ Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     
     PhysicsBody::traveledDistance.subscribe(exhaust, [&](float distance) {
         if (movingCounter == 0) {
-            sf::Sound* sound = AssetManager::get()->playSound(SoundNames::movingTank, audioPlayerId);
-            sound->setLoop(true);
+            sf::Sound* sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
+            if (sound == nullptr) {
+                sound = AssetManager::get()->playSound(SoundNames::movingTank, audioPlayerId);
+                sound->setLoop(true);
+            } else {
+                sound->setVolume(100.f);
+            }
         }
         movingCounter = 2;
     });
@@ -54,6 +59,8 @@ void Hull::update() {
             sf::Sound* sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
             if (sound != nullptr) {
                 sound->setVolume(30.f);
+            } else {
+                int a = 3;
             }
         }
     }
