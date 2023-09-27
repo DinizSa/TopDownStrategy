@@ -10,7 +10,7 @@
 #include "Drawable.hpp"
 #include "Explosion.hpp"
 
-Mine::Mine(sf::Vector2f position):
+Mine::Mine(sf::Vector2f position, sf::Vector2f physicsSize):
     PhysicsBody({20.f, 20.f})
 {
     translate(position, false);
@@ -28,7 +28,7 @@ void Mine::update() {
     }
 }
 
-BasicMine::BasicMine(sf::Vector2f position): Mine(position) {
-    Drawable* mine = new Drawable({40.f, 40.f}, 0.f, SpriteNames::mine, 0);
+BasicMine::BasicMine(sf::Vector2f position, sf::Vector2f size): Mine(position, size/2.f) {
+    Drawable* mine = new Drawable(size, 0.f, SpriteNames::mine, 0);
     mine->setPosition(position, 0.f);
 }

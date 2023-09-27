@@ -48,8 +48,8 @@ int main()
     
     std::chrono::time_point<clock> next_frame = clock::now();
     
-//    sf::Vector2f velocity = {0.2f, 0.2f};
-//    tank2.setVelocity(velocity);
+    sf::Vector2f velocity = {0.5f, 0.2f};
+    tank2.setVelocity(velocity);
     
     const int terrainMap[] =
     {
@@ -67,7 +67,7 @@ int main()
     int tilesColumn = 8;
     terrain.load("/Users/Shared/merda/PleaseTanks/images/grassTiled.png", sf::Vector2u(windowWidth/tilesRow, windowWidth/tilesColumn), terrainMap, tilesRow, tilesColumn);
     
-    BasicMine* mine = new BasicMine({400.f, 400.f});
+    new BasicMine({400.f, 400.f}, {40.f, 40.f});
     
     while (window.isOpen()) {
         sf::Event event;

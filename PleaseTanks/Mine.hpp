@@ -11,12 +11,12 @@
 
 class Mine : public PhysicsBody {
 public:
-    Mine(sf::Vector2f position);
+    Mine(sf::Vector2f position, sf::Vector2f physicsSize);
     ~Mine();
     void update() override;
 };
 
 class BasicMine : public Mine {
 public:
-    BasicMine(sf::Vector2f position);
+    BasicMine(sf::Vector2f position, sf::Vector2f size);
 };
