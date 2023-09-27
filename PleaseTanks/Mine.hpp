@@ -8,11 +8,13 @@
 #pragma once
 
 #include "PhysicsBody.hpp"
+#include "Drawable.hpp"
 
 class Mine : public PhysicsBody {
 public:
     Mine(sf::Vector2f position, sf::Vector2f physicsSize);
     ~Mine();
+    Drawable* asset;
     void update() override;
 };
 

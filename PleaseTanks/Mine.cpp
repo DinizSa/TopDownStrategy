@@ -7,7 +7,6 @@
 
 #include "Mine.hpp"
 #include "Utils.hpp"
-#include "Drawable.hpp"
 #include "Explosion.hpp"
 
 Mine::Mine(sf::Vector2f position, sf::Vector2f physicsSize):
@@ -22,13 +21,14 @@ Mine::~Mine() {
 }
 void Mine::update() {
     bool collided = collidedAny();
-    if (collided) {
+    if (!expired && collided) {
         new FireExplosion(centerWorld(), collisionMaskId);
         expired = true;
+        delete asset;
     }
 }
 
 BasicMine::BasicMine(sf::Vector2f position, sf::Vector2f size): Mine(position, size/2.f) {
-    Drawable* mine = new Drawable(size, 0.f, SpriteNames::mine, 0);
-    mine->setPosition(position, 0.f);
+    asset = new Drawable(size, 0.f, SpriteNames::mine, 0);
+    asset->setPosition(position, 0.f);
 }
