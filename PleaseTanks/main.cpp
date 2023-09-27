@@ -9,6 +9,7 @@
 #include "Projectile.hpp"
 #include "TileMap.hpp"
 #include "Mine.hpp"
+#include "StaticEnvironment.hpp"
 
 int main()
 {
@@ -68,6 +69,9 @@ int main()
     terrain.load("/Users/Shared/merda/PleaseTanks/images/grassTiled.png", sf::Vector2u(windowWidth/tilesRow, windowWidth/tilesColumn), terrainMap, tilesRow, tilesColumn);
     
     new BasicMine({400.f, 400.f}, {40.f, 40.f});
+    new Tree({100.f, 100.f}, {350.f, 250.f});
+    new Tree({100.f, 100.f}, {450.f, 250.f});
+    new Tree({100.f, 100.f}, {600.f, 250.f});
     
     while (window.isOpen()) {
         sf::Event event;
