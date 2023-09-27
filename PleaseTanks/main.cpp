@@ -66,6 +66,8 @@ int main()
     int tilesColumn = 8;
     terrain.load("/Users/Shared/merda/PleaseTanks/images/grassTiled.png", sf::Vector2u(windowWidth/tilesRow, windowWidth/tilesColumn), terrainMap, tilesRow, tilesColumn);
     
+    Mine* mine = new Mine({400.f, 400.f});
+    
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event))

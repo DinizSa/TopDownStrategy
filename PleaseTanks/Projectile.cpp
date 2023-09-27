@@ -19,8 +19,10 @@ Projectile::Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vect
     setCollisionMaskId(maskId);
     
     translate(position, false);
-    sf::Vector2f velocity = Utils::getVector(angleDegrees, velocityScalar);
-    setVelocityAndRotate(velocity);
+    if (velocityScalar != 0.f) {
+        sf::Vector2f velocity = Utils::getVector(angleDegrees, velocityScalar);
+        setVelocityAndRotate(velocity);
+    }
     
     PhysicsBody::addPhysicsBody(this);
 }
@@ -28,12 +30,14 @@ Projectile::~Projectile() {
     PhysicsBody::removePhysicsBody(this);
 }
 void Projectile::update() {
-    if (getTraveledDistance() > 1000.f) {
+    if (getTraveledDistance() > 700.f) {
         expired = true;
         return;
     }
     
-    applyVelocity();
+    if (velocityScalar > 0) {
+        applyVelocity();
+    }
     bool collided = collidedAny();
     if (collided) {
         new FireExplosion(centerWorld(), collisionMaskId);
@@ -41,11 +45,14 @@ void Projectile::update() {
     }
 }
 
-
 FireProjectile::FireProjectile(sf::Vector2f position, float angleDegrees, int collisionMaskId):
-    Projectile({150.f, 150.f}, {20.f, 20.f}, position, angleDegrees, collisionMaskId, {SpriteNames::effects, 10, 19, 80, true}, 10.f)
+    Projectile({150.f, 150.f}, {5.f, 5.f}, position, angleDegrees, collisionMaskId, {SpriteNames::effects, 10, 19, 80, true}, 10.f)
 {
     sf::Sound* sound = AssetManager::get()->playSound(SoundNames::tankGunBlast, audioPlayerId);
     sound->setLoop(false);
     sound->setVolume(20.f);
 }
+
+Mine::Mine(sf::Vector2f position):
+    Projectile({50.f, 50.f}, {10.f, 10.f}, position, 0.f, collisionMaskId, {SpriteNames::mine, 0, 0, 0, false}, 0.f)
+{}

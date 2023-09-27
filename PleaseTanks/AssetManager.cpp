@@ -20,6 +20,7 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::effects, new SpriteSheet({7, 7, imagesPath + "effectsSprites.png", sf::Vector2f({266.f, 266.f})}));
     spriteSheets.insert_or_assign(SpriteNames::effects2, new SpriteSheet({6, 4, imagesPath + "effectsSprites2.png", sf::Vector2f({125.f, 128.f})}));
     spriteSheets.insert_or_assign(SpriteNames::shotEffect, new SpriteSheet({3, 3, imagesPath + "shotSprite.png", sf::Vector2f({93.f, 93.f})}));
+    spriteSheets.insert_or_assign(SpriteNames::mine, new SpriteSheet({1, 1, imagesPath + "mine.png", sf::Vector2f({256.f, 256.f})}));
 
     loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
     loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");

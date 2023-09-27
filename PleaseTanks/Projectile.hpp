@@ -26,3 +26,8 @@ class FireProjectile : public Projectile {
 public:
     FireProjectile(sf::Vector2f position, float angleDegrees, int collisionMaskId);
 };
+
+class Mine : public Projectile {
+public:
+    Mine(sf::Vector2f position);
+};
