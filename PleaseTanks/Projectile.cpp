@@ -10,19 +10,17 @@
 #include "AutoSprite.hpp"
 #include "Explosion.hpp"
 
-Projectile::Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int maskId, Sprite sprite, float velocityScalar):
+Projectile::Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int maskId, Sprite sprite, float velocityScalar, float maxDistance):
     PhysicsBody(physicsBodySize),
     AutoSprite(size, 4.f, sprite),
-    velocityScalar(velocityScalar)
+    velocityScalar(velocityScalar), maxDistance(maxDistance)
 {
     setPosition(&centerWorld, &rotation);
     setCollisionMaskId(maskId);
     
     translate(position, false);
-    if (velocityScalar != 0.f) {
-        sf::Vector2f velocity = Utils::getVector(angleDegrees, velocityScalar);
-        setVelocityAndRotate(velocity);
-    }
+    sf::Vector2f velocity = Utils::getVector(angleDegrees, velocityScalar);
+    setVelocityAndRotate(velocity);
     
     PhysicsBody::addPhysicsBody(this);
 }
@@ -30,14 +28,12 @@ Projectile::~Projectile() {
     PhysicsBody::removePhysicsBody(this);
 }
 void Projectile::update() {
-    if (getTraveledDistance() > 700.f) {
+    if (getTraveledDistance() > maxDistance) {
         expired = true;
         return;
     }
     
-    if (velocityScalar > 0) {
-        applyVelocity();
-    }
+    applyVelocity();
     bool collided = collidedAny();
     if (collided) {
         new FireExplosion(centerWorld(), collisionMaskId);
@@ -46,13 +42,9 @@ void Projectile::update() {
 }
 
 FireProjectile::FireProjectile(sf::Vector2f position, float angleDegrees, int collisionMaskId):
-    Projectile({150.f, 150.f}, {5.f, 5.f}, position, angleDegrees, collisionMaskId, {SpriteNames::effects, 10, 19, 80, true}, 10.f)
+    Projectile({150.f, 150.f}, {5.f, 5.f}, position, angleDegrees, collisionMaskId, {SpriteNames::effects, 10, 19, 80, true}, 10.f, 500.f)
 {
     sf::Sound* sound = AssetManager::get()->playSound(SoundNames::tankGunBlast, audioPlayerId);
     sound->setLoop(false);
     sound->setVolume(20.f);
 }
-
-Mine::Mine(sf::Vector2f position):
-    Projectile({50.f, 50.f}, {10.f, 10.f}, position, 0.f, collisionMaskId, {SpriteNames::mine, 0, 0, 0, false}, 0.f)
-{}

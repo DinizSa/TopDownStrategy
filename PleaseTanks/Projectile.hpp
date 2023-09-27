@@ -15,9 +15,10 @@
 
 class Projectile : public PhysicsBody, public AutoSprite, protected AudioPlayer {
 protected:
+    float maxDistance;
     float velocityScalar;
 public:
-    Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int collisionMaskId, Sprite sprite, float velocityScalar);
+    Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int collisionMaskId, Sprite sprite, float velocityScalar, float maxDistance);
     virtual ~Projectile();
     void update() override;
 };
@@ -25,9 +26,4 @@ public:
 class FireProjectile : public Projectile {
 public:
     FireProjectile(sf::Vector2f position, float angleDegrees, int collisionMaskId);
-};
-
-class Mine : public Projectile {
-public:
-    Mine(sf::Vector2f position);
 };

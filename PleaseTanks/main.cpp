@@ -8,6 +8,7 @@
 #include "Tank.hpp"
 #include "Projectile.hpp"
 #include "TileMap.hpp"
+#include "Mine.hpp"
 
 int main()
 {
@@ -66,7 +67,7 @@ int main()
     int tilesColumn = 8;
     terrain.load("/Users/Shared/merda/PleaseTanks/images/grassTiled.png", sf::Vector2u(windowWidth/tilesRow, windowWidth/tilesColumn), terrainMap, tilesRow, tilesColumn);
     
-    Mine* mine = new Mine({400.f, 400.f});
+    BasicMine* mine = new BasicMine({400.f, 400.f});
     
     while (window.isOpen()) {
         sf::Event event;
