@@ -22,10 +22,10 @@ Projectile::Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vect
     sf::Vector2f velocity = Utils::getVector(angleDegrees, velocityScalar);
     setVelocityAndRotate(velocity);
     
-    PhysicsBody::addPhysicsBody(this);
+    PhysicsBody::addUpdatable(this);
 }
 Projectile::~Projectile() {
-    PhysicsBody::removePhysicsBody(this);
+    PhysicsBody::removeUpdatable(this);
 }
 void Projectile::update() {
     if (getTraveledDistance() > maxDistance) {

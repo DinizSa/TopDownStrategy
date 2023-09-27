@@ -14,10 +14,10 @@ Mine::Mine(sf::Vector2f position, sf::Vector2f physicsSize):
 {
     translate(position, false);
     
-    PhysicsBody::addPhysicsBody(this);
+    PhysicsBody::addUpdatable(this);
 }
 Mine::~Mine() {
-    PhysicsBody::removePhysicsBody(this);
+    PhysicsBody::removeUpdatable(this);
 }
 void Mine::update() {
     bool collided = collidedAny();

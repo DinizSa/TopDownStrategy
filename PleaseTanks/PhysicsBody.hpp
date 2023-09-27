@@ -14,10 +14,11 @@
 #include "Subject.hpp"
 
 class PhysicsBody {
+private:
+    static std::vector<PhysicsBody*> updatables;
 protected:
-    static std::vector<PhysicsBody*> physicBodies;
-    static void addPhysicsBody(PhysicsBody* physicBody);
-    static void removePhysicsBody(PhysicsBody* physicBody);
+    static void addUpdatable(PhysicsBody* physicBody);
+    static void removeUpdatable(PhysicsBody* physicBody);
     bool expired = false;
 public:
     static void updatePhysicsBodys();

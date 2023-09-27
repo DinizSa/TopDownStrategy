@@ -12,20 +12,20 @@
 #include "PhysicsBody.hpp"
 #include "Utils.hpp"
 
-std::vector<PhysicsBody*> PhysicsBody::physicBodies;
+std::vector<PhysicsBody*> PhysicsBody::updatables;
 
-void PhysicsBody::addPhysicsBody(PhysicsBody* physicsBody) {
-    PhysicsBody::physicBodies.push_back(physicsBody);
+void PhysicsBody::addUpdatable(PhysicsBody* physicsBody) {
+    PhysicsBody::updatables.push_back(physicsBody);
 }
-void PhysicsBody::removePhysicsBody(PhysicsBody* physicsBody) {
-    PhysicsBody::physicBodies.erase(std::remove(PhysicsBody::physicBodies.begin(), PhysicsBody::physicBodies.end(), physicsBody), PhysicsBody::physicBodies.end());
+void PhysicsBody::removeUpdatable(PhysicsBody* physicsBody) {
+    PhysicsBody::updatables.erase(std::remove(PhysicsBody::updatables.begin(), PhysicsBody::updatables.end(), physicsBody), PhysicsBody::updatables.end());
 }
 void PhysicsBody::updatePhysicsBodys() {
-    for (auto physicsBody : PhysicsBody::physicBodies) {
+    for (auto physicsBody : PhysicsBody::updatables) {
         physicsBody->update();
     }
     
-    for (auto it = PhysicsBody::physicBodies.begin(); it != PhysicsBody::physicBodies.end();) {
+    for (auto it = PhysicsBody::updatables.begin(); it != PhysicsBody::updatables.end();) {
         PhysicsBody* physicsBody = *it;
         if (physicsBody->isExpired()) {
             delete physicsBody;

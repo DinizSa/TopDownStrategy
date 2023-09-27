@@ -24,7 +24,7 @@ int main()
     sf::Vector2f position = {200.f, 200.f};
     Tank tank = Tank(size, position);
     
-    sf::Vector2f position2 = {200.f, 450.f};
+    sf::Vector2f position2 = {800.f, 250.f};
     Tank tank2 = Tank(size, position2);
     
     bool forwardPressed = false;
@@ -49,8 +49,8 @@ int main()
     
     std::chrono::time_point<clock> next_frame = clock::now();
     
-    sf::Vector2f velocity = {0.5f, 0.2f};
-    tank2.setVelocity(velocity);
+//    sf::Vector2f velocity = {0.5f, 0.2f};
+//    tank2.setVelocity(velocity);
     
     const int terrainMap[] =
     {
