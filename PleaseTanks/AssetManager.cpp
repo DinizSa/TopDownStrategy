@@ -21,15 +21,15 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::effects2, new SpriteSheet({6, 4, imagesPath + "effectsSprites2.png", sf::Vector2f({125.f, 128.f})}));
     spriteSheets.insert_or_assign(SpriteNames::shotEffect, new SpriteSheet({3, 3, imagesPath + "shotSprite.png", sf::Vector2f({93.f, 93.f})}));
 
-    loadSoundBuffer(SoundNames::steadyTank, "steadyTank.mp3");
+    loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
     loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");
     loadSoundBuffer(SoundNames::rotationGun, "rotateGun.mp3");
     loadSoundBuffer(SoundNames::rotationGunStart, "rotateGunStart.mp3");
     loadSoundBuffer(SoundNames::rotationGunMoving, "rotateGunMoving.mp3");
     loadSoundBuffer(SoundNames::rotationGunStop, "rotateGunStop.mp3");
-    loadSoundBuffer(SoundNames::metalExplosion, "metalExplosion.mp3");
-    loadSoundBuffer(SoundNames::metalDamage, "metalDamage.mp3");
+    loadSoundBuffer(SoundNames::shellExplosion, "shellExplosion.mp3");
     loadSoundBuffer(SoundNames::tankShot, "tankShot.mp3");
+    loadSoundBuffer(SoundNames::tankGunBlast, "tankGunBlast.mp3");
 }
 void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& fileName) {
     const static std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";
@@ -55,6 +55,17 @@ AssetManager::~AssetManager() {
 }
 SpriteSheet* AssetManager::getSprite(SpriteNames sprite) {
     return spriteSheets.at(sprite);
+}
+
+sf::Sound* AssetManager::getPlayingSound(SoundNames soundName, int audioPlayerId) {
+    sf::SoundBuffer* soundBuffer = soundBuffers.at(soundName);
+    std::vector<sf::Sound*>& soundsFromId = sounds[audioPlayerId];
+    for (auto sound : soundsFromId) {
+        if (sound->getStatus() == sf::Sound::Playing) {
+            return sound;
+        }
+    }
+    return nullptr;
 }
 
 sf::Sound* AssetManager::playSound(SoundNames soundName, int audioPlayerId) {

@@ -30,6 +30,6 @@ FireExplosion::FireExplosion(sf::Vector2f position, int collisionMaskId):
         body->receiveDamage(damage);
     }
     
-    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::metalExplosion, audioPlayerId);
+    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::shellExplosion, audioPlayerId);
     sound->setLoop(false);
 }

@@ -14,7 +14,7 @@
 
 #include "SpriteSheet.hpp"
 
-enum SoundNames { steadyTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop, metalDamage, metalExplosion, tankShot };
+enum SoundNames { movingTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop, shellExplosion, tankShot, idleTank, tankGunBlast };
 
 class AssetManager {
 private:
@@ -36,4 +36,5 @@ public:
     SpriteSheet* getSprite(SpriteNames spriteSheet);
     sf::Sound* playSound(SoundNames soundName, int audioPlayerId);
     void stopSound(SoundNames soundName, int audioPlayerId);
+    sf::Sound* getPlayingSound(SoundNames soundName, int audioPlayerId);
 };

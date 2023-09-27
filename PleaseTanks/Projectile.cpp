@@ -45,7 +45,7 @@ void Projectile::update() {
 FireProjectile::FireProjectile(sf::Vector2f position, float angleDegrees, int collisionMaskId):
     Projectile({150.f, 150.f}, {20.f, 20.f}, position, angleDegrees, collisionMaskId, {SpriteNames::effects, 10, 19, 80, true}, 10.f)
 {
-    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::tankShot, audioPlayerId);
+    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::tankGunBlast, audioPlayerId);
     sound->setLoop(false);
-    sound->setVolume(50.f);
+    sound->setVolume(20.f);
 }
