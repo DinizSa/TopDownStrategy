@@ -191,6 +191,9 @@ bool PhysicsBody::collidedAny() const {
         
         if (this == body)
             continue;
+        
+        if (!body->hasMovementCollisions)
+            continue;
 
         if (this->collisionMaskId != 0 && body->collisionMaskId == this->collisionMaskId)
             continue;

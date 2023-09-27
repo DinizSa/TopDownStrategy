@@ -70,8 +70,8 @@ int main()
     
     new BasicMine({400.f, 400.f}, {40.f, 40.f});
     new Tree({100.f, 100.f}, {350.f, 250.f});
-    new Tree({100.f, 100.f}, {450.f, 250.f});
-    new Tree({100.f, 100.f}, {600.f, 250.f});
+    new Tree({120.f, 120.f}, {450.f, 240.f});
+    new Tree({130.f, 130.f}, {600.f, 260.f});
     
     while (window.isOpen()) {
         sf::Event event;

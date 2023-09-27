@@ -11,22 +11,25 @@
 
 Explosion::Explosion(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, int maskId, Sprite sprite, int damage):
     PhysicsBody(physicsBodySize),
-    AutoSprite(size, 4.f, sprite),
     damage(damage)
 {
-    setPosition(&centerWorld, &rotation);
+    setMovementCollisions(false);
     setCollisionMaskId(maskId);
     translate(position, false);
+    
+    asset = new AutoSprite(size, 4.f, sprite);
+    asset->setPosition(position, 0.f);
+    asset->setPosition(&centerWorld, &rotation);
 }
 
 FireExplosion::FireExplosion(sf::Vector2f position, int collisionMaskId):
     Explosion({100.f, 100.f}, {50.f, 50.f}, position, collisionMaskId, {SpriteNames::effects, 21, 28, 80, false}, 30)
 {
+    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::shellExplosion, audioPlayerId);
+    sound->setLoop(false);
+    
     std::vector<PhysicsBody*> collided = getCollided();
     for (auto body : collided) {
         body->receiveDamage(damage);
     }
-    
-    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::shellExplosion, audioPlayerId);
-    sound->setLoop(false);
 }
