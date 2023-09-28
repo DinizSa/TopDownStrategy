@@ -10,6 +10,7 @@
 #include "TileMap.hpp"
 #include "Mine.hpp"
 #include "StaticEnvironment.hpp"
+#include "Utils.hpp"
 
 int main()
 {
@@ -25,7 +26,7 @@ int main()
     Tank tank = Tank(size, position);
     
     sf::Vector2f position2 = {800.f, 250.f};
-    Tank tank2 = Tank(size, position2);
+//    Tank tank2 = Tank(size, position2);
     
     bool forwardPressed = false;
     bool turnClockPressed = false;
@@ -68,10 +69,10 @@ int main()
     int tilesColumn = 8;
     terrain.load("/Users/Shared/merda/PleaseTanks/images/grassTiled.png", sf::Vector2u(windowWidth/tilesRow, windowWidth/tilesColumn), terrainMap, tilesRow, tilesColumn);
     
-    new BasicMine({400.f, 400.f}, {40.f, 40.f});
-    new Tree({100.f, 100.f}, {350.f, 250.f});
-    new Tree({120.f, 120.f}, {450.f, 240.f});
-    new Tree({130.f, 130.f}, {600.f, 260.f});
+//    new BasicMine({400.f, 400.f}, {40.f, 40.f});
+    new Tree({100.f, 100.f}, {350.f, 200.f});
+//    new Tree({120.f, 120.f}, {450.f, 240.f});
+//    new Tree({130.f, 130.f}, {600.f, 450.f});
     
     while (window.isOpen()) {
         sf::Event event;
@@ -79,10 +80,16 @@ int main()
         {
             if (event.type == sf::Event::MouseButtonPressed){
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    std::cout << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
+                    std::cout << "click: " << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
-                    tank.contains(point);
-                    tank2.contains(point);
+//                    tank.contains(point);
+//                    tank2.contains(point);
+                    std::vector<sf::Vector2f> pointsPath = Utils::getPathPoints(&tank.hull, point);
+                    std::cout << "path: \n";
+                    for (auto& point: pointsPath) {
+                        std::cout << point.x << ", " << point.y << std::endl;
+                    }
+                    tank.hull.destinations = pointsPath;
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -145,7 +152,6 @@ int main()
 
         if (forwardPressed){
             tank.moveFront();
-//            tank2.rotateGunClock();
         }
         if (backwardPressed)
             tank.moveBack();
@@ -159,7 +165,7 @@ int main()
             tank.rotateGunAntiClock();
         
         tank.update();
-        tank2.update();
+//        tank2.update();
         
         Drawable::updateDrawables();
         AutoSprite::updateAutoSprites();

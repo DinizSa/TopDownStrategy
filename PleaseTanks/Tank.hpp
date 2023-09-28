@@ -17,7 +17,7 @@ class Tank {
     sf::Vector2f position;
     sf::Vector2f size;
     float speed, angularSpeed;
-    Hull hull;
+//    Hull hull;
     Gun gun;
     Track trackA, trackB;
 
@@ -29,6 +29,7 @@ public:
     void rotateAntiClock();
     void rotateGunClock();
     void rotateGunAntiClock();
+    Hull hull;
     
     bool contains(sf::Vector2f point) const;
     

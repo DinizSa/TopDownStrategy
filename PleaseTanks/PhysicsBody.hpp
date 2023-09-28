@@ -14,20 +14,18 @@
 #include "Subject.hpp"
 
 class PhysicsBody {
-private:
+    static int nextMaskId;
     static std::vector<PhysicsBody*> updatables;
 protected:
     static void addUpdatable(PhysicsBody* physicBody);
     static void removeUpdatable(PhysicsBody* physicBody);
     bool expired = false;
 public:
+    static std::vector<PhysicsBody*> allBodies;
     static void updatePhysicsBodys();
     bool isExpired();
     
 private:
-    static std::vector<PhysicsBody*> allBodies;
-    static int nextMaskId;
-    
     bool hasMovementCollisions;
     sf::Vector2f velocity;
     
@@ -38,7 +36,6 @@ protected:
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
     Subject<float> traveledDistance;
-    int collisionMaskId;
 
 private:
     bool collidedMovement() const;
@@ -50,9 +47,11 @@ protected:
     float getTraveledDistance();
 
 public:
+    std::vector<sf::Vector2f> destinations;
+    int collisionMaskId;
     PhysicsBody(sf::Vector2f size);
     virtual ~PhysicsBody();
-    virtual void update(){};
+    virtual void update();
     
     virtual void receiveDamage(int damage){};
     
@@ -60,6 +59,7 @@ public:
     void setCollisionMaskId(int id);
     
     float getRotation() const;
+    const sf::FloatRect& getBody() const;
     sf::Vector2f getCenter() const;
     void setSize(sf::Vector2f size);
     void setLocalRotationCenter(sf::Vector2f localRotationCenter);

@@ -5,6 +5,8 @@
 //  Created by Diniz Sá on 17/09/2023.
 //
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include "PhysicsBody.hpp"
 #pragma once
 
 class Utils {
@@ -16,4 +18,5 @@ public:
     static sf::Vector2f getVector(float rotationDegrees, float hypotenusa);
     static float getDegrees(float radians);
     static float getRadians(float degrees);
+    static std::vector<sf::Vector2f> getPathPoints(PhysicsBody* walker, sf::Vector2f destination);
 };

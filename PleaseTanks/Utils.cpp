@@ -34,3 +34,180 @@ float Utils::getDegrees(float radians) {
 float Utils::getRadians(float degrees) {
     return degrees * M_PI / 180;
 }
+
+struct Node {
+    sf::Vector2f center;
+    float radius;
+    float aCost, bCost, abCost;
+    sf::Vector2f parent;
+    bool isOriginal = false;
+};
+
+sf::Vector2f getCenter(sf::FloatRect rect) {
+    return rect.getPosition() + rect.getSize()/2.f;
+}
+
+std::vector<Node> removeNode(std::vector<Node>& nodes, Node node) {
+    for (auto it = nodes.begin(); it != nodes.end();) {
+        bool isSame = Utils::getDistance((*it).center, node.center) < 0.01f;
+        if (isSame) {
+            nodes.erase(it);
+        } else {
+            it++;
+        }
+    }
+    return nodes;
+}
+bool contains(std::vector<Node>& nodes, Node node) {
+    for (auto& n : nodes) {
+        bool isSame = Utils::getDistance(n.center, node.center) < 0.01f;
+        if (isSame)
+            return true;
+    }
+    return false;
+}
+Node* getNode(std::vector<Node>& nodes, Node node) {
+    for (auto& n : nodes) {
+        bool isSame = Utils::getDistance(n.center, node.center) < 0.01f;
+        if (isSame)
+            return &n;
+    }
+    return nullptr;
+}
+std::vector<sf::Vector2f> getPoints(std::vector<Node>& nodes, Node finalNode, sf::Vector2f destination) {
+    std::vector<sf::Vector2f> points;
+    points.push_back(destination);
+    points.push_back(finalNode.center);
+    Node node = finalNode;
+    while (!node.isOriginal) {
+        sf::Vector2f parent = node.parent;
+        for (auto& n : nodes) {
+            bool isSame = Utils::getDistance(n.center, parent) < 0.01f;
+            if (isSame) {
+                points.emplace_back(n.center);
+                node = n;
+                break;
+            }
+        }
+    }
+    points.pop_back();
+    
+    std::vector<sf::Vector2f> medianPoints;
+    medianPoints.push_back(destination);
+    for (int i = 0; i < points.size() - 1; i++) {
+        sf::Vector2f medianPoint = (points[i] + points[i+1])/2.f;
+        medianPoints.push_back(medianPoint);
+    }
+    return medianPoints;
+}
+Node getLowerCostNode(const std::vector<Node>& nodes) {
+    Node cheaper = nodes[0];
+    for (auto& node: nodes) {
+        if (node.abCost < cheaper.abCost) {
+            cheaper = node;
+        } else if (node.abCost == cheaper.abCost) {
+            if (node.bCost < cheaper.bCost) {
+                cheaper = node;
+            }
+        }
+    }
+    return cheaper;
+}
+
+std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f destination) {
+    std::vector<sf::Vector2f> points;
+
+    std::vector<Node> open;
+    sf::FloatRect walkerRect = walker->getBody();
+    sf::Vector2f walkerSize = walkerRect.getSize();
+    sf::Vector2f walkerPosition = getCenter(walkerRect);
+    Node firstNode;
+    firstNode.center = walkerPosition;
+    firstNode.radius = getLength(walkerSize)/2.f;
+    firstNode.aCost = 0.f;
+    firstNode.bCost = getDistance(walkerPosition, destination);
+    firstNode.abCost = firstNode.aCost + firstNode.bCost;
+    firstNode.isOriginal = true;
+    
+    open.push_back(firstNode);
+    std::vector<Node> closed;
+    float minimumDistance = getLength(walkerSize/1.f);
+    
+    auto getNeighbours = [&](Node& node){
+        std::vector<Node> neighbours;
+        neighbours.reserve(8);
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                if (x == 0 && y == 0)
+                    continue;
+                Node neightboor;
+                neightboor.radius = firstNode.radius;
+                float dx = walkerSize.x / 1.f;
+                float dy = walkerSize.y / 1.f;
+                neightboor.center = node.center + sf::Vector2f({x * dx, y * dy});
+                neightboor.aCost = getDistance(neightboor.center, node.center);
+                neightboor.bCost = getDistance(neightboor.center, destination);
+                neightboor.abCost = neightboor.aCost + neightboor.bCost;
+                
+//              outside window bounds
+                if (neightboor.center.x < 0.f || neightboor.center.x > 1200.f)
+                    continue;
+                if (neightboor.center.y < 0.f || neightboor.center.y > 800.f)
+                    continue;
+
+//              included in closed
+                if (contains(closed, neightboor))
+                    continue;
+                
+//              if collided with an existing body
+                bool collides = false;
+                for (auto& physicsBody : PhysicsBody::allBodies) {
+                    if (walker->collisionMaskId != 0 && physicsBody->collisionMaskId == walker->collisionMaskId)
+                        continue;
+                    auto& body = physicsBody->getBody();
+                    auto bodyCenter = getCenter(body);
+                    float distance = getDistance(bodyCenter, neightboor.center);
+                    float radiusOther = Utils::getLength(body.getSize()) / 2.f;
+                    if (distance < neightboor.radius + radiusOther) {
+                        collides = true;
+                        break;
+                    }
+                }
+                if (!collides) {
+                    neighbours.push_back(neightboor);
+                }
+            }
+        }
+        return neighbours;
+    };
+    
+    while (true) {
+        Node current = getLowerCostNode(open);
+        open = removeNode(open, current);
+        closed.push_back(current);
+        
+        float distance = getDistance(current.center, destination);
+        if (distance < minimumDistance) {
+            points.push_back(current.center);
+            points = getPoints(closed, current, destination);
+            return points;
+        }
+        
+        std::vector<Node> neighboors = getNeighbours(current);
+        for (auto& neighboor : neighboors) {
+            Node* exitingNode = getNode(open, neighboor);
+            if (exitingNode == nullptr || (neighboor.abCost < exitingNode->abCost)) {
+                neighboor.parent = current.center;
+                if (exitingNode == nullptr) {
+                    open.push_back(neighboor);
+                } else {
+                    *exitingNode = neighboor;
+                }
+            }
+            
+        }
+    }
+    
+    
+    return points;
+};

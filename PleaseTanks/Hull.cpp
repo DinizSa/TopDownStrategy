@@ -59,9 +59,9 @@ void Hull::update() {
             sf::Sound* sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
             if (sound != nullptr) {
                 sound->setVolume(30.f);
-            } else {
-                int a = 3;
             }
         }
     }
+    
+    applyVelocity();
 }
