@@ -83,8 +83,8 @@ void Tank::translate(float distance) {
 void Tank::update() {
     const sf::Vector2f& hullVelocity = hull.getVelocity();
     if (Utils::getLength(hullVelocity) > 0.01f) {
+        sf::Vector2f rotationOrigin = hull.getCenter();
         if (hull.applyVelocity()) {
-            sf::Vector2f rotationOrigin = hull.getCenter();
             gun.setVelocityAndRotateAroundOrigin(hullVelocity, rotationOrigin);
             trackA.setVelocityAndRotateAroundOrigin(hullVelocity, rotationOrigin);
             trackB.setVelocityAndRotateAroundOrigin(hullVelocity, rotationOrigin);

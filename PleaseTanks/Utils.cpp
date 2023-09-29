@@ -92,7 +92,7 @@ std::vector<sf::Vector2f> getPoints(const std::vector<Node>& nodes, const Node& 
     std::vector<sf::Vector2f> medianPointsRange;
     medianPointsRange.reserve(points.size());
     medianPointsRange.push_back(destination);
-    int delta = 10;
+    int delta = 2;
     for (int i = 0; i < points.size(); i++) {
         int counter = 0;
         sf::Vector2f sum;
@@ -151,10 +151,10 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
                     continue;
                 Node neightboor;
                 neightboor.radius = firstNode.radius;
-                float dx = walkerSize.x / 15.f;
-                float dy = walkerSize.y / 15.f;
+                float dx = walkerSize.x / 5.f;
+                float dy = walkerSize.y / 5.f;
                 neightboor.center = node.center + sf::Vector2f({x * dx, y * dy});
-                neightboor.aCost = getDistance(neightboor.center, firstNode.center);
+                neightboor.aCost = getDistance(neightboor.center, node.center) + node.aCost;
                 neightboor.bCost = getDistance(neightboor.center, destination);
                 neightboor.abCost = neightboor.aCost + neightboor.bCost;
                 

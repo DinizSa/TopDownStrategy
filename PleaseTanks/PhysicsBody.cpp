@@ -46,8 +46,12 @@ int PhysicsBody::getAndIncrementMaskId() {
 }
 
 void PhysicsBody::update() {
+    setVelocityFromDestinations();
+}
+
+void PhysicsBody::setVelocityFromDestinations() {
     if (destinations.size() == 0)
-        return;
+        return ;
 
     sf::Vector2f destination = destinations[destinations.size() - 1];
     float currentVelocity = Utils::getLength(velocity);

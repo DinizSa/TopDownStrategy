@@ -69,10 +69,10 @@ int main()
     int tilesColumn = 8;
     terrain.load("/Users/Shared/merda/PleaseTanks/images/grassTiled.png", sf::Vector2u(windowWidth/tilesRow, windowWidth/tilesColumn), terrainMap, tilesRow, tilesColumn);
     
-    new BasicMine({400.f, 400.f}, {40.f, 40.f});
-    new Tree({100.f, 100.f}, {350.f, 200.f});
-    new Tree({120.f, 120.f}, {450.f, 240.f});
-    new Tree({130.f, 130.f}, {600.f, 400.f});
+    new BasicMine({200.f, 600.f}, {40.f, 40.f});
+    new Tree({120.f, 120.f}, {300.f, 350.f});
+    new Tree({120.f, 120.f}, {450.f, 300.f});
+    new Tree({130.f, 130.f}, {600.f, 350.f});
     
     while (window.isOpen()) {
         sf::Event event;

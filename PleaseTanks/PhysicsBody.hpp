@@ -78,6 +78,7 @@ public:
     bool rotate(float deltaAngle);
     bool rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
     void travelToDestination(sf::Vector2f destination);
+    void setVelocityFromDestinations();
     
     bool instersects(sf::Vector2f point) const;
     bool instersects(const PhysicsBody& other) const;
