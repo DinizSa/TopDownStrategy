@@ -52,7 +52,7 @@ protected:
 public:
     PhysicsBody(sf::Vector2f size);
     virtual ~PhysicsBody();
-    virtual void update();
+    virtual void update(){};
     
     virtual void receiveDamage(int damage){};
     
@@ -77,7 +77,7 @@ public:
     bool rotate(float deltaAngle);
     bool rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
     void travelToDestination(sf::Vector2f destination);
-    void setPathVelocity();
+    void setPathVelocity(float speed);
     
     bool instersects(sf::Vector2f point) const;
     bool instersects(const PhysicsBody& other) const;

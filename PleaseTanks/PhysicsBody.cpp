@@ -45,11 +45,7 @@ int PhysicsBody::getAndIncrementMaskId() {
     return PhysicsBody::nextMaskId++;
 }
 
-void PhysicsBody::update() {
-    setPathVelocity();
-}
-
-void PhysicsBody::setPathVelocity() {
+void PhysicsBody::setPathVelocity(float speed) {
     if (path.size() == 0)
         return ;
 
@@ -59,10 +55,10 @@ void PhysicsBody::setPathVelocity() {
         sf::Vector2f deltaPos = destination - centerWorld();
         
         sf::Vector2f unitVelocity = deltaPos / sqrt((deltaPos.x * deltaPos.x) + (deltaPos.y * deltaPos.y));
-        sf::Vector2f vel = unitVelocity * 1.f;
+        sf::Vector2f vel = unitVelocity * speed;
         setVelocityAndRotate(vel);
     }
-    if (Utils::getDistance(centerWorld(), destination) < 2.f) {
+    if (Utils::getDistance(centerWorld(), destination) < (speed/2.f)) {
         path.pop_back();
         
         velocity = sf::Vector2f({0.f, 0.f});

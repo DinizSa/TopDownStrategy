@@ -16,9 +16,11 @@ private:
     AutoSprite* exhaust;
     Subject<sf::Vector2f> exhaustPosition;
     int movingCounter;
+    float speed;
 public:
     Hull(sf::Vector2f size, int spriteIndex);
     ~Hull();
     void receiveDamage(int damage) override;
     void update() override;
+    void setSpeed(float newSpeed);
 };
