@@ -46,14 +46,14 @@ int PhysicsBody::getAndIncrementMaskId() {
 }
 
 void PhysicsBody::update() {
-    setVelocityFromDestinations();
+    setPathVelocity();
 }
 
-void PhysicsBody::setVelocityFromDestinations() {
-    if (destinations.size() == 0)
+void PhysicsBody::setPathVelocity() {
+    if (path.size() == 0)
         return ;
 
-    sf::Vector2f destination = destinations[destinations.size() - 1];
+    sf::Vector2f destination = path[path.size() - 1];
     float currentVelocity = Utils::getLength(velocity);
     if (currentVelocity < 0.01f) {
         sf::Vector2f deltaPos = destination - centerWorld();
@@ -63,7 +63,7 @@ void PhysicsBody::setVelocityFromDestinations() {
         setVelocityAndRotate(vel);
     }
     if (Utils::getDistance(centerWorld(), destination) < 2.f) {
-        destinations.pop_back();
+        path.pop_back();
         
         velocity = sf::Vector2f({0.f, 0.f});
     }
@@ -96,8 +96,8 @@ void PhysicsBody::setSize(sf::Vector2f size) {
     maxRadius = Utils::getLength(body.width/2.f, body.height/2.f);
 }
 void PhysicsBody::travelToDestination(sf::Vector2f destination) {
-    std::vector<sf::Vector2f> pointsPath = Utils::getPathPoints(this, destination);
-    setPath(pointsPath);
+    path = Utils::getPathPoints(this, destination);
+    velocity = sf::Vector2f({0.f, 0.f});
 }
 int PhysicsBody::getCollisionMaskId() const {
     return collisionMaskId;
@@ -107,9 +107,6 @@ sf::Vector2f PhysicsBody::getCenter() const {
 }
 sf::Vector2f PhysicsBody::getSize() const {
     return {body.width, body.height};
-}
-void PhysicsBody::setPath(std::vector<sf::Vector2f> pathPoints) {
-    destinations = pathPoints;
 }
 float PhysicsBody::getRadius() const {
     return maxRadius;

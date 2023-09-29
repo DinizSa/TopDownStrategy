@@ -37,7 +37,7 @@ protected:
     float maxRadius;
     Subject<float> traveledDistance;
     
-    std::vector<sf::Vector2f> destinations;
+    std::vector<sf::Vector2f> path;
     int collisionMaskId;
 
 private:
@@ -50,7 +50,6 @@ protected:
     float getTraveledDistance();
 
 public:
-    void setPath(std::vector<sf::Vector2f> pathPoints);
     PhysicsBody(sf::Vector2f size);
     virtual ~PhysicsBody();
     virtual void update();
@@ -78,7 +77,7 @@ public:
     bool rotate(float deltaAngle);
     bool rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
     void travelToDestination(sf::Vector2f destination);
-    void setVelocityFromDestinations();
+    void setPathVelocity();
     
     bool instersects(sf::Vector2f point) const;
     bool instersects(const PhysicsBody& other) const;
