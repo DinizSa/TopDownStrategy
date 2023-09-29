@@ -70,7 +70,7 @@ void PhysicsBody::setCollisionMaskId(int groupId) {
 void PhysicsBody::removeCollider() {
     allBodies.erase(std::remove(allBodies.begin(), allBodies.end(), this), allBodies.end());
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}) {
+PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f) {
     traveledDistance = 0.f;
     setSize(size);
     allBodies.push_back(this);
@@ -135,7 +135,7 @@ void PhysicsBody::setVelocityAndRotateAroundOrigin(sf::Vector2f v, sf::Vector2f 
     
     float velocityAngle = Utils::getAngle(v);
     float currentRot = rotation();
-    float angle = imagesInitialAngle + velocityAngle - currentRot;
+    float angle = imagesInitialAngle + velocityAngle - (currentRot - localRotation);
     rotateAroundOrigin(angle, origin);
 
     setVelocity(v);
@@ -174,7 +174,11 @@ bool PhysicsBody::rotate(float deltaAngle) {
     sf::Vector2f rotationOrigin = t.transformPoint(localRotationCenter.x, localRotationCenter.y);
     sf::Vector2f rotationCenter = centerWorld() + rotationOrigin;
     
-    return rotateAroundOrigin(deltaAngle, rotationCenter);
+    bool success = rotateAroundOrigin(deltaAngle, rotationCenter);
+    if (success) {
+        localRotation += deltaAngle;
+    }
+    return success;
 }
 
 bool PhysicsBody::rotateAroundOrigin(float deltaAngle, sf::Vector2f origin) {

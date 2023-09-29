@@ -32,6 +32,7 @@ private:
 protected:
     sf::FloatRect body;
     Subject<float> rotation;
+    float localRotation;
     sf::Vector2f localRotationCenter;
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
