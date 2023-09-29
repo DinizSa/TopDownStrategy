@@ -137,5 +137,5 @@ bool Tank::contains(sf::Vector2f point) const {
     if (hitTrackB)
         std::cout << "X track B" << std::endl;
     
-    return true;
+    return hitHull || hitGun || hitTrackA || hitTrackB;
 }

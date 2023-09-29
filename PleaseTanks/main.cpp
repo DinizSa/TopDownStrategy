@@ -53,6 +53,8 @@ int main()
 //    sf::Vector2f velocity = {0.5f, 0.2f};
 //    tank2.setVelocity(velocity);
     
+    Tank* selectedTank = &tank;
+    
     const int terrainMap[] =
     {
         0, 0, 0, 0, 0, 0, 0, 0,
@@ -82,14 +84,22 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "click: " << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
-//                    tank.contains(point);
+                    if (tank.contains(point)) {
+                        std::cout << "selected tank 1 \n";
+                        selectedTank = &tank;
+                    } else if (tank2.contains(point)) {
+                        std::cout << "selected tank 2 \n";
+                        selectedTank = &tank2;
+                    } else {
+                        std::cout << "travel \n";
+                        selectedTank->travelToDestination(point);
+                    }
 //                    tank2.contains(point);
 //                    std::vector<sf::Vector2f> pointsPath = Utils::getPathPoints(&tank.hull, point);
 //                    std::cout << "path: \n";
 //                    for (auto& point: pointsPath) {
 //                        std::cout << point.x << ", " << point.y << std::endl;
 //                    }
-                    tank.travelToDestination(point);
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -118,7 +128,7 @@ int main()
                         turnAnticlockGunPressed = true;
                         break;
                     case sf::Keyboard::Scan::Space:
-                        tank.shot();
+                        selectedTank->shot();
                         break;
                     default:
                         break;
@@ -154,18 +164,18 @@ int main()
             tank.moveFront();
         }
         if (backwardPressed)
-            tank.moveBack();
+            selectedTank->moveBack();
         if (turnClockPressed)
-            tank.rotateClock();
+            selectedTank->rotateClock();
         if (turnAnticlockPressed)
-            tank.rotateAntiClock();
+            selectedTank->rotateAntiClock();
         if (turnClockGunPressed)
-            tank.rotateGunClock();
+            selectedTank->rotateGunClock();
         if (turnAnticlockGunPressed)
-            tank.rotateGunAntiClock();
+            selectedTank->rotateGunAntiClock();
         
         tank.update();
-//        tank2.update();
+        tank2.update();
         
         Drawable::updateDrawables();
         AutoSprite::updateAutoSprites();
