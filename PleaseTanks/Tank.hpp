@@ -17,7 +17,7 @@ class Tank {
 private:
     sf::Vector2f position;
     sf::Vector2f size;
-    float speed, angularSpeed;
+    float angularSpeed;
     Gun gun;
     Track trackA, trackB;
     Hull hull;

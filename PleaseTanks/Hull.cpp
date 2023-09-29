@@ -11,7 +11,7 @@
 Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x * (6.f/10.f), imageSize.y}),
     Drawable(imageSize, 2.f, SpriteNames::hulls, spriteIndex),
-    Health(200), movingCounter(0), speed(5.f)
+    Health(200), movingCounter(0), speed(2.f)
 {
     setMovementCollisions(true);
     
@@ -67,4 +67,8 @@ void Hull::update() {
 }
 void Hull::setSpeed(float newSpeed) {
     speed = newSpeed;
+}
+
+float Hull::getSpeed() const {
+    return speed;
 }

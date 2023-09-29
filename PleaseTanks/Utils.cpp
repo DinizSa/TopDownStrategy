@@ -91,12 +91,12 @@ std::vector<sf::Vector2f> getPoints(const std::vector<Node>& nodes, const Node& 
     
     std::vector<sf::Vector2f> medianPointsRange;
     medianPointsRange.reserve(points.size());
-    medianPointsRange.push_back(destination);
-    int delta = 2;
+//    medianPointsRange.push_back(destination);
+    int deltaNeighbours = 2;
     for (int i = 0; i < points.size(); i++) {
         int counter = 0;
         sf::Vector2f sum;
-        for (int j = -delta; j <= delta; j++) {
+        for (int j = -deltaNeighbours; j <= deltaNeighbours; j++) {
             int index = i + j;
             if (index < 0 || index > points.size() - 1)
                 continue;
@@ -143,6 +143,10 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
     float minimumDistance = firstNode.radius / 2.f;
     
     auto getNeighbours = [&](Node& node){
+        float coefDistanceNeighboor = 0.2f;
+        float dx = walkerSize.x * coefDistanceNeighboor;
+        float dy = walkerSize.y * coefDistanceNeighboor;
+        
         std::vector<Node> neighbours;
         neighbours.reserve(8);
         for (int x = -1; x < 2; x++) {
@@ -151,12 +155,7 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
                     continue;
                 Node neightboor;
                 neightboor.radius = firstNode.radius;
-                float dx = walkerSize.x / 5.f;
-                float dy = walkerSize.y / 5.f;
                 neightboor.center = node.center + sf::Vector2f({x * dx, y * dy});
-                neightboor.aCost = getDistance(neightboor.center, node.center) + node.aCost;
-                neightboor.bCost = getDistance(neightboor.center, destination);
-                neightboor.abCost = neightboor.aCost + neightboor.bCost;
                 
 //              outside window bounds
                 if (neightboor.center.x < 0.f || neightboor.center.x > 1200.f)
@@ -185,6 +184,9 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
                     }
                 }
                 if (!collides) {
+                    neightboor.aCost = getDistance(neightboor.center, node.center) + node.aCost;
+                    neightboor.bCost = getDistance(neightboor.center, destination);
+                    neightboor.abCost = neightboor.aCost + neightboor.bCost;
                     neighbours.push_back(neightboor);
                 }
             }
@@ -218,7 +220,6 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
             
         }
     }
-    
     
     return points;
 };

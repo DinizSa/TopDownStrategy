@@ -23,4 +23,5 @@ public:
     void receiveDamage(int damage) override;
     void update() override;
     void setSpeed(float newSpeed);
+    float getSpeed() const;
 };
