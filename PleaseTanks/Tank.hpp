@@ -14,12 +14,18 @@
 #include "Track.hpp"
 
 class Tank {
+private:
     sf::Vector2f position;
     sf::Vector2f size;
     float speed, angularSpeed;
-//    Hull hull;
     Gun gun;
     Track trackA, trackB;
+    Hull hull;
+    
+private:
+    void translate(float delta);
+    void translate(sf::Vector2f delta);
+    void rotate(float degrees);
 
 public:
     Tank(sf::Vector2f size, sf::Vector2f position);
@@ -29,15 +35,11 @@ public:
     void rotateAntiClock();
     void rotateGunClock();
     void rotateGunAntiClock();
-    Hull hull;
     
     bool contains(sf::Vector2f point) const;
     
     void update();
     void setVelocity(sf::Vector2f velocity);
     void shot();
-private:
-    void translate(float delta);
-    void translate(sf::Vector2f delta);
-    void rotate(float degrees);
+    void travelToDestination(sf::Vector2f& destination);
 };

@@ -43,11 +43,7 @@ struct Node {
     bool isOriginal = false;
 };
 
-sf::Vector2f getCenter(sf::FloatRect rect) {
-    return rect.getPosition() + rect.getSize()/2.f;
-}
-
-std::vector<Node> removeNode(std::vector<Node>& nodes, Node node) {
+std::vector<Node> removeNode(std::vector<Node>& nodes, const Node& node) {
     for (auto it = nodes.begin(); it != nodes.end();) {
         bool isSame = Utils::getDistance((*it).center, node.center) < 0.01f;
         if (isSame) {
@@ -58,7 +54,7 @@ std::vector<Node> removeNode(std::vector<Node>& nodes, Node node) {
     }
     return nodes;
 }
-bool contains(std::vector<Node>& nodes, Node node) {
+bool contains(const std::vector<Node>& nodes, const Node& node) {
     for (auto& n : nodes) {
         bool isSame = Utils::getDistance(n.center, node.center) < 0.01f;
         if (isSame)
@@ -66,7 +62,7 @@ bool contains(std::vector<Node>& nodes, Node node) {
     }
     return false;
 }
-Node* getNode(std::vector<Node>& nodes, Node node) {
+Node* getNode(std::vector<Node>& nodes, const Node& node) {
     for (auto& n : nodes) {
         bool isSame = Utils::getDistance(n.center, node.center) < 0.01f;
         if (isSame)
@@ -74,8 +70,9 @@ Node* getNode(std::vector<Node>& nodes, Node node) {
     }
     return nullptr;
 }
-std::vector<sf::Vector2f> getPoints(std::vector<Node>& nodes, Node finalNode, const sf::Vector2f& destination) {
+std::vector<sf::Vector2f> getPoints(const std::vector<Node>& nodes, const Node& finalNode, const sf::Vector2f& destination) {
     std::vector<sf::Vector2f> points;
+    points.reserve(nodes.size() + 2);
     points.push_back(destination);
     points.push_back(finalNode.center);
     Node node = finalNode;
@@ -92,15 +89,10 @@ std::vector<sf::Vector2f> getPoints(std::vector<Node>& nodes, Node finalNode, co
     }
     points.pop_back();
     
-//    std::vector<sf::Vector2f> medianPoints;
-//    medianPoints.push_back(destination);
-//    for (int i = 0; i < points.size() - 1; i++) {
-//        sf::Vector2f medianPoint = (points[i] + points[i+1])/2.f;
-//        medianPoints.push_back(medianPoint);
-//    }
     std::vector<sf::Vector2f> medianPointsRange;
+    medianPointsRange.reserve(points.size());
     medianPointsRange.push_back(destination);
-    int delta = 3;
+    int delta = 10;
     for (int i = 0; i < points.size(); i++) {
         int counter = 0;
         sf::Vector2f sum;
@@ -132,6 +124,7 @@ Node getLowerCostNode(const std::vector<Node>& nodes) {
 
 std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f destination) {
     std::vector<sf::Vector2f> points;
+    points.reserve(100);
 
     std::vector<Node> open;
     int walkerCollisionMaskId = walker->getCollisionMaskId();
@@ -146,6 +139,7 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
     
     open.push_back(firstNode);
     std::vector<Node> closed;
+    closed.reserve(100);
     float minimumDistance = firstNode.radius / 2.f;
     
     auto getNeighbours = [&](Node& node){
@@ -157,10 +151,10 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
                     continue;
                 Node neightboor;
                 neightboor.radius = firstNode.radius;
-                float dx = walkerSize.x / 5.f;
-                float dy = walkerSize.y / 5.f;
+                float dx = walkerSize.x / 15.f;
+                float dy = walkerSize.y / 15.f;
                 neightboor.center = node.center + sf::Vector2f({x * dx, y * dy});
-                neightboor.aCost = getDistance(neightboor.center, node.center);
+                neightboor.aCost = getDistance(neightboor.center, firstNode.center);
                 neightboor.bCost = getDistance(neightboor.center, destination);
                 neightboor.abCost = neightboor.aCost + neightboor.bCost;
                 

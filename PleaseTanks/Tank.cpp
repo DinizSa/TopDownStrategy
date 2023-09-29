@@ -81,8 +81,14 @@ void Tank::translate(float distance) {
     }
 }
 void Tank::update() {
-    if (Utils::getLength(hull.getVelocity()) > 0.f) {
+    const sf::Vector2f& hullVelocity = hull.getVelocity();
+    if (Utils::getLength(hullVelocity) > 0.01f) {
         if (hull.applyVelocity()) {
+            sf::Vector2f rotationOrigin = hull.getCenter();
+            gun.setVelocityAndRotateAroundOrigin(hullVelocity, rotationOrigin);
+            trackA.setVelocityAndRotateAroundOrigin(hullVelocity, rotationOrigin);
+            trackB.setVelocityAndRotateAroundOrigin(hullVelocity, rotationOrigin);
+
             gun.applyVelocity();
             trackA.applyVelocity();
             trackB.applyVelocity();
@@ -111,6 +117,12 @@ void Tank::shot() {
     gunAlignedWithHull ? moveBack() : moveFront();
     gun.shot();
 }
+
+void Tank::travelToDestination(sf::Vector2f& destination) {
+    hull.travelToDestination(destination);
+}
+
+
 bool Tank::contains(sf::Vector2f point) const {
     bool hitHull = hull.instersects(point);
     if (hitHull)

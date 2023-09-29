@@ -49,7 +49,7 @@ void PhysicsBody::update() {
     if (destinations.size() == 0)
         return;
 
-    sf::Vector2f destination = destinations[destinations.size()-1];
+    sf::Vector2f destination = destinations[destinations.size() - 1];
     float currentVelocity = Utils::getLength(velocity);
     if (currentVelocity < 0.01f) {
         sf::Vector2f deltaPos = destination - centerWorld();
@@ -58,8 +58,7 @@ void PhysicsBody::update() {
         sf::Vector2f vel = unitVelocity * 1.f;
         setVelocityAndRotate(vel);
     }
-    if (Utils::getDistance(centerWorld(), destination) < 5.f) {
-//        std::cout << "-> " << centerWorld().x << ", " << centerWorld().y << std::endl;
+    if (Utils::getDistance(centerWorld(), destination) < 2.f) {
         destinations.pop_back();
         
         velocity = sf::Vector2f({0.f, 0.f});
@@ -91,6 +90,10 @@ void PhysicsBody::setSize(sf::Vector2f size) {
     body.width = size.x;
     body.height = size.y;
     maxRadius = Utils::getLength(body.width/2.f, body.height/2.f);
+}
+void PhysicsBody::travelToDestination(sf::Vector2f destination) {
+    std::vector<sf::Vector2f> pointsPath = Utils::getPathPoints(this, destination);
+    setPath(pointsPath);
 }
 int PhysicsBody::getCollisionMaskId() const {
     return collisionMaskId;
@@ -124,6 +127,19 @@ void PhysicsBody::setVelocityAndRotate(sf::Vector2f v) {
     float currentRot = rotation();
     float angle = imagesInitialAngle + velocityAngle - currentRot;
     rotate(angle);
+
+    setVelocity(v);
+}
+void PhysicsBody::setVelocityAndRotateAroundOrigin(sf::Vector2f v, sf::Vector2f origin) {
+    if (v == velocity)
+        return;
+    
+    float imagesInitialAngle = 90.f;
+    
+    float velocityAngle = Utils::getAngle(v);
+    float currentRot = rotation();
+    float angle = imagesInitialAngle + velocityAngle - currentRot;
+    rotateAroundOrigin(angle, origin);
 
     setVelocity(v);
 }

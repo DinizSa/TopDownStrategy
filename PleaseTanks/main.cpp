@@ -84,12 +84,12 @@ int main()
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
 //                    tank.contains(point);
 //                    tank2.contains(point);
-                    std::vector<sf::Vector2f> pointsPath = Utils::getPathPoints(&tank.hull, point);
-                    std::cout << "path: \n";
-                    for (auto& point: pointsPath) {
-                        std::cout << point.x << ", " << point.y << std::endl;
-                    }
-                    tank.hull.setPath(pointsPath);
+//                    std::vector<sf::Vector2f> pointsPath = Utils::getPathPoints(&tank.hull, point);
+//                    std::cout << "path: \n";
+//                    for (auto& point: pointsPath) {
+//                        std::cout << point.x << ", " << point.y << std::endl;
+//                    }
+                    tank.travelToDestination(point);
                 }
             }
             if (event.type == sf::Event::Closed)

@@ -71,11 +71,13 @@ public:
 
     void setVelocity(sf::Vector2f velocity);
     void setVelocityAndRotate(sf::Vector2f velocity);
+    void setVelocityAndRotateAroundOrigin(sf::Vector2f v, sf::Vector2f origin);
     sf::Vector2f getVelocity();
     bool applyVelocity();
     bool translate(sf::Vector2f delta, bool isTravel = true);
     bool rotate(float deltaAngle);
     bool rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
+    void travelToDestination(sf::Vector2f destination);
     
     bool instersects(sf::Vector2f point) const;
     bool instersects(const PhysicsBody& other) const;
