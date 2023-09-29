@@ -92,17 +92,28 @@ void PhysicsBody::setSize(sf::Vector2f size) {
     body.height = size.y;
     maxRadius = Utils::getLength(body.width/2.f, body.height/2.f);
 }
-
+int PhysicsBody::getCollisionMaskId() const {
+    return collisionMaskId;
+}
 sf::Vector2f PhysicsBody::getCenter() const {
     return centerWorld();
+}
+sf::Vector2f PhysicsBody::getSize() const {
+    return {body.width, body.height};
+}
+void PhysicsBody::setPath(std::vector<sf::Vector2f> pathPoints) {
+    destinations = pathPoints;
+}
+float PhysicsBody::getRadius() const {
+    return maxRadius;
+}
+bool PhysicsBody::getMovementCollisions() const {
+    return hasMovementCollisions;
 }
 float PhysicsBody::getRotation() const {
     return rotation();
 }
 
-const sf::FloatRect& PhysicsBody::getBody() const {
-    return body;
-}
 void PhysicsBody::setVelocity(sf::Vector2f v) {
     velocity = v;
 }

@@ -74,7 +74,7 @@ Node* getNode(std::vector<Node>& nodes, Node node) {
     }
     return nullptr;
 }
-std::vector<sf::Vector2f> getPoints(std::vector<Node>& nodes, Node finalNode, sf::Vector2f destination) {
+std::vector<sf::Vector2f> getPoints(std::vector<Node>& nodes, Node finalNode, const sf::Vector2f& destination) {
     std::vector<sf::Vector2f> points;
     points.push_back(destination);
     points.push_back(finalNode.center);
@@ -92,13 +92,29 @@ std::vector<sf::Vector2f> getPoints(std::vector<Node>& nodes, Node finalNode, sf
     }
     points.pop_back();
     
-    std::vector<sf::Vector2f> medianPoints;
-    medianPoints.push_back(destination);
-    for (int i = 0; i < points.size() - 1; i++) {
-        sf::Vector2f medianPoint = (points[i] + points[i+1])/2.f;
-        medianPoints.push_back(medianPoint);
+//    std::vector<sf::Vector2f> medianPoints;
+//    medianPoints.push_back(destination);
+//    for (int i = 0; i < points.size() - 1; i++) {
+//        sf::Vector2f medianPoint = (points[i] + points[i+1])/2.f;
+//        medianPoints.push_back(medianPoint);
+//    }
+    std::vector<sf::Vector2f> medianPointsRange;
+    medianPointsRange.push_back(destination);
+    int delta = 3;
+    for (int i = 0; i < points.size(); i++) {
+        int counter = 0;
+        sf::Vector2f sum;
+        for (int j = -delta; j <= delta; j++) {
+            int index = i + j;
+            if (index < 0 || index > points.size() - 1)
+                continue;
+            sum += points[index];
+            counter++;
+        }
+        sf::Vector2f medianPoint = sum / (float)counter;
+        medianPointsRange.push_back(medianPoint);
     }
-    return medianPoints;
+    return medianPointsRange;
 }
 Node getLowerCostNode(const std::vector<Node>& nodes) {
     Node cheaper = nodes[0];
@@ -118,20 +134,19 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
     std::vector<sf::Vector2f> points;
 
     std::vector<Node> open;
-    sf::FloatRect walkerRect = walker->getBody();
-    sf::Vector2f walkerSize = walkerRect.getSize();
-    sf::Vector2f walkerPosition = getCenter(walkerRect);
+    int walkerCollisionMaskId = walker->getCollisionMaskId();
+    sf::Vector2f walkerSize = walker->getSize();
     Node firstNode;
-    firstNode.center = walkerPosition;
-    firstNode.radius = getLength(walkerSize)/2.f;
+    firstNode.center = walker->getCenter();
+    firstNode.radius = walker->getRadius();
     firstNode.aCost = 0.f;
-    firstNode.bCost = getDistance(walkerPosition, destination);
+    firstNode.bCost = getDistance(firstNode.center, destination);
     firstNode.abCost = firstNode.aCost + firstNode.bCost;
     firstNode.isOriginal = true;
     
     open.push_back(firstNode);
     std::vector<Node> closed;
-    float minimumDistance = getLength(walkerSize/1.f);
+    float minimumDistance = firstNode.radius / 2.f;
     
     auto getNeighbours = [&](Node& node){
         std::vector<Node> neighbours;
@@ -142,8 +157,8 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
                     continue;
                 Node neightboor;
                 neightboor.radius = firstNode.radius;
-                float dx = walkerSize.x / 1.f;
-                float dy = walkerSize.y / 1.f;
+                float dx = walkerSize.x / 5.f;
+                float dy = walkerSize.y / 5.f;
                 neightboor.center = node.center + sf::Vector2f({x * dx, y * dy});
                 neightboor.aCost = getDistance(neightboor.center, node.center);
                 neightboor.bCost = getDistance(neightboor.center, destination);
@@ -161,13 +176,15 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
                 
 //              if collided with an existing body
                 bool collides = false;
-                for (auto& physicsBody : PhysicsBody::allBodies) {
-                    if (walker->collisionMaskId != 0 && physicsBody->collisionMaskId == walker->collisionMaskId)
+                for (auto physicsBody : PhysicsBody::allBodies) {
+                    int bodyCollisionMaskId = physicsBody->getCollisionMaskId();
+                    if (walkerCollisionMaskId != 0 && bodyCollisionMaskId == walkerCollisionMaskId)
                         continue;
-                    auto& body = physicsBody->getBody();
-                    auto bodyCenter = getCenter(body);
+                    if (!physicsBody->getMovementCollisions())
+                        continue;
+                    auto bodyCenter = physicsBody->getCenter();
                     float distance = getDistance(bodyCenter, neightboor.center);
-                    float radiusOther = Utils::getLength(body.getSize()) / 2.f;
+                    float radiusOther = physicsBody->getRadius();
                     if (distance < neightboor.radius + radiusOther) {
                         collides = true;
                         break;

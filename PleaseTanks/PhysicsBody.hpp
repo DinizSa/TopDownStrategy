@@ -36,6 +36,9 @@ protected:
     Subject<sf::Vector2f> centerWorld;
     float maxRadius;
     Subject<float> traveledDistance;
+    
+    std::vector<sf::Vector2f> destinations;
+    int collisionMaskId;
 
 private:
     bool collidedMovement() const;
@@ -47,8 +50,7 @@ protected:
     float getTraveledDistance();
 
 public:
-    std::vector<sf::Vector2f> destinations;
-    int collisionMaskId;
+    void setPath(std::vector<sf::Vector2f> pathPoints);
     PhysicsBody(sf::Vector2f size);
     virtual ~PhysicsBody();
     virtual void update();
@@ -59,8 +61,11 @@ public:
     void setCollisionMaskId(int id);
     
     float getRotation() const;
-    const sf::FloatRect& getBody() const;
+    bool getMovementCollisions() const;
+    int getCollisionMaskId() const;
     sf::Vector2f getCenter() const;
+    float getRadius() const;
+    sf::Vector2f getSize() const;
     void setSize(sf::Vector2f size);
     void setLocalRotationCenter(sf::Vector2f localRotationCenter);
 
