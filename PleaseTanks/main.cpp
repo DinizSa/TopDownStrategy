@@ -73,7 +73,7 @@ int main()
 //    sf::Vector2f velocity = {0.5f, 0.2f};
 //    tank2.setVelocity(velocity);
     
-    Tank* selectedTank = &tank;
+    PhysicsBody* selectedBody = &tank;
     
     const int terrainMap[] =
     {
@@ -105,22 +105,14 @@ int main()
                     std::cout << "click: " << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
                     if (tank.instersects(point)) {
-                        std::cout << "selected tank 1 \n" << tank;
-                        selectedTank = &tank;
+                        selectedBody = &tank;
                     } else if (tank2.instersects(point)) {
-                        std::cout << "selected tank 2 \n";
-                        selectedTank = &tank2;
+                        selectedBody = &tank2;
+                    }  else if (soldier.instersects(point)) {
+                        selectedBody = &soldier;
                     } else {
-                        std::cout << "travel \n";
-                        selectedTank->travelToDestination(point);
-//                        soldier.travelToDestination(point);
+                        selectedBody->travelToDestination(point);
                     }
-//                    tank2.contains(point);
-//                    std::vector<sf::Vector2f> pointsPath = Utils::getPathPoints(&tank.hull, point);
-//                    std::cout << "path: \n";
-//                    for (auto& point: pointsPath) {
-//                        std::cout << point.x << ", " << point.y << std::endl;
-//                    }
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -149,9 +141,9 @@ int main()
                         turnAnticlockGunPressed = true;
                         break;
                     case sf::Keyboard::Scan::Space:
-                        selectedTank->shot();
-                        break;
-                    default:
+                        Tank* tank = static_cast<Tank*>(selectedBody);
+                        if (tank != nullptr)
+                            tank->shot();
                         break;
                 }
             }
@@ -185,15 +177,22 @@ int main()
             tank.translateFront();
         }
         if (backwardPressed)
-            selectedTank->translateBack();
+            selectedBody->translateBack();
         if (turnClockPressed)
-            selectedTank->rotateClock();
+            selectedBody->rotateClock();
         if (turnAnticlockPressed)
-            selectedTank->rotateAntiClock();
-        if (turnClockGunPressed)
-            selectedTank->rotateGunClock();
-        if (turnAnticlockGunPressed)
-            selectedTank->rotateGunAntiClock();
+            selectedBody->rotateAntiClock();
+        if (turnClockGunPressed) {
+            auto tank = static_cast<Tank*>(selectedBody);
+            if (tank != nullptr) {
+                tank->rotateGunClock();
+            }
+        } if (turnAnticlockGunPressed) {
+            auto tank = static_cast<Tank*>(selectedBody);
+            if (tank != nullptr) {
+                tank->rotateGunAntiClock();
+            }
+        }
         
         tank.update();
         tank2.update();
