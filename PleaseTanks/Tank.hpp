@@ -13,38 +13,22 @@
 #include "Gun.hpp"
 #include "Track.hpp"
 
-class Tank {
+class Tank : public PhysicsBody {
 private:
     float angularSpeed;
     Gun gun;
     Track trackA, trackB;
     Hull hull;
-    
-private:
-    void translate(float delta);
-    void translate(sf::Vector2f delta);
-    void rotate(float degrees);
 
 public:
     Tank(sf::Vector2f size, sf::Vector2f position);
-    void moveFront();
-    void moveBack();
-    void rotateClock();
-    void rotateAntiClock();
     void rotateGunClock();
     void rotateGunAntiClock();
     
-    bool contains(sf::Vector2f point) const;
+    bool translate(float delta, bool isTravel = true) override;
+    bool translate(sf::Vector2f delta, bool isTravel = true) override;
+    bool rotate(float degrees) override;
     
-    void update();
-    void setVelocity(sf::Vector2f velocity);
+    void update() override;
     void shot();
-    void travelToDestination(sf::Vector2f& destination);
-    
-    friend std::ostream& operator<<(std::ostream& os, const Tank& tank) {
-        sf::Vector2f pos = tank.hull.getCenter();
-        sf::Vector2f size = tank.hull.getSize();
-        os << "[Tank] position: [" << pos.x << ", " << pos.y << "], size: [" << size.x << ", " << size.y << "], rotation: " << tank.hull.getRotation() << std::endl;
-        return os;
-    }
 };

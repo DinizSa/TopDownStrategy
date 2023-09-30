@@ -14,14 +14,13 @@
 
 class Gun : public PhysicsBody, public Drawable, private Health, private AudioPlayer {
 private:
-    float angularSpeed;
     int rotationCounter;
     void rotateGun(float speed);
 public:
     Gun(sf::Vector2f size, int spriteIndex);
     void shot();
-    void rotateClock();
-    void rotateAntiClock();
+    bool rotate(float deltaAngle) override;
+    bool rotate(float deltaAngle, sf::Vector2f origin) override;
     void receiveDamage(int damage) override;
     void update() override;
 };

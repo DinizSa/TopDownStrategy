@@ -44,8 +44,11 @@ std::vector<PhysicsBody*> PhysicsBody::allBodies;
 int PhysicsBody::getAndIncrementMaskId() {
     return PhysicsBody::nextMaskId++;
 }
-
-void PhysicsBody::setPathVelocity(float speed) {
+void PhysicsBody::update() {
+    processPath();
+    applyVelocity();
+}
+void PhysicsBody::processPath() {
     if (path.size() == 0)
         return ;
 
@@ -64,13 +67,25 @@ void PhysicsBody::setPathVelocity(float speed) {
         velocity = sf::Vector2f({0.f, 0.f});
     }
 }
+float PhysicsBody::getSpeed() const {
+    return speed;
+}
+void PhysicsBody::setSpeed(float newSpeed) {
+    speed = newSpeed;
+}
+float PhysicsBody::getAngularSpeed() const {
+    return speed;
+}
+void PhysicsBody::setAngularSpeed(float newAngularSpeed) {
+    angularSpeed = newAngularSpeed;
+}
 void PhysicsBody::setCollisionMaskId(int groupId) {
     collisionMaskId = groupId;
 }
 void PhysicsBody::removeCollider() {
     allBodies.erase(std::remove(allBodies.begin(), allBodies.end(), this), allBodies.end());
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f) {
+PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f), speed(0.f), angularSpeed(0.f) {
     traveledDistance = 0.f;
     setSize(size);
     allBodies.push_back(this);
@@ -136,7 +151,7 @@ void PhysicsBody::setVelocityAndRotateAroundOrigin(sf::Vector2f v, sf::Vector2f 
     float velocityAngle = Utils::getAngle(v);
     float currentRot = rotation();
     float angle = imagesInitialAngle + velocityAngle - (currentRot - localRotation);
-    rotateAroundOrigin(angle, origin);
+    rotate(angle, origin);
 
     setVelocity(v);
 }
@@ -145,10 +160,21 @@ sf::Vector2f PhysicsBody::getVelocity() {
 }
 bool PhysicsBody::applyVelocity() {
     float dV = Utils::getLength(velocity);
-    if (dV > 0.f) {
+    if (dV > 0.001f) {
         return translate(velocity, true);
     }
     return false;
+}
+bool PhysicsBody::translate(float delta, bool isTravel) {
+    
+    float rotation = getRotation();
+    float rotationDeg = rotation * M_PI / 180;
+    float dx = -delta * sin(rotationDeg);
+    float dy = delta * cos(rotationDeg);
+    
+    sf::Vector2f deltaPos = {dx, dy};
+    
+    return translate(deltaPos, isTravel);
 }
 bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
     if (isTravel) {
@@ -168,20 +194,32 @@ bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
     
     return true;
 }
+bool PhysicsBody::translateFront() {
+    return translate(-speed);
+}
+bool PhysicsBody::translateBack() {
+    return translate(speed);
+}
+bool PhysicsBody::rotateClock() {
+    return rotate(angularSpeed);
+}
+bool PhysicsBody::rotateAntiClock() {
+    return rotate(-angularSpeed);
+}
 bool PhysicsBody::rotate(float deltaAngle) {
     sf::Transform t;
     t.rotate(rotation());
     sf::Vector2f rotationOrigin = t.transformPoint(localRotationCenter.x, localRotationCenter.y);
     sf::Vector2f rotationCenter = centerWorld() + rotationOrigin;
     
-    bool success = rotateAroundOrigin(deltaAngle, rotationCenter);
+    bool success = rotate(deltaAngle, rotationCenter);
     if (success) {
         localRotation += deltaAngle;
     }
     return success;
 }
 
-bool PhysicsBody::rotateAroundOrigin(float deltaAngle, sf::Vector2f origin) {
+bool PhysicsBody::rotate(float deltaAngle, sf::Vector2f origin) {
     sf::Transform t0;
     t0.rotate(deltaAngle, origin);
     sf::Vector2f rotatedPosition = t0.transformPoint(centerWorld());

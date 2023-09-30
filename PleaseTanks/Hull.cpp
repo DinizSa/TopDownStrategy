@@ -13,8 +13,6 @@ Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     Drawable(imageSize, 2.f, SpriteNames::hulls, spriteIndex),
     Health(200), movingCounter(0), speed(2.f)
 {
-    setMovementCollisions(true);
-    
     setPosition(&centerWorld, &rotation);
     
     exhaust = new AutoSprite({{100.f, 100.f}, 2.f, {SpriteNames::effects, 0, 2, 90, true}});
@@ -52,8 +50,6 @@ void Hull::receiveDamage(int damage) {
 
 void Hull::update() {
     PhysicsBody::update();
-
-    setPathVelocity(speed);
     
     if (movingCounter > 0) {
         --movingCounter;

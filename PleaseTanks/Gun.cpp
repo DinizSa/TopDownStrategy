@@ -13,18 +13,13 @@
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),
     Drawable(imageSize, 3.f, SpriteNames::guns, spriteIndex),
-    Health(100), angularSpeed(2.f), rotationCounter(0)
+    Health(100), rotationCounter(0)
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
+    setAngularSpeed(2.f);
 }
-void Gun::rotateClock() {
-    rotateGun(angularSpeed);
-}
-void Gun::rotateAntiClock() {
-    rotateGun(-angularSpeed);
-}
-void Gun::rotateGun(float speed) {
+bool Gun::rotate(float deltaAngle) {
     if (rotationCounter == 0) {
         sf::Sound* soundMoving = AssetManager::get()->playSound(SoundNames::rotationGun, audioPlayerId);
         soundMoving->setLoop(true);
@@ -32,7 +27,10 @@ void Gun::rotateGun(float speed) {
     }
     rotationCounter = 2;
     
-    rotate(speed);
+    return PhysicsBody::rotate(deltaAngle);
+}
+bool Gun::rotate(float deltaAngle, sf::Vector2f origin) {
+    return PhysicsBody::rotate(deltaAngle, origin);
 }
 
 void Gun::shot() {

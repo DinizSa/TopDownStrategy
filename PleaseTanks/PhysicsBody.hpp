@@ -40,6 +40,7 @@ protected:
     
     std::vector<sf::Vector2f> path;
     int collisionMaskId;
+    float speed, angularSpeed;
 
 private:
     bool collidedMovement() const;
@@ -53,7 +54,7 @@ protected:
 public:
     PhysicsBody(sf::Vector2f size);
     virtual ~PhysicsBody();
-    virtual void update(){};
+    virtual void update();
     
     virtual void receiveDamage(int damage){};
     
@@ -74,15 +75,30 @@ public:
     void setVelocityAndRotateAroundOrigin(sf::Vector2f v, sf::Vector2f origin);
     sf::Vector2f getVelocity();
     bool applyVelocity();
-    bool translate(sf::Vector2f delta, bool isTravel = true);
-    bool rotate(float deltaAngle);
-    bool rotateAroundOrigin(float deltaAngle, sf::Vector2f origin);
+    virtual bool translateFront();
+    virtual bool translateBack();
+    virtual bool translate(sf::Vector2f delta, bool isTravel = true);
+    virtual bool translate(float delta, bool isTravel = true);
+    virtual bool rotateClock();
+    virtual bool rotateAntiClock();
+    virtual bool rotate(float deltaAngle);
+    virtual bool rotate(float deltaAngle, sf::Vector2f origin);
     void travelToDestination(sf::Vector2f destination);
-    void setPathVelocity(float speed);
+    void processPath();
     float getSpeed() const;
+    void setSpeed(float speed);
+    float getAngularSpeed() const;
+    void setAngularSpeed(float angularSpeed);
     
     bool instersects(sf::Vector2f point) const;
     bool instersects(const PhysicsBody& other) const;
     std::vector<PhysicsBody*> getCollided() const;
     bool collidedAny() const;
+    
+    friend std::ostream& operator<<(std::ostream& os, const PhysicsBody& pb) {
+        sf::Vector2f pos = pb.getCenter();
+        sf::Vector2f size = pb.getSize();
+        os << "[PhysicsBody] position: [" << pos.x << ", " << pos.y << "], size: [" << size.x << ", " << size.y << "], rotation: " << pb.getRotation() << std::endl;
+        return os;
+    }
 };

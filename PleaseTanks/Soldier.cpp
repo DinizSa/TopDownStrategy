@@ -12,6 +12,8 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     body.setPosition(&centerWorld, &rotation);
     translate(position, false);
     
+    setSpeed(1.0);
+    
     int id = PhysicsBody::getAndIncrementMaskId();
     setCollisionMaskId(id);
     
@@ -25,6 +27,6 @@ Soldier::~Soldier() {
 }
 
 void Soldier::update() {
-    setPathVelocity(1.f);
+    processPath();
     applyVelocity();
 }

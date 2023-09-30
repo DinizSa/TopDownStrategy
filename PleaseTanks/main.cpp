@@ -104,16 +104,16 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "click: " << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
-                    if (tank.contains(point)) {
+                    if (tank.instersects(point)) {
                         std::cout << "selected tank 1 \n" << tank;
                         selectedTank = &tank;
-                    } else if (tank2.contains(point)) {
+                    } else if (tank2.instersects(point)) {
                         std::cout << "selected tank 2 \n";
                         selectedTank = &tank2;
                     } else {
                         std::cout << "travel \n";
-//                        selectedTank->travelToDestination(point);
-                        soldier.travelToDestination(point);
+                        selectedTank->travelToDestination(point);
+//                        soldier.travelToDestination(point);
                     }
 //                    tank2.contains(point);
 //                    std::vector<sf::Vector2f> pointsPath = Utils::getPathPoints(&tank.hull, point);
@@ -182,10 +182,10 @@ int main()
         }
 
         if (forwardPressed){
-            tank.moveFront();
+            tank.translateFront();
         }
         if (backwardPressed)
-            selectedTank->moveBack();
+            selectedTank->translateBack();
         if (turnClockPressed)
             selectedTank->rotateClock();
         if (turnAnticlockPressed)
