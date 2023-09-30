@@ -11,7 +11,7 @@
 #include "Tank.hpp"
 #include "Utils.hpp"
 
-Tank::Tank(sf::Vector2f size, sf::Vector2f position): angularSpeed(1.f), size(size), hull(size, 7), gun(size, 4), trackA({size.x/4, size.y*1.03f}, 6), trackB({size.x/4, size.y*1.03f}, 6) {
+Tank::Tank(sf::Vector2f size, sf::Vector2f position): angularSpeed(1.f), hull(size, 7), gun(size, 4), trackA({size.x/4, size.y*1.03f}, 6), trackB({size.x/4, size.y*1.03f}, 6) {
     
     int id = PhysicsBody::getAndIncrementMaskId();
     trackA.setCollisionMaskId(id);
@@ -59,7 +59,6 @@ void Tank::rotate(float deltaAngle) {
 }
 void Tank::translate(sf::Vector2f delta) {
     if (hull.translate(delta)) {
-        position += delta;
         trackA.translate(delta);
         trackB.translate(delta);
         gun.translate(delta);
@@ -77,7 +76,6 @@ void Tank::translate(float distance) {
         trackA.translate(delta);
         trackB.translate(delta);
         gun.translate(delta);
-        position += delta;
     }
 }
 void Tank::update() {

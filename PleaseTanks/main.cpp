@@ -19,7 +19,17 @@
 
 int main()
 {
+    asio::error_code ec;
+    asio::io_context context;
+    asio::ip::tcp::endpoint endpoint(asio::ip::make_address("93.184.216.34", ec), 80);
+    asio::ip::tcp::socket socket(context);
     
+    socket.connect(endpoint, ec);
+    if (!ec) {
+        std::cout << "Connected! \n";
+    } else {
+        std::cout << "Error connecting: " << ec.message() << " \n";
+    }
     
     int windowWidth = 1200;
     int windowHeight = 800;
@@ -90,7 +100,7 @@ int main()
                     std::cout << "click: " << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
                     if (tank.contains(point)) {
-                        std::cout << "selected tank 1 \n";
+                        std::cout << "selected tank 1 \n" << tank;
                         selectedTank = &tank;
                     } else if (tank2.contains(point)) {
                         std::cout << "selected tank 2 \n";

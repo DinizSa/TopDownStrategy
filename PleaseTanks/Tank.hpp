@@ -15,8 +15,6 @@
 
 class Tank {
 private:
-    sf::Vector2f position;
-    sf::Vector2f size;
     float angularSpeed;
     Gun gun;
     Track trackA, trackB;
@@ -42,4 +40,11 @@ public:
     void setVelocity(sf::Vector2f velocity);
     void shot();
     void travelToDestination(sf::Vector2f& destination);
+    
+    friend std::ostream& operator<<(std::ostream& os, const Tank& tank) {
+        sf::Vector2f pos = tank.hull.getCenter();
+        sf::Vector2f size = tank.hull.getSize();
+        os << "[Tank] position: [" << pos.x << ", " << pos.y << "], size: [" << size.x << ", " << size.y << "], rotation: " << tank.hull.getRotation() << std::endl;
+        return os;
+    }
 };
