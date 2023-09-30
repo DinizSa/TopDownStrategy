@@ -15,10 +15,10 @@
 
 class Projectile : public PhysicsBody, public AutoSprite, protected AudioPlayer {
 protected:
-    float maxDistance;
+    float range;
     float velocityScalar;
 public:
-    Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int collisionMaskId, Sprite sprite, float velocityScalar, float maxDistance);
+    Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int collisionMaskId, Sprite sprite, float velocityScalar, float range);
     virtual ~Projectile();
     void update() override;
 };

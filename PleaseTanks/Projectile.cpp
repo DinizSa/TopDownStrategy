@@ -10,10 +10,10 @@
 #include "AutoSprite.hpp"
 #include "Explosion.hpp"
 
-Projectile::Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int maskId, Sprite sprite, float velocityScalar, float maxDistance):
+Projectile::Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int maskId, Sprite sprite, float velocityScalar, float range):
     PhysicsBody(physicsBodySize),
     AutoSprite(size, 4.f, sprite),
-    velocityScalar(velocityScalar), maxDistance(maxDistance)
+    velocityScalar(velocityScalar), range(range)
 {
     setPosition(&centerWorld, &rotation);
     setCollisionMaskId(maskId);
@@ -28,7 +28,9 @@ Projectile::~Projectile() {
     PhysicsBody::removeUpdatable(this);
 }
 void Projectile::update() {
-    if (getTraveledDistance() > maxDistance) {
+    PhysicsBody::update();
+    
+    if (getTraveledDistance() > range) {
         expired = true;
         return;
     }

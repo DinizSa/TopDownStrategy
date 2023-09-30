@@ -17,9 +17,10 @@ public:
     const int columns;
     const int rows;
     const sf::Vector2f singleImageSize;
+    float deltaAngle;
     
 public:
-    SpriteSheet(int columns, int rows, std::string path, sf::Vector2f singleImageSize);
+    SpriteSheet(int columns, int rows, std::string path, sf::Vector2f singleImageSize, float deltaAngle);
     const sf::Texture* getTexture() const;
     sf::Vector2f getPosition(int index) const;
     virtual ~SpriteSheet();

@@ -15,4 +15,6 @@ struct Sprite {
     int maxIndex;
     int singleImageDurationMs;
     bool loop;
+    
+    Sprite(SpriteNames spriteName, int minIndex, int maxIndex, int singleImageDurationMs, bool loop): spriteName(spriteName), minIndex(minIndex), maxIndex(maxIndex), singleImageDurationMs(singleImageDurationMs), loop(loop) {};
 };

@@ -11,6 +11,7 @@
 #include "Mine.hpp"
 #include "StaticEnvironment.hpp"
 #include "Utils.hpp"
+#include "Soldier.hpp"
 
 #define ASIO_STANDALONE
 #include <asio.hpp>
@@ -42,6 +43,10 @@ int main()
     
     sf::Vector2f position2 = {800.f, 250.f};
     Tank tank2 = Tank(size, position2);
+    
+    sf::Vector2f sizeSoldier = {100.f, 100.f};
+    sf::Vector2f positionSolider = {200.f, 500.f};
+    Soldier soldier = Soldier(sizeSoldier, positionSolider);
     
     bool forwardPressed = false;
     bool turnClockPressed = false;
@@ -107,7 +112,8 @@ int main()
                         selectedTank = &tank2;
                     } else {
                         std::cout << "travel \n";
-                        selectedTank->travelToDestination(point);
+//                        selectedTank->travelToDestination(point);
+                        soldier.travelToDestination(point);
                     }
 //                    tank2.contains(point);
 //                    std::vector<sf::Vector2f> pointsPath = Utils::getPathPoints(&tank.hull, point);
