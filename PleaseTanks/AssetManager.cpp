@@ -22,6 +22,8 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::shotEffect, new SpriteSheet({3, 3, imagesPath + "shotSprite.png", sf::Vector2f({93.f, 93.f})}));
     spriteSheets.insert_or_assign(SpriteNames::mine, new SpriteSheet({1, 1, imagesPath + "mine.png", sf::Vector2f({800.f, 800.f})}));
     spriteSheets.insert_or_assign(SpriteNames::tree, new SpriteSheet({1, 1, imagesPath + "tree.png", sf::Vector2f({100.f, 100.f})}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierFeet, new SpriteSheet({4, 5, imagesPath + "soldierFeet.png", sf::Vector2f({204.f, 124.f})}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierSprite, new SpriteSheet({4, 5, imagesPath + "soldierSprite.png", sf::Vector2f({322.f, 217.f})}));
 
     loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
     loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");
