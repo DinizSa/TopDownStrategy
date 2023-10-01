@@ -22,8 +22,10 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::shotEffect, new SpriteSheet({3, 3, imagesPath + "shotSprite.png", sf::Vector2f({93.f, 93.f}), 0.f}));
     spriteSheets.insert_or_assign(SpriteNames::mine, new SpriteSheet({1, 1, imagesPath + "mine.png", sf::Vector2f({800.f, 800.f}), 0.f}));
     spriteSheets.insert_or_assign(SpriteNames::tree, new SpriteSheet({1, 1, imagesPath + "tree.png", sf::Vector2f({100.f, 100.f}), 0.f}));
-    spriteSheets.insert_or_assign(SpriteNames::soldierFeet, new SpriteSheet({4, 5, imagesPath + "soldierFeet.png", sf::Vector2f({124.f, 204.f}), 0.f}));
-    spriteSheets.insert_or_assign(SpriteNames::soldierSprite, new SpriteSheet({4, 5, imagesPath + "soldierSprite.png", sf::Vector2f({217.f, 322.f}), 0.f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierFeet, new SpriteSheet({6, 4, imagesPath + "soldierFeet.png", sf::Vector2f({124.f, 204.f}), 90.f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierMove, new SpriteSheet({6, 4, imagesPath + "soldierMove.png", sf::Vector2f({206.f, 313.f}), 0.f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierReload, new SpriteSheet({5, 4, imagesPath + "soldierReload.png", sf::Vector2f({217.f, 322.f}), 0.f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierShoot, new SpriteSheet({3, 2, imagesPath + "soldierShoot.png", sf::Vector2f({206.f, 309.f}), 0.f}));
 
     loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
     loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");

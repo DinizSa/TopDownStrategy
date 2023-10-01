@@ -10,8 +10,9 @@
 #include "PhysicsBody.hpp"
 #include "AutoSprite.hpp"
 #include "Health.hpp"
+#include "CombatUnit.hpp"
 
-class Track : public PhysicsBody, public AutoSprite, private Health {
+class Track : public PhysicsBody, public AutoSprite, public CombatUnit, private Health {
 private:
     float deltaTrack;
     float previousTrackDistance;

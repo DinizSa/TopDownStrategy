@@ -28,15 +28,18 @@ public:
 private:
     bool hasMovementCollisions;
     sf::Vector2f velocity;
+    sf::Vector2f lastPosition;
+    bool shouldConsumePath;
     
 protected:
     sf::FloatRect body;
-    Subject<float> rotation;
     float localRotation;
     sf::Vector2f localRotationCenter;
-    Subject<sf::Vector2f> centerWorld;
     float maxRadius;
+    Subject<float> rotation;
+    Subject<sf::Vector2f> centerWorld;
     Subject<float> traveledDistance;
+    Subject<bool> moving;
     
     std::vector<sf::Vector2f> path;
     int collisionMaskId;
@@ -56,8 +59,6 @@ public:
     virtual ~PhysicsBody();
     virtual void update();
     
-    virtual void receiveDamage(int damage){};
-    
     static int getAndIncrementMaskId();
     void setCollisionMaskId(int id);
     
@@ -72,7 +73,6 @@ public:
 
     void setVelocity(sf::Vector2f velocity);
     void setVelocityAndRotate(sf::Vector2f velocity);
-    void setVelocityAndRotateAroundOrigin(sf::Vector2f v, sf::Vector2f origin);
     sf::Vector2f getVelocity();
     bool applyVelocity();
     virtual bool translateFront();

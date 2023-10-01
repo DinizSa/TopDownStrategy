@@ -35,7 +35,12 @@ Tank::Tank(sf::Vector2f size, sf::Vector2f position): PhysicsBody({size.x * (6.f
     trackA.translate(position - deltaTracks, isTravel);
     trackB.translate(position + deltaTracks, isTravel);
 }
-
+void Tank::attack() {
+    bool gunAlignedWithHull = fabs(hull.getRotation() - gun.getRotation()) < 90;
+    gunAlignedWithHull ? translateBack() : translateFront();
+    
+    gun.shot();
+}
 void Tank::rotateGunClock() {
     gun.rotateClock();
 }
@@ -82,10 +87,4 @@ void Tank::update() {
     gun.update();
     trackA.update();
     trackB.update();
-}
-void Tank::shot() {
-    bool gunAlignedWithHull = fabs(hull.getRotation() - gun.getRotation()) < 90;
-    gunAlignedWithHull ? translateBack() : translateFront();
-    
-    gun.shot();
 }

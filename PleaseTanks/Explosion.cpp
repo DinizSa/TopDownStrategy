@@ -8,28 +8,40 @@
 #include "Explosion.hpp"
 #include "Utils.hpp"
 #include "AutoSprite.hpp"
+#include "CombatUnit.hpp"
 
 Explosion::Explosion(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, int maskId, Sprite sprite, int damage):
-    PhysicsBody(physicsBodySize),
+    PhysicsBody(physicsBodySize), AutoSprite(size, 4.f, sprite),
     damage(damage)
 {
     setMovementCollisions(false);
     setCollisionMaskId(maskId);
     translate(position, false);
     
-    asset = new AutoSprite(size, 4.f, sprite);
-    asset->setPosition(position, 0.f);
-    asset->setPosition(&centerWorld, &rotation);
+    setPosition(position, 0.f);
+    setPosition(&centerWorld, &rotation);
+    
+    setEndCallback([&](){
+        dirty = true;
+    });
+}
+Explosion::~Explosion() {
 }
 
-FireExplosion::FireExplosion(sf::Vector2f position, int collisionMaskId):
-    Explosion({100.f, 100.f}, {50.f, 50.f}, position, collisionMaskId, {SpriteNames::effects, 21, 28, 80, false}, 30)
+FireExplosion::FireExplosion(sf::Vector2f size, sf::Vector2f position, int collisionMaskId):
+    Explosion(size, size/2.f, position, collisionMaskId, {SpriteNames::effects, 21, 28, 80, false}, 30)
 {
     sf::Sound* sound = AssetManager::get()->playSound(SoundNames::shellExplosion, audioPlayerId);
     sound->setLoop(false);
     
     std::vector<PhysicsBody*> collided = getCollided();
     for (auto body : collided) {
-        body->receiveDamage(damage);
+        CombatUnit* combatUnit = dynamic_cast<CombatUnit*>(body);
+        if (combatUnit != nullptr) {
+            combatUnit->receiveDamage(damage);
+        }
     }
 }
+LaunchExplosion::LaunchExplosion(sf::Vector2f size, sf::Vector2f position):
+    Explosion(size, {0.f, 0.f}, position, collisionMaskId, {SpriteNames::shotEffect, 0, 5, 80, false}, 0)
+{}

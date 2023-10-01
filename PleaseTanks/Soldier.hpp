@@ -9,15 +9,18 @@
 
 #include "PhysicsBody.hpp"
 #include "AutoSprite.hpp"
+#include "Observer.hpp"
+#include "CombatUnit.hpp"
 
 #pragma once
 
-class Soldier : public PhysicsBody {
+class Soldier : public PhysicsBody, public CombatUnit, private Observer {
 private:
     AutoSprite feet;
     AutoSprite body;
 public:
     Soldier(sf::Vector2f size, sf::Vector2f position);
     ~Soldier();
-    void update() override;
+    
+    void attack() override;
 };

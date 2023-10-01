@@ -12,6 +12,7 @@
 #include "StaticEnvironment.hpp"
 #include "Utils.hpp"
 #include "Soldier.hpp"
+#include "CombatUnit.hpp"
 
 #define ASIO_STANDALONE
 #include <asio.hpp>
@@ -48,6 +49,9 @@ int main()
     sf::Vector2f positionSolider = {200.f, 500.f};
     Soldier soldier = Soldier(sizeSoldier, positionSolider);
     
+    
+    PhysicsBody* selectedBody = &soldier;
+    
     bool forwardPressed = false;
     bool turnClockPressed = false;
     bool turnAnticlockPressed = false;
@@ -73,7 +77,7 @@ int main()
 //    sf::Vector2f velocity = {0.5f, 0.2f};
 //    tank2.setVelocity(velocity);
     
-    PhysicsBody* selectedBody = &tank;
+//    PhysicsBody* selectedBody = &tank;
     
     const int terrainMap[] =
     {
@@ -141,9 +145,11 @@ int main()
                         turnAnticlockGunPressed = true;
                         break;
                     case sf::Keyboard::Scan::Space:
-                        Tank* tank = static_cast<Tank*>(selectedBody);
-                        if (tank != nullptr)
-                            tank->shot();
+                        if (dynamic_cast<CombatUnit*>(selectedBody) != nullptr) {
+                            dynamic_cast<CombatUnit*>(selectedBody)->attack();
+                        }
+                        break;
+                    default:
                         break;
                 }
             }
@@ -174,7 +180,7 @@ int main()
         }
 
         if (forwardPressed){
-            tank.translateFront();
+            selectedBody->translateFront();
         }
         if (backwardPressed)
             selectedBody->translateBack();
@@ -193,7 +199,7 @@ int main()
                 tank->rotateGunAntiClock();
             }
         }
-        
+//        todo: auto manage update calls
         tank.update();
         tank2.update();
         

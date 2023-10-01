@@ -47,24 +47,34 @@ int PhysicsBody::getAndIncrementMaskId() {
 void PhysicsBody::update() {
     processPath();
     applyVelocity();
+    
+    if (moving() && lastPosition == centerWorld()) {
+        moving = false;
+        moving.notify();
+    }
+    lastPosition = centerWorld();
 }
 void PhysicsBody::processPath() {
     if (path.size() == 0)
         return ;
 
     sf::Vector2f destination = path[path.size() - 1];
-    float currentVelocity = Utils::getLength(velocity);
-    if (currentVelocity < 0.01f) {
+    if (shouldConsumePath) {
         sf::Vector2f deltaPos = destination - centerWorld();
         
         sf::Vector2f unitVelocity = deltaPos / sqrt((deltaPos.x * deltaPos.x) + (deltaPos.y * deltaPos.y));
         sf::Vector2f vel = unitVelocity * speed;
         setVelocityAndRotate(vel);
+        shouldConsumePath = false;
     }
     if (Utils::getDistance(centerWorld(), destination) < (speed/2.f)) {
         path.pop_back();
         
-        velocity = sf::Vector2f({0.f, 0.f});
+        if (path.size() == 0) {
+            setVelocity({0.f, 0.f});
+        } else {
+            shouldConsumePath = true;
+        }
     }
 }
 float PhysicsBody::getSpeed() const {
@@ -85,7 +95,7 @@ void PhysicsBody::setCollisionMaskId(int groupId) {
 void PhysicsBody::removeCollider() {
     allBodies.erase(std::remove(allBodies.begin(), allBodies.end(), this), allBodies.end());
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f), speed(0.f), angularSpeed(0.f) {
+PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f), speed(0.f), angularSpeed(0.f), shouldConsumePath(false) {
     traveledDistance = 0.f;
     setSize(size);
     allBodies.push_back(this);
@@ -93,6 +103,7 @@ PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), colli
     sf::Vector2f leftTopPosition = -size/2.f;
     body.left = leftTopPosition.x;
     body.top = leftTopPosition.y;
+    moving = false;
 }
 PhysicsBody::~PhysicsBody() {
     removeCollider();
@@ -108,7 +119,7 @@ void PhysicsBody::setSize(sf::Vector2f size) {
 }
 void PhysicsBody::travelToDestination(sf::Vector2f destination) {
     path = Utils::getPathPoints(this, destination);
-    velocity = sf::Vector2f({0.f, 0.f});
+    shouldConsumePath = true;
 }
 int PhysicsBody::getCollisionMaskId() const {
     return collisionMaskId;
@@ -139,19 +150,6 @@ void PhysicsBody::setVelocityAndRotate(sf::Vector2f v) {
     float currentRot = rotation();
     float angle = imagesInitialAngle + velocityAngle - currentRot;
     rotate(angle);
-
-    setVelocity(v);
-}
-void PhysicsBody::setVelocityAndRotateAroundOrigin(sf::Vector2f v, sf::Vector2f origin) {
-    if (v == velocity)
-        return;
-    
-    float imagesInitialAngle = 90.f;
-    
-    float velocityAngle = Utils::getAngle(v);
-    float currentRot = rotation();
-    float angle = imagesInitialAngle + velocityAngle - (currentRot - localRotation);
-    rotate(angle, origin);
 
     setVelocity(v);
 }
@@ -192,6 +190,11 @@ bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
     centerWorld = centerWorld() + delta;
     centerWorld.notify();
     
+    if (!moving()) {
+        moving = true;
+        moving.notify();
+    }
+    
     return true;
 }
 bool PhysicsBody::translateFront() {
@@ -225,7 +228,7 @@ bool PhysicsBody::rotate(float deltaAngle, sf::Vector2f origin) {
     sf::Vector2f rotatedPosition = t0.transformPoint(centerWorld());
 
     rotation = remainder(rotation() + deltaAngle, 360.f);
-    if (!translate(rotatedPosition - centerWorld())) {
+    if (!translate(rotatedPosition - centerWorld(), false)) {
         rotation = remainder(rotation() - deltaAngle, 360.f);
         return false;
     }

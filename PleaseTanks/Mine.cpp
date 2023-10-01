@@ -22,7 +22,7 @@ Mine::~Mine() {
 void Mine::update() {
     bool collided = collidedAny();
     if (collided) {
-        new FireExplosion(centerWorld(), collisionMaskId);
+        new FireExplosion({100.f, 100.f}, centerWorld(), collisionMaskId);
         expired = true;
         delete asset;
     }

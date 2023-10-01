@@ -11,8 +11,10 @@
 #include "PhysicsBody.hpp"
 #include "Health.hpp"
 #include "AudioPlayer.hpp"
+#include "AudioPlayer.hpp"
+#include "CombatUnit.hpp"
 
-class Gun : public PhysicsBody, public Drawable, private Health, private AudioPlayer {
+class Gun : public PhysicsBody, public Drawable, private Health, public CombatUnit, private AudioPlayer {
 private:
     int rotationCounter;
     void rotateGun(float speed);

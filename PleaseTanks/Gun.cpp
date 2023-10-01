@@ -8,6 +8,7 @@
 #include "Gun.hpp"
 #include "Utils.hpp"
 #include "Projectile.hpp"
+#include "Explosion.hpp"
 #include "AssetManager.hpp"
 
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
@@ -40,10 +41,7 @@ void Gun::shot() {
     sf::Vector2f pos = centerWorld() + deltaPos;
     
     new FireProjectile(pos, currentRotation, collisionMaskId);
-    
-    Sprite sp = Sprite({SpriteNames::shotEffect, 0, 5, 80, false});
-    AutoSprite* shotEffect = new AutoSprite({50.f, 50.f}, 4.f, sp);
-    shotEffect->setPosition(pos, currentRotation + 90);
+    new LaunchExplosion({50.f, 50.f}, pos);
 }
 
 void Gun::receiveDamage(int damage) {

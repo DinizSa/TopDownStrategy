@@ -45,6 +45,7 @@ private:
 protected:
     void setSprite(int index);
     virtual void updateDrawable(){};
+    void updateTexture(SpriteNames spriteName, int spriteIndex);
 
 public:
     virtual ~Drawable();

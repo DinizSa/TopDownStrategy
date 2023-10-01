@@ -12,8 +12,9 @@
 #include "Hull.hpp"
 #include "Gun.hpp"
 #include "Track.hpp"
+#include "CombatUnit.hpp"
 
-class Tank : public PhysicsBody {
+class Tank : public PhysicsBody, public CombatUnit {
 private:
     float angularSpeed;
     Gun gun;
@@ -30,5 +31,5 @@ public:
     bool rotate(float degrees) override;
     
     void update() override;
-    void shot();
+    void attack() override;
 };

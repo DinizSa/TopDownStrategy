@@ -19,15 +19,16 @@ class AutoSprite : public Drawable {
     
 private:
     static std::vector<AutoSprite*> autoSprites;
-    bool dirty;
 public:
     static void addAutoSprite(AutoSprite* autoSprite);
     static void removeAutoSprite(AutoSprite* autoSprite);
     static void updateAutoSprites();
     
 protected:
+    bool dirty;
     Sprite sprite;
 private:
+    std::function<void()> endCallback;
     std::chrono::time_point<clock> spriteAnimationStart;
 
 private:
@@ -35,11 +36,14 @@ private:
     void updateSpriteAnimation();
 
 protected:
+    void updateDrawable() override;
     void setNextSprite();
     bool isDirty();
-    void updateDrawable() override;
 
 public:
     AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite);
-    ~AutoSprite();
+    void updateSprite(Sprite sprite, std::function<void()> endCallback = [](){});
+    virtual ~AutoSprite();
+    void setEndCallback(std::function<void()> callback);
+    void setIsDirty();
 };

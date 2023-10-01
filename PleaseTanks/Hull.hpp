@@ -10,8 +10,9 @@
 #include "PhysicsBody.hpp"
 #include "Health.hpp"
 #include "AudioPlayer.hpp"
+#include "CombatUnit.hpp"
 
-class Hull : public PhysicsBody, public Drawable, private Health, private AudioPlayer {
+class Hull : public PhysicsBody, public Drawable, private Health, public CombatUnit, private AudioPlayer {
 private:
     AutoSprite* exhaust;
     Subject<sf::Vector2f> exhaustPosition;

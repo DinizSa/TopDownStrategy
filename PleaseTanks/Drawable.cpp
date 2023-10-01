@@ -35,17 +35,25 @@ void Drawable::updateDrawables() {
 
 Drawable::Drawable(sf::Vector2f size, float zIndex, SpriteNames spriteName, int spriteIndex): currentSpriteIndex(spriteIndex), zIndex(zIndex), rotationSub(nullptr), positionSub(nullptr)
 {
-    rect.setSize({size.x, size.y});
+    rect.setSize(size);
+    rect.setOrigin(size / 2.f);
+    updateTexture(spriteName, spriteIndex);
+
+    Drawable::addDrawable(this, zIndex);
+}
+void Drawable::updateTexture(SpriteNames spriteName, int spriteIndex) {
 
     spriteSheet = AssetManager::get()->getSprite(spriteName);
     texture = spriteSheet->getTexture();
     rect.setTexture(texture);
-    setSingleSpriteSize(spriteSheet->singleImageSize);
-    setSprite(currentSpriteIndex);
+    textureRect.width = spriteSheet->singleImageSize.x;
+    textureRect.height = spriteSheet->singleImageSize.y;
     
-    rect.setOrigin(size / 2.f);
+    sf::Vector2f spritePosition = spriteSheet->getPosition(spriteIndex);
+    textureRect.left = spritePosition.x;
+    textureRect.top = spritePosition.y;
 
-    Drawable::addDrawable(this, zIndex);
+    rect.setTextureRect(textureRect);
 }
 void Drawable::setPosition(Subject<sf::Vector2f>* pos, Subject<float>* rot) {
     positionSub = pos;
