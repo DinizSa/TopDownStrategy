@@ -11,10 +11,12 @@
 #include "AutoSprite.hpp"
 #include "Observer.hpp"
 #include "CombatUnit.hpp"
+#include "Weapon.hpp"
+#include "AudioPlayer.hpp"
 
 #pragma once
 
-class Soldier : public PhysicsBody, public CombatUnit, private Observer {
+class Soldier : public PhysicsBody, public CombatUnit, private Observer, private AudioPlayer {
 private:
     AutoSprite feet;
     AutoSprite body;

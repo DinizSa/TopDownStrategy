@@ -14,7 +14,7 @@
 
 #include "SpriteSheet.hpp"
 
-enum SoundNames { movingTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop, shellExplosion, tankShot, idleTank, tankGunBlast };
+enum SoundNames { movingTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop, shellExplosion, tankShot, idleTank, tankGunBlast, rifle, bulletHitMetal, rifleReload };
 
 class AssetManager {
 private:

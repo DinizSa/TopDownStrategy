@@ -45,7 +45,7 @@ int main()
     sf::Vector2f position2 = {800.f, 250.f};
     Tank tank2 = Tank(size, position2);
     
-    sf::Vector2f sizeSoldier = {100.f, 100.f};
+    sf::Vector2f sizeSoldier = {65.f, 65.f};
     sf::Vector2f positionSolider = {200.f, 500.f};
     Soldier soldier = Soldier(sizeSoldier, positionSolider);
     

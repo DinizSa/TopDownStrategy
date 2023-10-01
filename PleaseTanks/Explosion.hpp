@@ -31,3 +31,8 @@ class LaunchExplosion : public Explosion {
 public:
     LaunchExplosion(sf::Vector2f size, sf::Vector2f pozition);
 };
+
+class BulletExplosion : public Explosion {
+public:
+    BulletExplosion(sf::Vector2f size, sf::Vector2f pozition, int collisionMaskId);
+};

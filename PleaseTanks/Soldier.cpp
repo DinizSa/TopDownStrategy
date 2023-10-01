@@ -32,7 +32,7 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
         }
     });
     
-    primaryWeapon = std::make_unique<Weapon>(200.f, 20.f, 5.f, 1.9f, 2);
+    primaryWeapon = std::make_unique<Weapon>(200.f, 20.f, 5.f, 1.9f, 5);
     
 }
 Soldier::~Soldier() {}
@@ -49,11 +49,16 @@ bool Soldier::attack() {
     body.addAnimation(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
     body.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
     
+    
+    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::rifleReload, audioPlayerId);
+    sound->setLoop(false);
+    sound->setVolume(50.f);
+    
     float currentRotation = PhysicsBody::rotation();
-    sf::Vector2f deltaPos = Utils::getVector(currentRotation + 25.f, maxRadius + 18.f);
+    sf::Vector2f deltaPos = Utils::getVector(currentRotation + 23.f, maxRadius + 8.f);
     sf::Vector2f pos = centerWorld() + deltaPos;
     
-    new FireProjectile(pos, currentRotation, collisionMaskId);
+    new BulletProjectile(pos, currentRotation, collisionMaskId);
     new LaunchExplosion({20.f, 20.f}, pos);
     return true;
 }

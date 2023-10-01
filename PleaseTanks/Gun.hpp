@@ -13,6 +13,7 @@
 #include "AudioPlayer.hpp"
 #include "AudioPlayer.hpp"
 #include "CombatUnit.hpp"
+#include "Weapon.hpp"
 
 class Gun : public PhysicsBody, public Drawable, private Health, public CombatUnit, private AudioPlayer {
 private:

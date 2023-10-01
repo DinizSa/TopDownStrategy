@@ -21,9 +21,17 @@ public:
     Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int collisionMaskId, Sprite sprite, float velocityScalar, float range);
     virtual ~Projectile();
     void update() override;
+    virtual void onHit() = 0;
 };
 
 class FireProjectile : public Projectile {
 public:
     FireProjectile(sf::Vector2f position, float angleDegrees, int collisionMaskId);
+    void onHit() override;
+};
+
+class BulletProjectile : public Projectile {
+public:
+    BulletProjectile(sf::Vector2f position, float angleDegrees, int collisionMaskId);
+    void onHit() override;
 };
