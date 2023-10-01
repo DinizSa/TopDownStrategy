@@ -14,18 +14,18 @@ AssetManager* AssetManager::get() {
 }
 AssetManager::AssetManager() {
     const std::string imagesPath = "/Users/Shared/merda/PleaseTanks/images/";
-    spriteSheets.insert_or_assign(SpriteNames::tracks, new SpriteSheet({8, 1, imagesPath + "tracksSprites.png", sf::Vector2f({42.f, 246.f}), 90.f}));
-    spriteSheets.insert_or_assign(SpriteNames::guns, new SpriteSheet({8, 1, imagesPath + "gunsSprites.png", sf::Vector2f({256.f, 256.f}), 90.f}));
-    spriteSheets.insert_or_assign(SpriteNames::hulls, new SpriteSheet({8, 1, imagesPath + "hullsSprites.png", sf::Vector2f({256.f, 256.f}), 90.f}));
-    spriteSheets.insert_or_assign(SpriteNames::effects, new SpriteSheet({7, 7, imagesPath + "effectsSprites.png", sf::Vector2f({266.f, 266.f}), 0.f}));
-    spriteSheets.insert_or_assign(SpriteNames::effects2, new SpriteSheet({6, 4, imagesPath + "effectsSprites2.png", sf::Vector2f({125.f, 128.f}), 90.f}));
-    spriteSheets.insert_or_assign(SpriteNames::shotEffect, new SpriteSheet({3, 3, imagesPath + "shotSprite.png", sf::Vector2f({93.f, 93.f}), 0.f}));
-    spriteSheets.insert_or_assign(SpriteNames::mine, new SpriteSheet({1, 1, imagesPath + "mine.png", sf::Vector2f({800.f, 800.f}), 0.f}));
-    spriteSheets.insert_or_assign(SpriteNames::tree, new SpriteSheet({1, 1, imagesPath + "tree.png", sf::Vector2f({100.f, 100.f}), 0.f}));
-    spriteSheets.insert_or_assign(SpriteNames::soldierFeet, new SpriteSheet({6, 4, imagesPath + "soldierFeet.png", sf::Vector2f({124.f, 204.f}), 90.f}));
-    spriteSheets.insert_or_assign(SpriteNames::soldierMove, new SpriteSheet({6, 4, imagesPath + "soldierMove.png", sf::Vector2f({206.f, 313.f}), 0.f}));
-    spriteSheets.insert_or_assign(SpriteNames::soldierReload, new SpriteSheet({5, 4, imagesPath + "soldierReload.png", sf::Vector2f({217.f, 322.f}), 0.f}));
-    spriteSheets.insert_or_assign(SpriteNames::soldierShoot, new SpriteSheet({3, 2, imagesPath + "soldierShoot.png", sf::Vector2f({206.f, 309.f}), 0.f}));
+    spriteSheets.insert_or_assign(SpriteNames::tracks, new SpriteSheet({8, 1, imagesPath + "tracksSprites.png", sf::Vector2f({42.f, 246.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::guns, new SpriteSheet({8, 1, imagesPath + "gunsSprites.png", sf::Vector2f({256.f, 256.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::hulls, new SpriteSheet({8, 1, imagesPath + "hullsSprites.png", sf::Vector2f({256.f, 256.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::effects, new SpriteSheet({7, 7, imagesPath + "effectsSprites.png", sf::Vector2f({266.f, 266.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::effects2, new SpriteSheet({6, 4, imagesPath + "effectsSprites2.png", sf::Vector2f({125.f, 128.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::shotEffect, new SpriteSheet({3, 3, imagesPath + "shotSprite.png", sf::Vector2f({93.f, 93.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::mine, new SpriteSheet({1, 1, imagesPath + "mine.png", sf::Vector2f({800.f, 800.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::tree, new SpriteSheet({1, 1, imagesPath + "tree.png", sf::Vector2f({100.f, 100.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierFeet, new SpriteSheet({6, 4, imagesPath + "soldierFeet.png", sf::Vector2f({124.f, 204.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierMove, new SpriteSheet({5, 4, imagesPath + "soldierMove.png", sf::Vector2f({96.f, 150.f}), 0.95f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierReload, new SpriteSheet({5, 4, imagesPath + "soldierReload.png", sf::Vector2f({101.f, 154.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierShoot, new SpriteSheet({3, 1, imagesPath + "soldierShoot.png", sf::Vector2f({103.f, 156.f}), 1.f}));
 
     loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
     loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");

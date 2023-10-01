@@ -53,6 +53,8 @@ void Drawable::updateTexture(SpriteNames spriteName, int spriteIndex) {
     textureRect.left = spritePosition.x;
     textureRect.top = spritePosition.y;
 
+    
+    rect.setScale(spriteSheet->scale, spriteSheet->scale);
     rect.setTextureRect(textureRect);
 }
 void Drawable::setPosition(Subject<sf::Vector2f>* pos, Subject<float>* rot) {

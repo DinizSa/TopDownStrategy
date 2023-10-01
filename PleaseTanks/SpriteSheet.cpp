@@ -8,7 +8,7 @@
 #include <cmath>
 #include "SpriteSheet.hpp"
 
-SpriteSheet::SpriteSheet(int columns, int rows, std::string path, sf::Vector2f singleImageSize, float deltaAngle): columns(columns), rows(rows), singleImageSize(singleImageSize), deltaAngle(deltaAngle) {
+SpriteSheet::SpriteSheet(int columns, int rows, std::string path, sf::Vector2f singleImageSize, float scale): columns(columns), rows(rows), singleImageSize(singleImageSize), scale(scale) {
     texture = new sf::Texture;
     texture->loadFromFile(path);
 }
