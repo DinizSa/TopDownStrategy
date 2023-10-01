@@ -26,9 +26,9 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     moving.subscribe(this, [&](bool isMoving) {
         std::cout << "moving: " << isMoving << std::endl;
         if (isMoving) {
-            feet.updateSprite(Sprite(SpriteNames::soldierFeet, 0, 19, 80, true));
+            feet.setAnimation(Sprite(SpriteNames::soldierFeet, 0, 19, 80, true));
         } else {
-            feet.updateSprite(Sprite(SpriteNames::soldierFeet, 8, 8, 0, false));
+            feet.setAnimation(Sprite(SpriteNames::soldierFeet, 8, 8, 0, false));
         }
     });
     
@@ -37,15 +37,7 @@ Soldier::~Soldier() {
     PhysicsBody::removeUpdatable(this);
 }
 void Soldier::attack() {
-//    body.updateSprite(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
-    body.updateSprite(Sprite(SpriteNames::soldierShoot, 0, 2, 100, false));
-    body.setEndCallback([&](){
-        std::cout << "animation finished" << std::endl;
-        body.updateSprite(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
-        body.setEndCallback([&]() {
-            std::cout << "animation 2 finished" << std::endl;
-            body.updateSprite(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
-            body.setEndCallback([](){});
-        });
-    });
+    body.setAnimation(Sprite(SpriteNames::soldierShoot, 0, 2, 100, false));
+    body.addAnimation(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
+    body.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
 }
