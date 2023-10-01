@@ -14,18 +14,12 @@
 
 std::vector<PhysicsBody*> PhysicsBody::updatables;
 
-void PhysicsBody::addUpdatable(PhysicsBody* physicsBody) {
-    PhysicsBody::updatables.push_back(physicsBody);
-}
-void PhysicsBody::removeUpdatable(PhysicsBody* physicsBody) {
-    PhysicsBody::updatables.erase(std::remove(PhysicsBody::updatables.begin(), PhysicsBody::updatables.end(), physicsBody), PhysicsBody::updatables.end());
-}
 void PhysicsBody::updatePhysicsBodys() {
-    for (auto physicsBody : PhysicsBody::updatables) {
+    for (auto physicsBody : PhysicsBody::allBodies) {
         physicsBody->update();
     }
     
-    for (auto it = PhysicsBody::updatables.begin(); it != PhysicsBody::updatables.end();) {
+    for (auto it = PhysicsBody::allBodies.begin(); it != PhysicsBody::allBodies.end();) {
         PhysicsBody* physicsBody = *it;
         if (physicsBody->isExpired()) {
             delete physicsBody;

@@ -17,8 +17,6 @@ class PhysicsBody {
     static int nextMaskId;
     static std::vector<PhysicsBody*> updatables;
 protected:
-    static void addUpdatable(PhysicsBody* physicBody);
-    static void removeUpdatable(PhysicsBody* physicBody);
     bool expired = false;
 public:
     static std::vector<PhysicsBody*> allBodies;

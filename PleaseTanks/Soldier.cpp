@@ -19,8 +19,6 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     int id = PhysicsBody::getAndIncrementMaskId();
     setCollisionMaskId(id);
     
-    PhysicsBody::addUpdatable(this);
-    
     setMovementCollisions(true);
     
     moving.subscribe(this, [&](bool isMoving) {
@@ -33,9 +31,7 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     });
     
 }
-Soldier::~Soldier() {
-    PhysicsBody::removeUpdatable(this);
-}
+Soldier::~Soldier() {}
 void Soldier::attack() {
     body.setAnimation(Sprite(SpriteNames::soldierShoot, 0, 2, 100, false));
     body.addAnimation(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));

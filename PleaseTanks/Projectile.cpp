@@ -21,11 +21,8 @@ Projectile::Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vect
     translate(position, false);
     sf::Vector2f velocity = Utils::getVector(angleDegrees, velocityScalar);
     setVelocityAndRotate(velocity);
-    
-    PhysicsBody::addUpdatable(this);
 }
 Projectile::~Projectile() {
-    PhysicsBody::removeUpdatable(this);
 }
 void Projectile::update() {
     PhysicsBody::update();
