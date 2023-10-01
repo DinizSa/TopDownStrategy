@@ -31,7 +31,6 @@ protected:
     bool dirty;
     Sprite sprite;
 private:
-    std::function<void()> endCallback;
     std::chrono::time_point<clock> spriteAnimationStart;
 
 private:
@@ -48,7 +47,6 @@ protected:
 public:
     AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite);
     virtual ~AutoSprite();
-    void setEndCallback(std::function<void()> callback);
     void addAnimation(Sprite sprite);
     void setAnimation(Sprite sprite);
 };

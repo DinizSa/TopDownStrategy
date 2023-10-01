@@ -20,16 +20,12 @@ Explosion::Explosion(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector
     
     setPosition(position, 0.f);
     setPosition(&centerWorld, &rotation);
-    
-    setEndCallback([&](){
-        dirty = true;
-    });
 }
 Explosion::~Explosion() {
 }
 
 FireExplosion::FireExplosion(sf::Vector2f size, sf::Vector2f position, int collisionMaskId):
-    Explosion(size, size/2.f, position, collisionMaskId, {SpriteNames::effects, 21, 28, 80, false}, 30)
+    Explosion(size, size/2.f, position, collisionMaskId, {SpriteNames::effects, 21, 28, 80, false, [&](){dirty = true;}}, 30)
 {
     sf::Sound* sound = AssetManager::get()->playSound(SoundNames::shellExplosion, audioPlayerId);
     sound->setLoop(false);
@@ -43,5 +39,5 @@ FireExplosion::FireExplosion(sf::Vector2f size, sf::Vector2f position, int colli
     }
 }
 LaunchExplosion::LaunchExplosion(sf::Vector2f size, sf::Vector2f position):
-    Explosion(size, {0.f, 0.f}, position, collisionMaskId, {SpriteNames::shotEffect, 0, 5, 80, false}, 0)
+    Explosion(size, {0.f, 0.f}, position, collisionMaskId, {SpriteNames::shotEffect, 0, 5, 80, false, [&](){dirty = true;}}, 0)
 {}

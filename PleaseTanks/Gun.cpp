@@ -14,27 +14,33 @@
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),
     Drawable(imageSize, 3.f, SpriteNames::guns, spriteIndex),
-    Health(100), rotationCounter(0)
+    Health(100)
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
     setAngularSpeed(2.f);
-}
-bool Gun::rotate(float deltaAngle) {
-    if (rotationCounter == 0) {
-        sf::Sound* soundMoving = AssetManager::get()->playSound(SoundNames::rotationGun, audioPlayerId);
-        soundMoving->setLoop(true);
-        soundMoving->setVolume(40.f);
-    }
-    rotationCounter = 2;
     
-    return PhysicsBody::rotate(deltaAngle);
-}
-bool Gun::rotate(float deltaAngle, sf::Vector2f origin) {
-    return PhysicsBody::rotate(deltaAngle, origin);
+    primaryWeapon = std::make_unique<Weapon>(200.f, 20.f, 5.f, 4.f, 3);
+    
+    rotatingLocal.subscribe(this, [&](bool isRotating){
+        if (isRotating) {
+            sf::Sound* soundMoving = AssetManager::get()->playSound(SoundNames::rotationGun, audioPlayerId);
+            soundMoving->setLoop(true);
+            soundMoving->setVolume(40.f);
+        } else {
+            AssetManager::get()->stopSound(SoundNames::rotationGun, audioPlayerId);
+            auto gunStopSound = AssetManager::get()->playSound(SoundNames::rotationGunStop, audioPlayerId);
+            gunStopSound->setLoop(false);
+            gunStopSound->setVolume(5.f);
+        }
+    });
 }
 
-void Gun::shot() {
+bool Gun::attack() {
+    bool fired = primaryWeapon->fire();
+    if (!fired)
+        return false;
+    
     float currentRotation = PhysicsBody::rotation();
     float radius = body.width > body.height ? body.width : body.height;
     sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
@@ -42,6 +48,8 @@ void Gun::shot() {
     
     new FireProjectile(pos, currentRotation, collisionMaskId);
     new LaunchExplosion({50.f, 50.f}, pos);
+    
+    return true;
 }
 
 void Gun::receiveDamage(int damage) {
@@ -50,14 +58,5 @@ void Gun::receiveDamage(int damage) {
 
 void Gun::update() {
     PhysicsBody::update();
-
-    if (rotationCounter > 0) {
-        --rotationCounter;
-        if (rotationCounter == 0) {
-            AssetManager::get()->stopSound(SoundNames::rotationGun, audioPlayerId);
-            auto gunStopSound = AssetManager::get()->playSound(SoundNames::rotationGunStop, audioPlayerId);
-            gunStopSound->setLoop(false);
-            gunStopSound->setVolume(5.f);
-        }
-    }
+    primaryWeapon->updateReloadTimer();
 }

@@ -15,6 +15,7 @@ struct Sprite {
     int maxIndex;
     int singleImageDurationMs;
     bool loop;
+    std::function<void()> endCallback;
     
-    Sprite(SpriteNames spriteName, int minIndex, int maxIndex, int singleImageDurationMs, bool loop): spriteName(spriteName), minIndex(minIndex), maxIndex(maxIndex), singleImageDurationMs(singleImageDurationMs), loop(loop) {};
+    Sprite(SpriteNames spriteName, int minIndex, int maxIndex, int singleImageDurationMs, bool loop, std::function<void()> endCallback = [](){}): spriteName(spriteName), minIndex(minIndex), maxIndex(maxIndex), singleImageDurationMs(singleImageDurationMs), loop(loop), endCallback(endCallback) {};
 };

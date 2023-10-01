@@ -47,6 +47,12 @@ void PhysicsBody::update() {
         moving.notify();
     }
     lastPosition = centerWorld();
+    
+    if (rotatingLocal() && lastLocalRotation == localRotation) {
+        rotatingLocal = false;
+        rotatingLocal.notify();
+    }
+    lastLocalRotation = localRotation;
 }
 void PhysicsBody::processPath() {
     if (path.size() == 0)
@@ -89,7 +95,7 @@ void PhysicsBody::setCollisionMaskId(int groupId) {
 void PhysicsBody::removeCollider() {
     allBodies.erase(std::remove(allBodies.begin(), allBodies.end(), this), allBodies.end());
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f), speed(0.f), angularSpeed(0.f), shouldConsumePath(false) {
+PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f), speed(0.f), angularSpeed(0.f), shouldConsumePath(false), lastLocalRotation(0.f) {
     traveledDistance = 0.f;
     setSize(size);
     allBodies.push_back(this);
@@ -98,6 +104,7 @@ PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), colli
     body.left = leftTopPosition.x;
     body.top = leftTopPosition.y;
     moving = false;
+    rotatingLocal = false;
 }
 PhysicsBody::~PhysicsBody() {
     removeCollider();
@@ -159,8 +166,8 @@ bool PhysicsBody::applyVelocity() {
 }
 bool PhysicsBody::translate(float delta, bool isTravel) {
     
-    float rotation = getRotation();
-    float rotationDeg = rotation * M_PI / 180;
+    float rot = getRotation();
+    float rotationDeg = rot * M_PI / 180;
     float dx = -delta * sin(rotationDeg);
     float dy = delta * cos(rotationDeg);
     
@@ -212,6 +219,11 @@ bool PhysicsBody::rotate(float deltaAngle) {
     bool success = rotate(deltaAngle, rotationCenter);
     if (success) {
         localRotation += deltaAngle;
+        
+        if (!rotatingLocal()) {
+            rotatingLocal = true;
+            rotatingLocal.notify();
+        }
     }
     return success;
 }

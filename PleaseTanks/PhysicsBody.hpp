@@ -27,6 +27,7 @@ private:
     bool hasMovementCollisions;
     sf::Vector2f velocity;
     sf::Vector2f lastPosition;
+    float lastLocalRotation;
     bool shouldConsumePath;
     
 protected:
@@ -38,6 +39,7 @@ protected:
     Subject<sf::Vector2f> centerWorld;
     Subject<float> traveledDistance;
     Subject<bool> moving;
+    Subject<bool> rotatingLocal;
     
     std::vector<sf::Vector2f> path;
     int collisionMaskId;

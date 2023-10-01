@@ -59,7 +59,7 @@ void Drawable::updateTexture(SpriteNames spriteName, int spriteIndex) {
 }
 void Drawable::setPosition(Subject<sf::Vector2f>* pos, Subject<float>* rot) {
     positionSub = pos;
-    std::function<void(sf::Vector2f)> callbackPosition = [&](sf::Vector2f newPosition) {
+    std::function<void(sf::Vector2f)> callbackPosition = [&](const sf::Vector2f& newPosition) {
         rect.setPosition(newPosition.x, newPosition.y);
     };
     positionSub->subscribe(this, callbackPosition);

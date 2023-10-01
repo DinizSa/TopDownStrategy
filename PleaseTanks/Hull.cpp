@@ -11,7 +11,7 @@
 Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x * (6.f/10.f), imageSize.y}),
     Drawable(imageSize, 2.f, SpriteNames::hulls, spriteIndex),
-    Health(200), movingCounter(0), speed(2.f)
+    Health(200), speed(2.f)
 {
     setPosition(&centerWorld, &rotation);
     
@@ -26,17 +26,17 @@ Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
         exhaustPosition.notify();
     });
     
-    PhysicsBody::traveledDistance.subscribe(exhaust, [&](float distance) {
-        if (movingCounter == 0) {
-            sf::Sound* sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
-            if (sound == nullptr) {
-                sound = AssetManager::get()->playSound(SoundNames::movingTank, audioPlayerId);
-                sound->setLoop(true);
-            } else {
-                sound->setVolume(100.f);
-            }
+    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::movingTank, audioPlayerId);
+    sound->setVolume(20.f);
+    sound->setLoop(true);
+    
+    moving.subscribe(exhaust, [&](bool isMoving) {
+        sf::Sound* sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
+        if (isMoving) {
+            sound->setVolume(100.f);
+        } else {
+            sound->setVolume(20.f);
         }
-        movingCounter = 2;
     });
 }
 
@@ -48,19 +48,6 @@ void Hull::receiveDamage(int damage) {
     updateHealth(-damage);
 }
 
-void Hull::update() {
-    PhysicsBody::update();
-    
-    if (movingCounter > 0) {
-        --movingCounter;
-        if (movingCounter == 0) {
-            sf::Sound* sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
-            if (sound != nullptr) {
-                sound->setVolume(30.f);
-            }
-        }
-    }
-}
 void Hull::setSpeed(float newSpeed) {
     speed = newSpeed;
 }

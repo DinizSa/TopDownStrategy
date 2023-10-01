@@ -30,7 +30,7 @@ void AutoSprite::updateAutoSprites() {
     }
 }
 
-AutoSprite::AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite): Drawable(size, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0)), dirty(false), endCallback([](){})
+AutoSprite::AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite): Drawable(size, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0)), dirty(false)
 {
     spriteAnimationStart = clock::now();
     
@@ -44,15 +44,14 @@ void AutoSprite::updateSprite(Sprite newSprite) {
     sprite = newSprite;
     spriteAnimationStart = clock::now();
     currentSpriteIndex = newSprite.minIndex;
-    endCallback = [](){};
 }
 void AutoSprite::setNextSprite() {
     if (currentSpriteIndex == sprite.maxIndex) {
         if (sprite.loop) {
             currentSpriteIndex = sprite.minIndex;
         } else if (sprite.singleImageDurationMs > 0) {
+            sprite.endCallback();
             setNextAnimation();
-            endCallback();
             return;
         } else {
             currentSpriteIndex = sprite.minIndex;
@@ -91,9 +90,6 @@ void AutoSprite::updateDrawable() {
     updateSpriteAnimation();
 }
 
-void AutoSprite::setEndCallback(std::function<void()> callback) {
-    endCallback = std::move(callback);
-}
 void AutoSprite::setNextAnimation() {
     if (spritesQueue.size() > 0) {
         updateSprite(spritesQueue.front());

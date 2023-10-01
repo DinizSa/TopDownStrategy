@@ -16,13 +16,12 @@
 
 class Gun : public PhysicsBody, public Drawable, private Health, public CombatUnit, private AudioPlayer {
 private:
-    int rotationCounter;
     void rotateGun(float speed);
+    std::unique_ptr<Weapon> primaryWeapon;
+    std::unique_ptr<Weapon> secondaryWeapon;
 public:
     Gun(sf::Vector2f size, int spriteIndex);
-    void shot();
-    bool rotate(float deltaAngle) override;
-    bool rotate(float deltaAngle, sf::Vector2f origin) override;
+    bool attack() override;
     void receiveDamage(int damage) override;
     void update() override;
 };

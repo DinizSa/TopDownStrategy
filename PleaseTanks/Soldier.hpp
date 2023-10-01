@@ -18,9 +18,11 @@ class Soldier : public PhysicsBody, public CombatUnit, private Observer {
 private:
     AutoSprite feet;
     AutoSprite body;
+    std::unique_ptr<Weapon> primaryWeapon;
+    std::unique_ptr<Weapon> secondaryWeapon;
 public:
     Soldier(sf::Vector2f size, sf::Vector2f position);
     ~Soldier();
-    
-    void attack() override;
+    void update() override;
+    bool attack() override;
 };

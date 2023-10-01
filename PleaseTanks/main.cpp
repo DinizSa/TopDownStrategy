@@ -189,20 +189,17 @@ int main()
         if (turnAnticlockPressed)
             selectedBody->rotateAntiClock();
         if (turnClockGunPressed) {
-            auto tank = static_cast<Tank*>(selectedBody);
+            Tank* tank = dynamic_cast<Tank*>(selectedBody);
             if (tank != nullptr) {
                 tank->rotateGunClock();
             }
         } if (turnAnticlockGunPressed) {
-            auto tank = static_cast<Tank*>(selectedBody);
+            Tank* tank = dynamic_cast<Tank*>(selectedBody);
             if (tank != nullptr) {
                 tank->rotateGunAntiClock();
             }
         }
-//        todo: auto manage update calls
-        tank.update();
-        tank2.update();
-        
+
         Drawable::updateDrawables();
         AutoSprite::updateAutoSprites();
         PhysicsBody::updatePhysicsBodys();
