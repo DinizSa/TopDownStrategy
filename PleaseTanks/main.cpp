@@ -143,14 +143,12 @@ int main()
                         turnAnticlockGunPressed = true;
                         break;
                     case sf::Keyboard::Scan::N:
-                        if (dynamic_cast<CombatUnit*>(selectedBody) != nullptr) {
+                        if (dynamic_cast<CombatUnit*>(selectedBody) != nullptr)
                             dynamic_cast<CombatUnit*>(selectedBody)->attackPrimary();
-                        }
                         break;
                     case sf::Keyboard::Scan::M:
-                        if (dynamic_cast<CombatUnit*>(selectedBody) != nullptr) {
+                        if (dynamic_cast<CombatUnit*>(selectedBody) != nullptr)
                             dynamic_cast<CombatUnit*>(selectedBody)->attackSecondary();
-                        }
                         break;
                     default:
                         break;

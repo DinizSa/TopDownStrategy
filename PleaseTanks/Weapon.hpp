@@ -84,7 +84,7 @@ public:
         reloadTimeSeconds = 2.f;
         velocityScalar = 5.f;
         collisionDetonationSeconds = 0.f;
-        projectileImageSize = {60.f, 60.f};
+        projectileImageSize = {50.f, 50.f};
         projectilePhysicsSize = {5.f, 5.f};
         explosionImageSize = {80.f, 80.f};
         explosionPhysicsSize = {5.f, 5.f};

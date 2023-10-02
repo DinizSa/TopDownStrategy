@@ -8,9 +8,10 @@
 #pragma once
 
 class Health {
-    int maxHealth, currentHealth;
+    float maxHealth, currentHealth;
 public:
-    Health(int maxHealth);
-    void updateHealth(int delta);
+    Health(float maxHealth);
     void updateHealth(float delta);
+    float getCurrentHealth();
+    float getMaxHealth();
 };

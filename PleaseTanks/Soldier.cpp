@@ -10,7 +10,7 @@
 #include "Explosion.hpp"
 #include "Utils.hpp"
 
-Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f), feet(size/1.5f, 1, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), body(size, 2, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)) {
+Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f), feet(size/1.5f, 1, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), body(size, 2, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)), Health(100) {
 
     feet.setPosition(&centerWorld, &rotation);
     body.setPosition(&centerWorld, &rotation);
@@ -89,4 +89,8 @@ bool Soldier::fireGrenade() {
     body.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
     
     return true;
+}
+
+void Soldier::receiveDamage(int damage) {
+    updateHealth(-damage);
 }

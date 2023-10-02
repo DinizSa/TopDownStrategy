@@ -13,10 +13,11 @@
 #include "CombatUnit.hpp"
 #include "Weapon.hpp"
 #include "AudioPlayer.hpp"
+#include "Health.hpp"
 
 #pragma once
 
-class Soldier : public PhysicsBody, public CombatUnit, private Observer, private AudioPlayer {
+class Soldier : public PhysicsBody, public CombatUnit, public Health, private Observer, private AudioPlayer {
 private:
     AutoSprite feet;
     AutoSprite body;
@@ -29,6 +30,7 @@ public:
     Soldier(sf::Vector2f size, sf::Vector2f position);
     ~Soldier();
     void update() override;
+    void receiveDamage(int damage) override;
     bool attackPrimary() override;
     bool attackSecondary() override;
 };

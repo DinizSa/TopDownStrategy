@@ -10,14 +10,17 @@
 #include <cmath>
 #include <iostream>
 
-Health::Health(int maxHealth): maxHealth(maxHealth), currentHealth(maxHealth) {
-}
-void Health::updateHealth(int delta) {
-    int updatedHealth = currentHealth + delta;
-    currentHealth = std::max(0, std::min(maxHealth, updatedHealth));
-    std::cout << currentHealth << "/" << maxHealth << '\n';
+Health::Health(float maxHealth): maxHealth(maxHealth), currentHealth(maxHealth) {
 }
 void Health::updateHealth(float delta) {
-    int dHealth = round(delta);
-    updateHealth(dHealth);
+    int updatedHealth = currentHealth + delta;
+    currentHealth = std::fmax(0, std::fmin(maxHealth, updatedHealth));
+    std::cout << currentHealth << "/" << maxHealth << '\n';
+}
+
+float Health::getCurrentHealth() {
+    return currentHealth;
+}
+float Health::getMaxHealth() {
+    return maxHealth;
 }
