@@ -92,7 +92,9 @@ void AutoSprite::updateDrawable() {
 
 void AutoSprite::setNextAnimation() {
     if (spritesQueue.size() > 0) {
-        updateSprite(spritesQueue.front());
         spritesQueue.pop_front();
+    }
+    if (spritesQueue.size() > 0) {
+        updateSprite(spritesQueue.front());
     }
 }

@@ -6,11 +6,13 @@
 //
 
 #include <cmath>
+#include <iostream>
 #include "SpriteSheet.hpp"
 
 SpriteSheet::SpriteSheet(int columns, int rows, std::string path, sf::Vector2f singleImageSize, float scale): columns(columns), rows(rows), singleImageSize(singleImageSize), scale(scale) {
     texture = new sf::Texture;
-    texture->loadFromFile(path);
+    if (!texture->loadFromFile(path))
+        std::cout << "error loading image: " << path << std::endl;
 }
 const sf::Texture* SpriteSheet::getTexture() const {
     return texture;

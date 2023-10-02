@@ -18,9 +18,9 @@ protected:
     float range;
     float velocityScalar;
 public:
-    Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int collisionMaskId, Sprite sprite, float velocityScalar, float range);
+    Projectile(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, float angleDegrees, int collisionMaskId, Sprite sprite, float velocityScalar, float range, float zIndex);
     virtual ~Projectile();
-    void update() override;
+    virtual void update() override;
     virtual void onHit() = 0;
 };
 
@@ -34,4 +34,13 @@ class BulletProjectile : public Projectile {
 public:
     BulletProjectile(sf::Vector2f position, float angleDegrees, int collisionMaskId);
     void onHit() override;
+};
+
+class GrenadeProjectile : public Projectile {
+private:
+    float secondsToExplosion;
+public:
+    GrenadeProjectile(sf::Vector2f position, float angleDegrees, int collisionMaskId);
+    void onHit() override;
+    void update() override;
 };

@@ -22,6 +22,9 @@ private:
     AutoSprite body;
     std::unique_ptr<Weapon> primaryWeapon;
     std::unique_ptr<Weapon> secondaryWeapon;
+    
+    bool fireRifle();
+    bool fireGrenade();
 public:
     Soldier(sf::Vector2f size, sf::Vector2f position);
     ~Soldier();

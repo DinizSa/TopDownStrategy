@@ -61,3 +61,14 @@ public:
         }
     };
 };
+
+// Weapon(float range, float damage, float penetration, float reloadTimeSeconds, int ammunitionAmount)
+class Rifle : public Weapon {
+public:
+    Rifle(): Weapon(200.f, 20.f, 5.f, 2.f, 5) {};
+};
+
+class Grenade : public Weapon {
+public:
+    Grenade(): Weapon(60.f, 50.f, 50.f, 3.f, 2) {};
+};

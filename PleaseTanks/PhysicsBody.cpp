@@ -67,7 +67,7 @@ void PhysicsBody::processPath() {
         setVelocityAndRotate(vel);
         shouldConsumePath = false;
     }
-    if (Utils::getDistance(centerWorld(), destination) < (speed/2.f)) {
+    if (Utils::getDistance(centerWorld(), destination) < (speed)) {
         path.pop_back();
         
         if (path.size() == 0) {
