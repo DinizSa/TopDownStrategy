@@ -27,6 +27,11 @@ Projectile::Projectile(sf::Vector2f position, float angleDegrees, int maskId, co
     
     if (weapon->launchSound != nullptr)
         AssetManager::get()->playSound(*weapon->launchSound, audioPlayerId);
+    
+    if (weapon->launchSprite != nullptr) {
+        auto launchEffect = new AutoSprite(weapon->lauchSize, zIndex+3, *weapon->launchSprite);
+        launchEffect->setPosition(position, rotation());
+    }
 }
 Projectile::~Projectile() {
 }
@@ -56,10 +61,8 @@ void Projectile::update() {
     
 //  collision detonation
     if (weapon->collisionDetonationSeconds > -1 && timeCollision == -1) {
-        if (collidedAny()){
+        if (collidedAny())
             timeCollision = timerSeconds;
-            collidedAny();
-        }
     }
     if (timeCollision >= timerSeconds + weapon->collisionDetonationSeconds) {
         shouldDetonate = true;

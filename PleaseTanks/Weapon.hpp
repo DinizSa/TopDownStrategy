@@ -60,11 +60,11 @@ public:
     int amountShots;
     float range, damage, penetration, zIndex, velocityScalar, rotation, reloadTimeSeconds, shotsIntervalSeconds;
     float selfDetonationSeconds, collisionDetonationSeconds;
-    sf::Vector2f projectileImageSize, projectilePhysicsSize, explosionImageSize, explosionPhysicsSize;
+    sf::Vector2f projectileImageSize, projectilePhysicsSize, explosionImageSize, explosionPhysicsSize, lauchSize;
     bool explodeOnMaxRange, loseForceOnMaxRange, automatic;
     Subject<int> triggerAutomatic;
     
-    std::unique_ptr<Sprite> missileSprite, explosionSprite;
+    std::unique_ptr<Sprite> launchSprite, missileSprite, explosionSprite;
     std::unique_ptr<Sound> launchSound, explosionSound;
     
     Weapon(int maxLoad): Ammunition(0, maxLoad), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), readyFromReload(true), readyFromShot(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f), shotsIntervalSeconds(0), automatic(false) {};
@@ -121,12 +121,14 @@ public:
         projectilePhysicsSize = {5.f, 5.f};
         explosionImageSize = {80.f, 80.f};
         explosionPhysicsSize = {5.f, 5.f};
+        lauchSize = {90.f, 90.f};
         explodeOnMaxRange = false;
         loseForceOnMaxRange = true;
         zIndex = 2.f;
         
-        missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
+        launchSprite = std::make_unique<Sprite>(SpriteNames::effects, 39, 42, 40, false, true);
         launchSound = std::make_unique<Sound>(SoundNames::rifle, 50.f, false);
+        missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
         
         explosionSprite = std::make_unique<Sprite>(SpriteNames::effects2, 17, 19, 80, false, true);
         explosionSound = std::make_unique<Sound>(SoundNames::bulletHitMetal, 100.f, false);
@@ -168,15 +170,17 @@ public:
         rotation = 0.f;
         reloadTimeSeconds = 4.f;
         velocityScalar = 7.f;
-        zIndex = 2.f;
+        zIndex = 3.f;
         collisionDetonationSeconds = 0.f;
-        projectileImageSize = {65.f, 65.f};
+        projectileImageSize = {95.f, 95.f};
         projectilePhysicsSize = {10.f, 10.f};
         explosionImageSize = {200.f, 200.f};
         explosionPhysicsSize = {150.f, 150.f};
+        lauchSize = {70.f, 70.f};
         explodeOnMaxRange = true;
         loseForceOnMaxRange = false;
         
+        launchSprite = std::make_unique<Sprite>(SpriteNames::effects, 39, 42, 40, false, true);
         missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
         launchSound = std::make_unique<Sound>(SoundNames::tankGunBlast, 50.f, false);
         
@@ -196,7 +200,7 @@ public:
         velocityScalar = 0.f;
         zIndex = 1.f;
         collisionDetonationSeconds = 0.f;
-        projectileImageSize = {45.f, 45.f};
+        projectileImageSize = {40.f, 40.f};
         projectilePhysicsSize = {40.f, 40.f};
         explosionImageSize = {200.f, 200.f};
         explosionPhysicsSize = {150.f, 150.f};
@@ -226,11 +230,13 @@ public:
         projectilePhysicsSize = {5.f, 5.f};
         explosionImageSize = {50.f, 50.f};
         explosionPhysicsSize = {5.f, 5.f};
+        lauchSize = {90.f, 90.f};
         explodeOnMaxRange = false;
         loseForceOnMaxRange = true;
         zIndex = 2.f;
         automatic = true;
         
+        launchSprite = std::make_unique<Sprite>(SpriteNames::effects, 39, 42, 40, false, true);
         missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
         launchSound = std::make_unique<Sound>(SoundNames::rifle, 50.f, false);
         

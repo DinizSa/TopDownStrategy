@@ -15,7 +15,6 @@
 
 class PhysicsBody {
     static int nextMaskId;
-    static std::vector<PhysicsBody*> updatables;
 protected:
     bool expired = false;
 public:

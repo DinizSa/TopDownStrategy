@@ -47,7 +47,7 @@ bool Gun::attackPrimary() {
 
     float currentRotation = PhysicsBody::rotation();
     float radius = body.width > body.height ? body.width : body.height;
-    sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
+    sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius * 0.9f);
     sf::Vector2f pos = centerWorld() + deltaPos;
 
     new Projectile(pos, currentRotation, collisionMaskId, primaryWeapon);

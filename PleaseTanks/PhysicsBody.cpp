@@ -12,13 +12,7 @@
 #include "PhysicsBody.hpp"
 #include "Utils.hpp"
 
-std::vector<PhysicsBody*> PhysicsBody::updatables;
-
 void PhysicsBody::updatePhysicsBodys() {
-    for (auto physicsBody : PhysicsBody::allBodies) {
-        physicsBody->update();
-    }
-    
     for (auto it = PhysicsBody::allBodies.begin(); it != PhysicsBody::allBodies.end();) {
         PhysicsBody* physicsBody = *it;
         if (physicsBody->isExpired()) {
@@ -26,6 +20,10 @@ void PhysicsBody::updatePhysicsBodys() {
         } else {
             it++;
         }
+    }
+    
+    for (auto physicsBody : PhysicsBody::allBodies) {
+        physicsBody->update();
     }
 }
 bool PhysicsBody::isExpired() {

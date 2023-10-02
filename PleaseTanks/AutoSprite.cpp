@@ -13,14 +13,11 @@
 
 AutoSprite::AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite): Drawable(size, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0)), dirty(false)
 {
-    start();
+    spriteAnimationStart = clock::now();
+    AutoSprite::addAutoSprite(this);
 }
 AutoSprite::~AutoSprite() {
     AutoSprite::removeAutoSprite(this);
-}
-void AutoSprite::start() {
-    spriteAnimationStart = clock::now();
-    AutoSprite::addAutoSprite(this);
 }
 void AutoSprite::updateSprite(Sprite newSprite) {
     updateTexture(newSprite.spriteName, newSprite.minIndex);

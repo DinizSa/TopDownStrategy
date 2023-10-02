@@ -20,7 +20,7 @@
 class Soldier : public PhysicsBody, public CombatUnit, public Health, private Observer, private AudioPlayer {
 private:
     AutoSprite feet;
-    AutoSprite body;
+    AutoSprite soldierBody;
     std::shared_ptr<Weapon> primaryWeapon;
     std::shared_ptr<Weapon> secondaryWeapon;
     

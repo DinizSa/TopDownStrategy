@@ -19,8 +19,8 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::hulls, new SpriteSheet({8, 1, imagesPath + "hullsSprites.png", sf::Vector2f({256.f, 256.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::effects, new SpriteSheet({7, 7, imagesPath + "effectsSprites.png", sf::Vector2f({266.f, 266.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::effects2, new SpriteSheet({6, 4, imagesPath + "effectsSprites2.png", sf::Vector2f({125.f, 128.f}), 1.f}));
-    spriteSheets.insert_or_assign(SpriteNames::shotEffect, new SpriteSheet({3, 3, imagesPath + "shotSprite.png", sf::Vector2f({93.f, 93.f}), 1.f}));
-    spriteSheets.insert_or_assign(SpriteNames::mine, new SpriteSheet({1, 1, imagesPath + "mine.png", sf::Vector2f({800.f, 800.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::darkExplosion, new SpriteSheet({3, 3, imagesPath + "darkExplosion.png", sf::Vector2f({93.f, 93.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::mine, new SpriteSheet({1, 1, imagesPath + "mine.png", sf::Vector2f({256.f, 256.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::tree, new SpriteSheet({1, 1, imagesPath + "tree.png", sf::Vector2f({100.f, 100.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::soldierFeet, new SpriteSheet({6, 4, imagesPath + "soldierFeet.png", sf::Vector2f({124.f, 204.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::soldierMove, new SpriteSheet({5, 4, imagesPath + "soldierMove.png", sf::Vector2f({96.f, 150.f}), 0.96f}));
@@ -28,6 +28,7 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::soldierShoot, new SpriteSheet({3, 1, imagesPath + "soldierShoot.png", sf::Vector2f({95.f, 149.f}), 0.96f}));
     spriteSheets.insert_or_assign(SpriteNames::soldierGrenade, new SpriteSheet({4, 2, imagesPath + "soldierGrenade.png", sf::Vector2f({115.f, 149.f}), 0.96f}));
     spriteSheets.insert_or_assign(SpriteNames::grenade, new SpriteSheet({1, 1, imagesPath + "grenade.png", sf::Vector2f({256.f, 256.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::smoke, new SpriteSheet({5, 3, imagesPath + "smoke.png", sf::Vector2f({256.f, 256.f}), 1.f}));
 
     loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
     loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");

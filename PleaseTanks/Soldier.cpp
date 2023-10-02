@@ -10,10 +10,10 @@
 #include "Explosion.hpp"
 #include "Utils.hpp"
 
-Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f), feet(size/1.5f, 1, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), body(size, 2, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)), Health(100) {
+Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f), feet(size/1.5f, 1, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), soldierBody(size, 2, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)), Health(100) {
 
     feet.setPosition(&centerWorld, &rotation);
-    body.setPosition(&centerWorld, &rotation);
+    soldierBody.setPosition(&centerWorld, &rotation);
     translate(position, false);
 
     setSpeed(1.0);
@@ -50,7 +50,6 @@ bool Soldier::attackPrimary() {
     return fireRifle();
 }
 
-
 bool Soldier::attackSecondary() {
     return fireGrenade();
 }
@@ -66,12 +65,12 @@ bool Soldier::fireRifle() {
     
     new Projectile(pos, currentRotation, collisionMaskId, primaryWeapon);
     
-    body.setAnimation(Sprite(SpriteNames::soldierShoot, 0, 2, 100, false));
+    soldierBody.setAnimation(Sprite(SpriteNames::soldierShoot, 0, 2, 100, false));
     AssetManager::get()->playSound({SoundNames::rifleReload, 50.f, false}, audioPlayerId);
     if (primaryWeapon->isReloading()) {
-        body.addAnimation(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
+        soldierBody.addAnimation(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
     }
-    body.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
+    soldierBody.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
     return true;
 }
 bool Soldier::fireGrenade() {
@@ -81,13 +80,13 @@ bool Soldier::fireGrenade() {
     
     AssetManager::get()->playSound({SoundNames::grenadePinPull, 50.f, false}, audioPlayerId);
     
-    body.setAnimation(Sprite(SpriteNames::soldierGrenade, 0, 7, 80, false, false, [&](){
+    soldierBody.setAnimation(Sprite(SpriteNames::soldierGrenade, 0, 7, 80, false, false, [&](){
         float currentRotation = PhysicsBody::rotation();
         sf::Vector2f deltaPos = Utils::getVector(currentRotation + 23.f, maxRadius + 8.f);
         sf::Vector2f pos = centerWorld() + deltaPos;
         new Projectile(pos, currentRotation, collisionMaskId, secondaryWeapon);
     }));
-    body.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
+    soldierBody.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
     
     return true;
 }

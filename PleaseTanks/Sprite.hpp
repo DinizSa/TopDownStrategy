@@ -7,7 +7,7 @@
 
 #pragma once
 
-enum SpriteNames { tracks, hulls, guns, effects, effects2, shotEffect, mine, tree, soldierFeet, soldierMove, soldierReload, soldierShoot, soldierGrenade, grenade};
+enum SpriteNames { tracks, hulls, guns, effects, effects2, darkExplosion, mine, tree, soldierFeet, soldierMove, soldierReload, soldierShoot, soldierGrenade, grenade, smoke};
 
 struct Sprite {
     SpriteNames spriteName;
