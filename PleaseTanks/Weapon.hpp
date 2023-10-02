@@ -174,5 +174,7 @@ public:
         
         explosionSprite = std::make_unique<Sprite>(SpriteNames::effects, 21, 28, 80, false, true);
         explosionSound = std::make_unique<Sound>(SoundNames::shellExplosion, 100.f, false);
+        
+        addAmmunition(1, true);
     };
 };
