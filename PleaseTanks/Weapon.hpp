@@ -151,3 +151,28 @@ public:
         explosionSound = std::make_unique<Sound>(SoundNames::bigExplosion, 100.f, false);
     };
 };
+
+class MineAntiTank : public Weapon {
+public:
+    MineAntiTank() {
+        range = 0.f;
+        damage = 200.f;
+        penetration = 60.f;
+        rotation = 0.f;
+        reloadTimeSeconds = 0.f;
+        velocityScalar = 0.f;
+        zIndex = 1.f;
+        collisionDetonationSeconds = 0.f;
+        projectileImageSize = {45.f, 45.f};
+        projectilePhysicsSize = {40.f, 40.f};
+        explosionImageSize = {200.f, 200.f};
+        explosionPhysicsSize = {150.f, 150.f};
+        explodeOnMaxRange = true;
+        loseForceOnMaxRange = false;
+        
+        missileSprite = std::make_unique<Sprite>(SpriteNames::mine, 0, 0, 0, false);
+        
+        explosionSprite = std::make_unique<Sprite>(SpriteNames::effects, 21, 28, 80, false, true);
+        explosionSound = std::make_unique<Sound>(SoundNames::shellExplosion, 100.f, false);
+    };
+};

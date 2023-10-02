@@ -14,6 +14,7 @@
 #include "Soldier.hpp"
 #include "CombatUnit.hpp"
 #include "Configs.hpp"
+#include "Weapon.hpp"
 
 #define ASIO_STANDALONE
 #include <asio.hpp>
@@ -91,7 +92,9 @@ int main()
     int tilesColumn = 8;
     terrain.load("/Users/Shared/merda/PleaseTanks/images/grassTiled.png", sf::Vector2u(windowWidth/tilesRow, windowWidth/tilesColumn), terrainMap, tilesRow, tilesColumn);
     
-    new BasicMine({200.f, 600.f}, {40.f, 40.f});
+    auto mine = std::make_shared<Weapon>(MineAntiTank());
+    mine->addAmmunition(1, true);
+    new Projectile({200.f, 700.f}, 0.f, 0.f, mine);
     new Tree({120.f, 120.f}, {300.f, 350.f});
     new Tree({120.f, 120.f}, {450.f, 300.f});
     new Tree({130.f, 130.f}, {600.f, 350.f});

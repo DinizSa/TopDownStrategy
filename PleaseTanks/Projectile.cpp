@@ -20,8 +20,10 @@ Projectile::Projectile(sf::Vector2f position, float angleDegrees, int maskId, co
     setCollisionMaskId(maskId);
     
     translate(position, false);
-    sf::Vector2f velocity = Utils::getVector(angleDegrees, weapon->velocityScalar);
-    setVelocityAndRotate(velocity);
+    if (weapon->velocityScalar > 0.f) {
+        sf::Vector2f velocity = Utils::getVector(angleDegrees, weapon->velocityScalar);
+        setVelocityAndRotate(velocity);
+    }
     
     if (weapon->launchSound != nullptr)
         AssetManager::get()->playSound(*weapon->launchSound, audioPlayerId);
