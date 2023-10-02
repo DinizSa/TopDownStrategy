@@ -44,6 +44,7 @@ AssetManager::AssetManager() {
     loadSoundBuffer(SoundNames::grenadeExplosion, "grenadeExplosion.mp3");
     loadSoundBuffer(SoundNames::grenadePinPull, "grenadePinPull.mp3");
     loadSoundBuffer(SoundNames::grenadeThrow, "grenadeThrow.mp3");
+    loadSoundBuffer(SoundNames::bigExplosion, "bigExplosion.mp3");
 }
 void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& fileName) {
     const static std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";
@@ -72,7 +73,6 @@ SpriteSheet* AssetManager::getSprite(SpriteNames sprite) {
 }
 
 sf::Sound* AssetManager::getPlayingSound(SoundNames soundName, int audioPlayerId) {
-    sf::SoundBuffer* soundBuffer = soundBuffers.at(soundName);
     std::vector<sf::Sound*>& soundsFromId = soundsPool[audioPlayerId];
     for (auto sound : soundsFromId) {
         if (sound->getStatus() == sf::Sound::Playing) {

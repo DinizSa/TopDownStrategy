@@ -84,7 +84,7 @@ public:
         reloadTimeSeconds = 2.f;
         velocityScalar = 5.f;
         collisionDetonationSeconds = 0.f;
-        projectileImageSize = {50.f, 50.f};
+        projectileImageSize = {60.f, 60.f};
         projectilePhysicsSize = {5.f, 5.f};
         explosionImageSize = {80.f, 80.f};
         explosionPhysicsSize = {5.f, 5.f};
@@ -96,7 +96,7 @@ public:
         launchSound = std::make_unique<Sound>(SoundNames::rifle, 50.f, false);
         
         explosionSprite = std::make_unique<Sprite>(SpriteNames::effects2, 17, 19, 80, false, true);
-        explosionSound = std::make_unique<Sound>(SoundNames::bulletHitMetal, 50.f, false);
+        explosionSound = std::make_unique<Sound>(SoundNames::bulletHitMetal, 100.f, false);
     };
 };
 
@@ -105,7 +105,7 @@ public:
     Grenade() {
         range = 150.f;
         damage = 60.f;
-        penetration = 50.f;
+        penetration = 20.f;
         rotation = 0.4f;
         reloadTimeSeconds = 3.f;
         velocityScalar = 3.f;
@@ -123,5 +123,31 @@ public:
         
         explosionSprite = std::make_unique<Sprite>(SpriteNames::effects, 21, 28, 80, false, true);
         explosionSound = std::make_unique<Sound>(SoundNames::grenadeExplosion, 50.f, false);
+    };
+};
+
+class CannonHighExplosive : public Weapon {
+public:
+    CannonHighExplosive() {
+        range = 550.f;
+        damage = 120.f;
+        penetration = 20.f;
+        rotation = 0.f;
+        reloadTimeSeconds = 4.f;
+        velocityScalar = 7.f;
+        zIndex = 2.f;
+        collisionDetonationSeconds = 0.f;
+        projectileImageSize = {65.f, 65.f};
+        projectilePhysicsSize = {10.f, 10.f};
+        explosionImageSize = {200.f, 200.f};
+        explosionPhysicsSize = {150.f, 150.f};
+        explodeOnMaxRange = true;
+        loseForceOnMaxRange = false;
+        
+        missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
+        launchSound = std::make_unique<Sound>(SoundNames::tankGunBlast, 50.f, false);
+        
+        explosionSprite = std::make_unique<Sprite>(SpriteNames::effects, 21, 28, 80, false, true);
+        explosionSound = std::make_unique<Sound>(SoundNames::bigExplosion, 100.f, false);
     };
 };
