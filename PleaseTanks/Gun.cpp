@@ -22,8 +22,11 @@ Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     
     primaryWeapon = std::make_shared<Weapon>(CannonHighExplosive());
     primaryWeapon->addAmmunition(10, true);
-    secondaryWeapon = std::make_shared<Weapon>(Rifle());
-    secondaryWeapon->addAmmunition(10, true);
+    secondaryWeapon = std::make_shared<Weapon>(AutomaticRifle());
+    secondaryWeapon->addAmmunition(20, true);
+    secondaryWeapon->triggerAutomatic.subscribe(this, [&](int loadedAmmo){
+        attackSecondary();
+    });
     
     rotatingLocal.subscribe(this, [&](bool isRotating){
         if (isRotating) {

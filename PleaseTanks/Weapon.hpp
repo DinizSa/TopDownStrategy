@@ -8,6 +8,7 @@
 #pragma once
 #include "Configs.hpp"
 #include "Sound.hpp"
+#include "Observer.hpp"
 
 class Ammunition {
 private:
@@ -60,12 +61,13 @@ public:
     float range, damage, penetration, zIndex, velocityScalar, rotation, reloadTimeSeconds, shotsIntervalSeconds;
     float selfDetonationSeconds, collisionDetonationSeconds;
     sf::Vector2f projectileImageSize, projectilePhysicsSize, explosionImageSize, explosionPhysicsSize;
-    bool explodeOnMaxRange, loseForceOnMaxRange;
+    bool explodeOnMaxRange, loseForceOnMaxRange, automatic;
+    Subject<int> triggerAutomatic;
     
     std::unique_ptr<Sprite> missileSprite, explosionSprite;
     std::unique_ptr<Sound> launchSound, explosionSound;
     
-    Weapon(int maxLoad): Ammunition(0, maxLoad), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), readyFromReload(true), readyFromShot(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f), shotsIntervalSeconds(0) {};
+    Weapon(int maxLoad): Ammunition(0, maxLoad), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), readyFromReload(true), readyFromShot(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f), shotsIntervalSeconds(0), automatic(false) {};
     bool fire() {
         if (readyFromShot && readyFromReload && Ammunition::consume()) {
             secondsSinceShot = 0.f;
@@ -95,6 +97,11 @@ public:
             secondsSinceShot += 1.f/CONFIGS::FPS;
             if (!readyFromShot && secondsSinceShot >= shotsIntervalSeconds) {
                 readyFromShot = true;
+                
+                if (automatic) {
+                    triggerAutomatic = loadedAmmo();
+                    triggerAutomatic.notify();
+                }
             }
         }
     };
@@ -103,7 +110,7 @@ public:
 class Rifle : public Weapon {
 public:
     Rifle(): Weapon(3) {
-        reloadTimeSeconds = 3.f;
+        reloadTimeSeconds = 2.f;
         shotsIntervalSeconds = 1.f;
         range = 250.f;
         damage = 30.f;
@@ -211,7 +218,8 @@ public:
         range = 200.f;
         damage = 20.f;
         penetration = 4.f;
-        reloadTimeSeconds = 0.5f;
+        reloadTimeSeconds = 2.0f;
+        shotsIntervalSeconds = 0.3;
         velocityScalar = 6.f;
         collisionDetonationSeconds = 0.f;
         projectileImageSize = {50.f, 50.f};
@@ -221,7 +229,7 @@ public:
         explodeOnMaxRange = false;
         loseForceOnMaxRange = true;
         zIndex = 2.f;
-        shotsIntervalSeconds = 0.3;
+        automatic = true;
         
         missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
         launchSound = std::make_unique<Sound>(SoundNames::rifle, 50.f, false);

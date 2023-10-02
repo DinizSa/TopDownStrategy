@@ -27,3 +27,4 @@ template <class T> void Subject<T>::notify() {
 template class Subject<float>;
 template class Subject<sf::Vector2f>;
 template class Subject<bool>;
+template class Subject<int>;
