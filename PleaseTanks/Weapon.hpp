@@ -11,11 +11,10 @@
 
 class Ammunition {
 private:
-    int stored;
-    int loaded;
+    int stored, loaded, maxLoad;
     
 public:
-    Ammunition(int amount): stored(amount), loaded(0) {
+    Ammunition(int amount, int maxLoad): stored(amount), loaded(0), maxLoad(maxLoad) {
         reload();
     };
 protected:
@@ -23,17 +22,25 @@ protected:
         if (stored == 0)
             return false;
         
-        stored--;
-        loaded++;
+        int amountMissing = maxLoad - loaded;
+        int amountToReload = std::min(stored, amountMissing);
+        stored -= amountToReload;
+        loaded += amountToReload;
         return true;
     };
     bool consume() {
         if (loaded == 0)
             return false;
-
+        
         loaded--;
         return true;
     };
+    bool loadedAmmo() {
+        return loaded;
+    }
+    bool storedAmmo() {
+        return stored;
+    }
 public:
     void addAmmunition(int amount, bool loadBullet) {
         stored += amount;
@@ -46,10 +53,11 @@ public:
 
 class Weapon : public Ammunition {
 private:
-    float secondsSinceShot;
-    bool recharged;
+    float secondsSinceShot, secondsSinceEmpty;
+    bool readyFromReload, readyFromShot;
 public:
-    float range, damage, penetration, reloadTimeSeconds, zIndex, velocityScalar, rotation;
+    int amountShots;
+    float range, damage, penetration, zIndex, velocityScalar, rotation, reloadTimeSeconds, shotsIntervalSeconds;
     float selfDetonationSeconds, collisionDetonationSeconds;
     sf::Vector2f projectileImageSize, projectilePhysicsSize, explosionImageSize, explosionPhysicsSize;
     bool explodeOnMaxRange, loseForceOnMaxRange;
@@ -57,31 +65,49 @@ public:
     std::unique_ptr<Sprite> missileSprite, explosionSprite;
     std::unique_ptr<Sound> launchSound, explosionSound;
     
-    Weapon(): Ammunition(0), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), recharged(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f) {};
+    Weapon(int maxLoad): Ammunition(0, maxLoad), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), readyFromReload(true), readyFromShot(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f), shotsIntervalSeconds(0) {};
     bool fire() {
-        if (recharged && consume()) {
+        if (readyFromShot && readyFromReload && Ammunition::consume()) {
             secondsSinceShot = 0.f;
-            recharged = false;
+            readyFromShot = shotsIntervalSeconds == 0;
+            if (reloadTimeSeconds > 0 && loadedAmmo() == 0) {
+                secondsSinceEmpty = 0.f;
+                readyFromReload = false;
+            }
+            if (loadedAmmo() == 0) {
+                reload();
+            }
             return true;
         }
         return false;
     };
+    bool isReloading() {
+        return !readyFromReload && storedAmmo() > 0;
+    }
     void updateReloadTimer() {
-        secondsSinceShot += 1.f/CONFIGS::FPS;
-        if (!recharged && secondsSinceShot >= reloadTimeSeconds) {
-            reload();
-            recharged = true;
+        
+        secondsSinceEmpty += 1.f/CONFIGS::FPS;
+        if (!readyFromReload && secondsSinceEmpty > reloadTimeSeconds) {
+            readyFromReload = true;
+        }
+            
+        if (shotsIntervalSeconds > 0) {
+            secondsSinceShot += 1.f/CONFIGS::FPS;
+            if (!readyFromShot && secondsSinceShot >= shotsIntervalSeconds) {
+                readyFromShot = true;
+            }
         }
     };
 };
 
 class Rifle : public Weapon {
 public:
-    Rifle() {
+    Rifle(): Weapon(3) {
+        reloadTimeSeconds = 3.f;
+        shotsIntervalSeconds = 1.f;
         range = 250.f;
         damage = 30.f;
         penetration = 5.f;
-        reloadTimeSeconds = 2.f;
         velocityScalar = 5.f;
         collisionDetonationSeconds = 0.f;
         projectileImageSize = {50.f, 50.f};
@@ -102,7 +128,7 @@ public:
 
 class Grenade : public Weapon {
 public:
-    Grenade() {
+    Grenade(): Weapon(1) {
         range = 150.f;
         damage = 60.f;
         penetration = 20.f;
@@ -128,7 +154,7 @@ public:
 
 class CannonHighExplosive : public Weapon {
 public:
-    CannonHighExplosive() {
+    CannonHighExplosive(): Weapon(1) {
         range = 550.f;
         damage = 120.f;
         penetration = 20.f;
@@ -154,7 +180,7 @@ public:
 
 class MineAntiTank : public Weapon {
 public:
-    MineAntiTank() {
+    MineAntiTank(): Weapon(1) {
         range = 0.f;
         damage = 200.f;
         penetration = 60.f;
@@ -176,5 +202,31 @@ public:
         explosionSound = std::make_unique<Sound>(SoundNames::shellExplosion, 100.f, false);
         
         addAmmunition(1, true);
+    };
+};
+
+class AutomaticRifle : public Weapon {
+public:
+    AutomaticRifle(): Weapon(5) {
+        range = 200.f;
+        damage = 20.f;
+        penetration = 4.f;
+        reloadTimeSeconds = 0.5f;
+        velocityScalar = 6.f;
+        collisionDetonationSeconds = 0.f;
+        projectileImageSize = {50.f, 50.f};
+        projectilePhysicsSize = {5.f, 5.f};
+        explosionImageSize = {50.f, 50.f};
+        explosionPhysicsSize = {5.f, 5.f};
+        explodeOnMaxRange = false;
+        loseForceOnMaxRange = true;
+        zIndex = 2.f;
+        shotsIntervalSeconds = 0.3;
+        
+        missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
+        launchSound = std::make_unique<Sound>(SoundNames::rifle, 50.f, false);
+        
+        explosionSprite = std::make_unique<Sprite>(SpriteNames::effects2, 17, 19, 80, false, true);
+        explosionSound = std::make_unique<Sound>(SoundNames::bulletHitMetal, 100.f, false);
     };
 };

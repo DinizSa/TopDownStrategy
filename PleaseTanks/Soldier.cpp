@@ -32,9 +32,9 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     });
     
     primaryWeapon = std::make_shared<Weapon>(Rifle());
-    primaryWeapon->addAmmunition(5, true);
+    primaryWeapon->addAmmunition(8, true);
     secondaryWeapon = std::make_shared<Weapon>(Grenade());
-    secondaryWeapon->addAmmunition(5, true);
+    secondaryWeapon->addAmmunition(8, true);
 }
 Soldier::~Soldier() {}
 
@@ -59,18 +59,19 @@ bool Soldier::fireRifle() {
     bool canAttack = primaryWeapon->fire();
     if (!canAttack)
         return false;
-
-    body.setAnimation(Sprite(SpriteNames::soldierShoot, 0, 2, 100, false));
-    body.addAnimation(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
-    body.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
-    
-    AssetManager::get()->playSound({SoundNames::rifleReload, 50.f, false}, audioPlayerId);
     
     float currentRotation = PhysicsBody::rotation();
     sf::Vector2f deltaPos = Utils::getVector(currentRotation + 23.f, maxRadius + 8.f);
     sf::Vector2f pos = centerWorld() + deltaPos;
     
     new Projectile(pos, currentRotation, collisionMaskId, primaryWeapon);
+    
+    body.setAnimation(Sprite(SpriteNames::soldierShoot, 0, 2, 100, false));
+    AssetManager::get()->playSound({SoundNames::rifleReload, 50.f, false}, audioPlayerId);
+    if (primaryWeapon->isReloading()) {
+        body.addAnimation(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
+    }
+    body.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
     return true;
 }
 bool Soldier::fireGrenade() {
