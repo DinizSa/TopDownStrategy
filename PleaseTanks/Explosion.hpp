@@ -12,27 +12,27 @@
 #include "PhysicsBody.hpp"
 #include "AutoSprite.hpp"
 #include "AudioPlayer.hpp"
+#include "Weapon.hpp"
 
 class Explosion : public PhysicsBody, public AutoSprite, protected AudioPlayer {
 protected:
-    int damage;
-//    AutoSprite* asset;
+    float damage;
 public:
-    Explosion(sf::Vector2f size, sf::Vector2f physicsBodySize, sf::Vector2f position, int collisionMaskId, Sprite sprite, int damage);
+    Explosion(sf::Vector2f position, int collisionMaskId, const std::shared_ptr<Weapon> weapon);
     ~Explosion();
 };
 
-class FireExplosion : public Explosion {
-public:
-    FireExplosion(sf::Vector2f size, sf::Vector2f position, int collisionMaskId);
-};
-
-class LaunchExplosion : public Explosion {
-public:
-    LaunchExplosion(sf::Vector2f size, sf::Vector2f pozition);
-};
-
-class BulletExplosion : public Explosion {
-public:
-    BulletExplosion(sf::Vector2f size, sf::Vector2f pozition, int collisionMaskId);
-};
+//class FireExplosion : public Explosion {
+//public:
+//    FireExplosion(sf::Vector2f size, sf::Vector2f position, int collisionMaskId, float damage);
+//};
+//
+//class LaunchExplosion : public Explosion {
+//public:
+//    LaunchExplosion(sf::Vector2f size, sf::Vector2f pozition);
+//};
+//
+//class BulletExplosion : public Explosion {
+//public:
+//    BulletExplosion(sf::Vector2f size, sf::Vector2f pozition, int collisionMaskId, float damage);
+//};

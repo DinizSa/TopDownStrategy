@@ -20,7 +20,7 @@ Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
     setAngularSpeed(2.f);
     
-    primaryWeapon = std::make_unique<Weapon>(200.f, 20.f, 5.f, 4.f, 3);
+    primaryWeapon = std::make_shared<Weapon>(Rifle());
     
     rotatingLocal.subscribe(this, [&](bool isRotating){
         if (isRotating) {
@@ -37,18 +37,18 @@ Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
 }
 
 bool Gun::attack() {
-    bool fired = primaryWeapon->fire();
-    if (!fired)
-        return false;
-    
-    float currentRotation = PhysicsBody::rotation();
-    float radius = body.width > body.height ? body.width : body.height;
-    sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
-    sf::Vector2f pos = centerWorld() + deltaPos;
-    
-    new FireProjectile(pos, currentRotation, collisionMaskId);
-    new LaunchExplosion({50.f, 50.f}, pos);
-    
+//    bool fired = primaryWeapon->fire();
+//    if (!fired)
+//        return false;
+//
+//    float currentRotation = PhysicsBody::rotation();
+//    float radius = body.width > body.height ? body.width : body.height;
+//    sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
+//    sf::Vector2f pos = centerWorld() + deltaPos;
+//
+//    new FireProjectile(pos, currentRotation, collisionMaskId);
+//    new LaunchExplosion({50.f, 50.f}, pos);
+//
     return true;
 }
 

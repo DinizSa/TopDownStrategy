@@ -23,9 +23,11 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::mine, new SpriteSheet({1, 1, imagesPath + "mine.png", sf::Vector2f({800.f, 800.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::tree, new SpriteSheet({1, 1, imagesPath + "tree.png", sf::Vector2f({100.f, 100.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::soldierFeet, new SpriteSheet({6, 4, imagesPath + "soldierFeet.png", sf::Vector2f({124.f, 204.f}), 1.f}));
-    spriteSheets.insert_or_assign(SpriteNames::soldierMove, new SpriteSheet({5, 4, imagesPath + "soldierMove.png", sf::Vector2f({96.f, 150.f}), 0.95f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierMove, new SpriteSheet({5, 4, imagesPath + "soldierMove.png", sf::Vector2f({96.f, 150.f}), 0.96f}));
     spriteSheets.insert_or_assign(SpriteNames::soldierReload, new SpriteSheet({5, 4, imagesPath + "soldierReload.png", sf::Vector2f({101.f, 154.f}), 1.f}));
-    spriteSheets.insert_or_assign(SpriteNames::soldierShoot, new SpriteSheet({3, 1, imagesPath + "soldierShoot.png", sf::Vector2f({103.f, 156.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierShoot, new SpriteSheet({3, 1, imagesPath + "soldierShoot.png", sf::Vector2f({95.f, 149.f}), 0.96f}));
+    spriteSheets.insert_or_assign(SpriteNames::soldierGrenade, new SpriteSheet({4, 2, imagesPath + "soldierGrenade.png", sf::Vector2f({115.f, 149.f}), 0.96f}));
+    spriteSheets.insert_or_assign(SpriteNames::grenade, new SpriteSheet({1, 1, imagesPath + "grenade.png", sf::Vector2f({256.f, 256.f}), 1.f}));
 
     loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
     loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");
@@ -39,6 +41,8 @@ AssetManager::AssetManager() {
     loadSoundBuffer(SoundNames::rifle, "rifle.mp3");
     loadSoundBuffer(SoundNames::bulletHitMetal, "bulletHitMetal.mp3");
     loadSoundBuffer(SoundNames::rifleReload, "rifleReload.mp3");
+    loadSoundBuffer(SoundNames::grenadeExplosion, "grenadeExplosion.mp3");
+    loadSoundBuffer(SoundNames::grenadePinPull, "grenadePinPull.mp3");
 }
 void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& fileName) {
     const static std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";
@@ -53,7 +57,7 @@ AssetManager::~AssetManager() {
     for (auto& sprite : spriteSheets) {
         delete sprite.second;
     }
-    for (auto soundPair : sounds) {
+    for (auto soundPair : soundsPool) {
         for (auto sound : soundPair.second) {
             delete sound;
         }
@@ -68,7 +72,7 @@ SpriteSheet* AssetManager::getSprite(SpriteNames sprite) {
 
 sf::Sound* AssetManager::getPlayingSound(SoundNames soundName, int audioPlayerId) {
     sf::SoundBuffer* soundBuffer = soundBuffers.at(soundName);
-    std::vector<sf::Sound*>& soundsFromId = sounds[audioPlayerId];
+    std::vector<sf::Sound*>& soundsFromId = soundsPool[audioPlayerId];
     for (auto sound : soundsFromId) {
         if (sound->getStatus() == sf::Sound::Playing) {
             return sound;
@@ -79,7 +83,7 @@ sf::Sound* AssetManager::getPlayingSound(SoundNames soundName, int audioPlayerId
 
 sf::Sound* AssetManager::playSound(SoundNames soundName, int audioPlayerId) {
     sf::SoundBuffer* soundBuffer = soundBuffers.at(soundName);
-    std::vector<sf::Sound*>& soundsFromId = sounds[audioPlayerId];
+    std::vector<sf::Sound*>& soundsFromId = soundsPool[audioPlayerId];
     for (auto sound : soundsFromId) {
         if (sound->getStatus() == sf::Sound::Stopped) {
             if (sound->getBuffer() != soundBuffer) {
@@ -99,7 +103,7 @@ sf::Sound* AssetManager::playSound(SoundNames soundName, int audioPlayerId) {
 
 void AssetManager::stopSound(SoundNames soundName, int audioPlayerId) {
     sf::SoundBuffer* soundBuffer = soundBuffers.at(soundName);
-    std::vector<sf::Sound*>& soundsFromId = sounds[audioPlayerId];
+    std::vector<sf::Sound*>& soundsFromId = soundsPool[audioPlayerId];
     for (auto sound : soundsFromId) {
         if (sound->getStatus() == sf::Sound::Playing) {
             if (sound->getBuffer() == soundBuffer) {

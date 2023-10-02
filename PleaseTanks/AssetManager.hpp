@@ -13,8 +13,7 @@
 #include <vector>
 
 #include "SpriteSheet.hpp"
-
-enum SoundNames { movingTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop, shellExplosion, tankShot, idleTank, tankGunBlast, rifle, bulletHitMetal, rifleReload, grenadeExplosion, grenadePinPull };
+#include "Sound.hpp"
 
 class AssetManager {
 private:

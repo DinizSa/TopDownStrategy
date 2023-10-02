@@ -20,8 +20,8 @@ class Soldier : public PhysicsBody, public CombatUnit, private Observer, private
 private:
     AutoSprite feet;
     AutoSprite body;
-    std::unique_ptr<Weapon> primaryWeapon;
-    std::unique_ptr<Weapon> secondaryWeapon;
+    std::shared_ptr<Weapon> primaryWeapon;
+    std::shared_ptr<Weapon> secondaryWeapon;
     
     bool fireRifle();
     bool fireGrenade();

@@ -11,33 +11,16 @@
 
 #include "AutoSprite.hpp"
 
-std::vector<AutoSprite*> AutoSprite::autoSprites;
-
-void AutoSprite::addAutoSprite(AutoSprite* autoSprite) {
-    AutoSprite::autoSprites.push_back(autoSprite);
-}
-void AutoSprite::removeAutoSprite(AutoSprite* autoSprite) {
-    AutoSprite::autoSprites.erase(std::remove(AutoSprite::autoSprites.begin(), AutoSprite::autoSprites.end(), autoSprite), AutoSprite::autoSprites.end());
-}
-void AutoSprite::updateAutoSprites() {
-    for (auto it = AutoSprite::autoSprites.begin(); it != AutoSprite::autoSprites.end();) {
-        AutoSprite* autoSprite = *it;
-        if (autoSprite->isDirty()) {
-            delete autoSprite;
-        } else {
-            it++;
-        }
-    }
-}
-
 AutoSprite::AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite): Drawable(size, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0)), dirty(false)
 {
-    spriteAnimationStart = clock::now();
-    
-    AutoSprite::addAutoSprite(this);
+    start();
 }
 AutoSprite::~AutoSprite() {
     AutoSprite::removeAutoSprite(this);
+}
+void AutoSprite::start() {
+    spriteAnimationStart = clock::now();
+    AutoSprite::addAutoSprite(this);
 }
 void AutoSprite::updateSprite(Sprite newSprite) {
     updateTexture(newSprite.spriteName, newSprite.minIndex);
@@ -52,6 +35,9 @@ void AutoSprite::setNextSprite() {
         } else if (sprite.singleImageDurationMs > 0) {
             sprite.endCallback();
             setNextAnimation();
+            if (sprite.cleanupOnFinish) {
+                dirty = true;
+            }
             return;
         } else {
             currentSpriteIndex = sprite.minIndex;
@@ -96,5 +82,25 @@ void AutoSprite::setNextAnimation() {
     }
     if (spritesQueue.size() > 0) {
         updateSprite(spritesQueue.front());
+    }
+}
+
+
+std::vector<AutoSprite*> AutoSprite::autoSprites;
+
+void AutoSprite::addAutoSprite(AutoSprite* autoSprite) {
+    AutoSprite::autoSprites.push_back(autoSprite);
+}
+void AutoSprite::removeAutoSprite(AutoSprite* autoSprite) {
+    AutoSprite::autoSprites.erase(std::remove(AutoSprite::autoSprites.begin(), AutoSprite::autoSprites.end(), autoSprite), AutoSprite::autoSprites.end());
+}
+void AutoSprite::updateAutoSprites() {
+    for (auto it = AutoSprite::autoSprites.begin(); it != AutoSprite::autoSprites.end();) {
+        AutoSprite* autoSprite = *it;
+        if (autoSprite->isDirty()) {
+            delete autoSprite;
+        } else {
+            it++;
+        }
     }
 }

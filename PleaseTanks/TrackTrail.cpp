@@ -7,9 +7,10 @@
 
 #include "TrackTrail.hpp"
 #include "Utils.hpp"
+#include "Configs.hpp"
 
 TrackTrail::TrackTrail(sf::Vector2f size, int spriteIndex, sf::Vector2f position, float rotation) :
-AutoSprite(size, 0.f, {SpriteNames::effects2, 21, 21, 5000, false}), currentOpacity(155.f), deltaOpacity(currentOpacity/(60*(sprite.singleImageDurationMs/1000)))
+AutoSprite(size, 0.f, {SpriteNames::effects2, 21, 21, 5000, false}), currentOpacity(155.f), deltaOpacity(currentOpacity/(CONFIGS::FPS * (sprite.singleImageDurationMs/1000)))
 {
     setOpacity(currentOpacity);
     setPosition(position, rotation);

@@ -13,6 +13,7 @@
 #include "Utils.hpp"
 #include "Soldier.hpp"
 #include "CombatUnit.hpp"
+#include "Configs.hpp"
 
 #define ASIO_STANDALONE
 #include <asio.hpp>
@@ -33,6 +34,7 @@ int main()
         std::cout << "Error connecting: " << ec.message() << " \n";
     }
     
+    int fps = CONFIGS::FPS;
     int windowWidth = 1200;
     int windowHeight = 800;
     sf::Vector2f windowDimensions = {(float)windowWidth, (float)windowHeight };
@@ -67,7 +69,6 @@ int main()
     framesText.setPosition(50.f, 50.f);
     framesText.setFillColor(sf::Color(255, 0, 0));
     int frames = 0;
-    const int fps = 60;
     const int secondsMs = pow(10, 3);
     
     using clock = std::chrono::steady_clock;

@@ -19,13 +19,6 @@ class AutoSprite : public Drawable {
     using clock = std::chrono::steady_clock;
     
 private:
-    static std::vector<AutoSprite*> autoSprites;
-public:
-    static void addAutoSprite(AutoSprite* autoSprite);
-    static void removeAutoSprite(AutoSprite* autoSprite);
-    static void updateAutoSprites();
-    
-private:
     std::deque<Sprite> spritesQueue;
 protected:
     bool dirty;
@@ -33,6 +26,9 @@ protected:
 private:
     std::chrono::time_point<clock> spriteAnimationStart;
 
+public:
+    AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite);
+    virtual ~AutoSprite();
 private:
     void setSingleSpriteSize(const sf::Vector2f& size);
     void updateSpriteAnimation();
@@ -45,8 +41,16 @@ protected:
     bool isDirty();
 
 public:
-    AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite);
-    virtual ~AutoSprite();
     void addAnimation(Sprite sprite);
     void setAnimation(Sprite sprite);
+    void start();
+    
+    
+    
+private:
+    static std::vector<AutoSprite*> autoSprites;
+public:
+    static void addAutoSprite(AutoSprite* autoSprite);
+    static void removeAutoSprite(AutoSprite* autoSprite);
+    static void updateAutoSprites();
 };

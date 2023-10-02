@@ -7,15 +7,12 @@
 
 #pragma once
 
-enum SpriteNames { tracks, hulls, guns, effects, effects2, shotEffect, mine, tree, soldierFeet, soldierMove, soldierReload, soldierShoot, soldierGrenade, grenade};
+enum SoundNames { movingTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop, shellExplosion, tankShot, idleTank, tankGunBlast, rifle, bulletHitMetal, rifleReload, grenadeExplosion, grenadePinPull };
 
-struct Sprite {
-    SpriteNames spriteName;
-    int minIndex;
-    int maxIndex;
-    int singleImageDurationMs;
+struct Sound {
+    SoundNames name;
+    float volume;
     bool loop;
-    std::function<void()> endCallback;
     
-    Sprite(SpriteNames spriteName, int minIndex, int maxIndex, int singleImageDurationMs, bool loop, std::function<void()> endCallback = [](){}): spriteName(spriteName), minIndex(minIndex), maxIndex(maxIndex), singleImageDurationMs(singleImageDurationMs), loop(loop), endCallback(endCallback) {};
+    Sound(SoundNames name, float volume, bool loop): name(name), volume(volume), loop(loop) {}
 };

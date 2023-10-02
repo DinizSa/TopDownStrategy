@@ -18,8 +18,8 @@
 class Gun : public PhysicsBody, public Drawable, private Health, public CombatUnit, private AudioPlayer {
 private:
     void rotateGun(float speed);
-    std::unique_ptr<Weapon> primaryWeapon;
-    std::unique_ptr<Weapon> secondaryWeapon;
+    std::shared_ptr<Weapon> primaryWeapon;
+    std::shared_ptr<Weapon> secondaryWeapon;
 public:
     Gun(sf::Vector2f size, int spriteIndex);
     bool attack() override;
