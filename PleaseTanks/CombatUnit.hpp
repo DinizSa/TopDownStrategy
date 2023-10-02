@@ -10,5 +10,6 @@
 class CombatUnit {
 public:
     virtual void receiveDamage(int damage) {};
-    virtual bool attack() {return false;};
+    virtual bool attackPrimary() {return false;};
+    virtual bool attackSecondary() {return false;};
 };

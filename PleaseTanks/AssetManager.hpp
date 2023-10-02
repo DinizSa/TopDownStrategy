@@ -33,6 +33,7 @@ private:
 public:
     static AssetManager* get();
     SpriteSheet* getSprite(SpriteNames spriteSheet);
+    sf::Sound* playSound(Sound sound, int audioPlayerId);
     sf::Sound* playSound(SoundNames soundName, int audioPlayerId);
     void stopSound(SoundNames soundName, int audioPlayerId);
     sf::Sound* getPlayingSound(SoundNames soundName, int audioPlayerId);

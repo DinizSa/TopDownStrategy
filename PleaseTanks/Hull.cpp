@@ -26,16 +26,14 @@ Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
         exhaustPosition.notify();
     });
     
-    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::movingTank, audioPlayerId);
-    sound->setVolume(20.f);
-    sound->setLoop(true);
+    sf::Sound* sound = AssetManager::get()->playSound({SoundNames::movingTank, 10.f, true}, audioPlayerId);
     
     moving.subscribe(exhaust, [&](bool isMoving) {
         sf::Sound* sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
         if (isMoving) {
-            sound->setVolume(100.f);
+            sound->setVolume(80.f);
         } else {
-            sound->setVolume(20.f);
+            sound->setVolume(10.f);
         }
     });
 }

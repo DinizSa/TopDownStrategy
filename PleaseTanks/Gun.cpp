@@ -24,19 +24,18 @@ Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     
     rotatingLocal.subscribe(this, [&](bool isRotating){
         if (isRotating) {
-            sf::Sound* soundMoving = AssetManager::get()->playSound(SoundNames::rotationGun, audioPlayerId);
-            soundMoving->setLoop(true);
-            soundMoving->setVolume(40.f);
+            AssetManager::get()->playSound({SoundNames::rotationGun, 40.f, true}, audioPlayerId);
         } else {
             AssetManager::get()->stopSound(SoundNames::rotationGun, audioPlayerId);
-            auto gunStopSound = AssetManager::get()->playSound(SoundNames::rotationGunStop, audioPlayerId);
-            gunStopSound->setLoop(false);
-            gunStopSound->setVolume(5.f);
+            AssetManager::get()->playSound({SoundNames::rotationGunStop, 5.f, false}, audioPlayerId);
         }
     });
 }
 
-bool Gun::attack() {
+bool Gun::attackPrimary() {
+    return true;
+}
+bool Gun::attackSecondary() {
 //    bool fired = primaryWeapon->fire();
 //    if (!fired)
 //        return false;

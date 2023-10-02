@@ -34,8 +34,10 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     primaryWeapon = std::make_shared<Weapon>(Rifle());
     primaryWeapon->addAmmunition(5, true);
     secondaryWeapon = std::make_shared<Weapon>(Grenade());
+    secondaryWeapon->addAmmunition(5, true);
 }
 Soldier::~Soldier() {}
+
 void Soldier::update() {
     PhysicsBody::update();
     if (primaryWeapon != nullptr)
@@ -44,30 +46,31 @@ void Soldier::update() {
         secondaryWeapon->updateReloadTimer();
 }
 
-bool Soldier::attack() {
+bool Soldier::attackPrimary() {
     return fireRifle();
+}
+
+
+bool Soldier::attackSecondary() {
+    return fireGrenade();
 }
 
 bool Soldier::fireRifle() {
     bool canAttack = primaryWeapon->fire();
     if (!canAttack)
         return false;
+
     body.setAnimation(Sprite(SpriteNames::soldierShoot, 0, 2, 100, false));
     body.addAnimation(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
     body.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
     
-//    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::rifleReload, audioPlayerId);
-//    sound->setLoop(false);
-//    sound->setVolume(50.f);
+    AssetManager::get()->playSound({SoundNames::rifleReload, 50.f, false}, audioPlayerId);
     
     float currentRotation = PhysicsBody::rotation();
     sf::Vector2f deltaPos = Utils::getVector(currentRotation + 23.f, maxRadius + 8.f);
     sf::Vector2f pos = centerWorld() + deltaPos;
     
     new Projectile(pos, currentRotation, collisionMaskId, primaryWeapon);
-//    new LaunchExplosion({20.f, 20.f}, pos);
-//    new BulletProjectile(pos, currentRotation, collisionMaskId);
-//    new LaunchExplosion({20.f, 20.f}, pos);
     return true;
 }
 bool Soldier::fireGrenade() {
@@ -75,15 +78,13 @@ bool Soldier::fireGrenade() {
     if (!canAttack)
         return false;
     
-    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::grenadePinPull, audioPlayerId);
-    sound->setLoop(false);
-    sound->setVolume(100.f);
+    AssetManager::get()->playSound({SoundNames::grenadePinPull, 50.f, false}, audioPlayerId);
     
-    body.setAnimation(Sprite(SpriteNames::soldierGrenade, 0, 7, 100, false, false, [&](){
+    body.setAnimation(Sprite(SpriteNames::soldierGrenade, 0, 7, 80, false, false, [&](){
         float currentRotation = PhysicsBody::rotation();
         sf::Vector2f deltaPos = Utils::getVector(currentRotation + 23.f, maxRadius + 8.f);
         sf::Vector2f pos = centerWorld() + deltaPos;
-//        new GrenadeProjectile(pos, currentRotation, collisionMaskId, *primaryWeapon);
+        new Projectile(pos, currentRotation, collisionMaskId, secondaryWeapon);
     }));
     body.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
     

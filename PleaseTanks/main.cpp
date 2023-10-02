@@ -52,7 +52,7 @@ int main()
     Soldier soldier = Soldier(sizeSoldier, positionSolider);
     
     
-    PhysicsBody* selectedBody = &soldier;
+    PhysicsBody* selectedBody = &tank;
     
     bool forwardPressed = false;
     bool turnClockPressed = false;
@@ -74,11 +74,6 @@ int main()
     using clock = std::chrono::steady_clock;
     
     std::chrono::time_point<clock> next_frame = clock::now();
-    
-//    sf::Vector2f velocity = {0.5f, 0.2f};
-//    tank2.setVelocity(velocity);
-    
-//    PhysicsBody* selectedBody = &tank;
     
     const int terrainMap[] =
     {
@@ -145,9 +140,14 @@ int main()
                     case sf::Keyboard::Scan::Q:
                         turnAnticlockGunPressed = true;
                         break;
-                    case sf::Keyboard::Scan::Space:
+                    case sf::Keyboard::Scan::N:
                         if (dynamic_cast<CombatUnit*>(selectedBody) != nullptr) {
-                            dynamic_cast<CombatUnit*>(selectedBody)->attack();
+                            dynamic_cast<CombatUnit*>(selectedBody)->attackPrimary();
+                        }
+                        break;
+                    case sf::Keyboard::Scan::M:
+                        if (dynamic_cast<CombatUnit*>(selectedBody) != nullptr) {
+                            dynamic_cast<CombatUnit*>(selectedBody)->attackSecondary();
                         }
                         break;
                     default:

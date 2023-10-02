@@ -29,5 +29,6 @@ public:
     Soldier(sf::Vector2f size, sf::Vector2f position);
     ~Soldier();
     void update() override;
-    bool attack() override;
+    bool attackPrimary() override;
+    bool attackSecondary() override;
 };

@@ -35,14 +35,14 @@ Tank::Tank(sf::Vector2f size, sf::Vector2f position): PhysicsBody({size.x * (6.f
     trackA.translate(position - deltaTracks, isTravel);
     trackB.translate(position + deltaTracks, isTravel);
 }
-bool Tank::attack() {
-    if (!gun.attack())
-        return false;
-    
-    bool gunAlignedWithHull = fabs(hull.getRotation() - gun.getRotation()) < 90;
-    gunAlignedWithHull ? translateBack() : translateFront();
-    
-    return true;
+bool Tank::attackPrimary() {
+    return gun.attackPrimary();
+}
+bool Tank::attackSecondary() {
+    return gun.attackSecondary();
+//    bool gunAlignedWithHull = fabs(hull.getRotation() - gun.getRotation()) < 90;
+//    gunAlignedWithHull ? translateBack() : translateFront();
+//    return true;
 }
 void Tank::rotateGunClock() {
     gun.rotateClock();

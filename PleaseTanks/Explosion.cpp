@@ -33,17 +33,3 @@ PhysicsBody(weapon->explosionPhysicsSize), AutoSprite(weapon->explosionImageSize
 }
 Explosion::~Explosion() {
 }
-//
-//FireExplosion::FireExplosion(sf::Vector2f size, sf::Vector2f position, int collisionMaskId, float damage):
-//    Explosion(size, size/2.f, position, collisionMaskId, {SpriteNames::effects, 21, 28, 80, false, [&](){dirty = true;}}, damage)
-//{
-//    sf::Sound* sound = AssetManager::get()->playSound(SoundNames::shellExplosion, audioPlayerId);
-//    sound->setLoop(false);
-//}
-//LaunchExplosion::LaunchExplosion(sf::Vector2f size, sf::Vector2f position):
-//    Explosion(size, {0.f, 0.f}, position, 0, {SpriteNames::shotEffect, 0, 5, 80, false, [&](){dirty = true;}}, 0)
-//{}
-//
-//BulletExplosion::BulletExplosion(sf::Vector2f size, sf::Vector2f position, int maskId, float damage):
-//    Explosion(size, {5.f, 5.f}, position, maskId, {SpriteNames::effects2, 17, 19, 80, false, [&](){dirty = true;}}, damage)
-//{}

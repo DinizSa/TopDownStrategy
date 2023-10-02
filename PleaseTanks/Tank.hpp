@@ -30,5 +30,6 @@ public:
     bool translate(sf::Vector2f delta, bool isTravel = true) override;
     bool rotate(float degrees) override;
     
-    bool attack() override;
+    bool attackPrimary() override;
+    bool attackSecondary() override;
 };

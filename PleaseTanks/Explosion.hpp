@@ -21,18 +21,3 @@ public:
     Explosion(sf::Vector2f position, int collisionMaskId, const std::shared_ptr<Weapon> weapon);
     ~Explosion();
 };
-
-//class FireExplosion : public Explosion {
-//public:
-//    FireExplosion(sf::Vector2f size, sf::Vector2f position, int collisionMaskId, float damage);
-//};
-//
-//class LaunchExplosion : public Explosion {
-//public:
-//    LaunchExplosion(sf::Vector2f size, sf::Vector2f pozition);
-//};
-//
-//class BulletExplosion : public Explosion {
-//public:
-//    BulletExplosion(sf::Vector2f size, sf::Vector2f pozition, int collisionMaskId, float damage);
-//};

@@ -93,9 +93,9 @@ public:
         zIndex = 2.f;
         
         missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
-        explosionSprite = std::make_unique<Sprite>(SpriteNames::effects2, 17, 19, 80, false, true);
-        
         launchSound = std::make_unique<Sound>(SoundNames::rifle, 50.f, false);
+        
+        explosionSprite = std::make_unique<Sprite>(SpriteNames::effects2, 17, 19, 80, false, true);
         explosionSound = std::make_unique<Sound>(SoundNames::bulletHitMetal, 50.f, false);
     };
 };
@@ -103,7 +103,7 @@ public:
 class Grenade : public Weapon {
 public:
     Grenade() {
-        range = 100.f;
+        range = 150.f;
         damage = 60.f;
         penetration = 50.f;
         rotation = 0.4f;
@@ -111,17 +111,17 @@ public:
         velocityScalar = 3.f;
         selfDetonationSeconds = 4.f;
         zIndex = 1.f;
-        projectileImageSize = {50.f, 50.f};
+        projectileImageSize = {20.f, 20.f};
         projectilePhysicsSize = {5.f, 5.f};
         explosionImageSize = {130.f, 130.f};
         explosionPhysicsSize = {100.f, 100.f};
         explodeOnMaxRange = false;
         loseForceOnMaxRange = false;
         
-        missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
-        explosionSprite = std::make_unique<Sprite>(SpriteNames::shotEffect, 0, 5, 80, false);
+        missileSprite = std::make_unique<Sprite>(SpriteNames::grenade, 0, 0, 0, false);
+        launchSound = std::make_unique<Sound>(SoundNames::grenadeThrow, 50.f, false);
         
-        launchSound = std::make_unique<Sound>(SoundNames::grenadePinPull, 50.f, false);
-        explosionSound = std::make_unique<Sound>(SoundNames::bulletHitMetal, 50.f, false);
+        explosionSprite = std::make_unique<Sprite>(SpriteNames::effects, 21, 28, 80, false, true);
+        explosionSound = std::make_unique<Sound>(SoundNames::grenadeExplosion, 50.f, false);
     };
 };

@@ -43,6 +43,7 @@ AssetManager::AssetManager() {
     loadSoundBuffer(SoundNames::rifleReload, "rifleReload.mp3");
     loadSoundBuffer(SoundNames::grenadeExplosion, "grenadeExplosion.mp3");
     loadSoundBuffer(SoundNames::grenadePinPull, "grenadePinPull.mp3");
+    loadSoundBuffer(SoundNames::grenadeThrow, "grenadeThrow.mp3");
 }
 void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& fileName) {
     const static std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";
@@ -81,6 +82,12 @@ sf::Sound* AssetManager::getPlayingSound(SoundNames soundName, int audioPlayerId
     return nullptr;
 }
 
+sf::Sound* AssetManager::playSound(Sound sound, int audioPlayerId) {
+    sf::Sound* s = playSound(sound.name, audioPlayerId);
+    s->setVolume(sound.volume);
+    s->setLoop(sound.loop);
+    return s;
+}
 sf::Sound* AssetManager::playSound(SoundNames soundName, int audioPlayerId) {
     sf::SoundBuffer* soundBuffer = soundBuffers.at(soundName);
     std::vector<sf::Sound*>& soundsFromId = soundsPool[audioPlayerId];

@@ -7,7 +7,7 @@
 
 #pragma once
 
-enum SoundNames { movingTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop, shellExplosion, tankShot, idleTank, tankGunBlast, rifle, bulletHitMetal, rifleReload, grenadeExplosion, grenadePinPull };
+enum SoundNames { movingTank, damagedTank, rotationGun, rotationGunStart, rotationGunMoving, rotationGunStop, shellExplosion, tankShot, idleTank, tankGunBlast, rifle, bulletHitMetal, rifleReload, grenadeExplosion, grenadePinPull, grenadeThrow };
 
 struct Sound {
     SoundNames name;
