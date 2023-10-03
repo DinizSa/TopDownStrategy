@@ -40,9 +40,9 @@ void PhysicsBody::update() {
     processPath();
     applyVelocity();
     
-    if (moving() && lastPosition == centerWorld()) {
-        moving = false;
-        moving.notify();
+    if (translating() && lastPosition == centerWorld()) {
+        translating = false;
+        translating.notify();
     }
     lastPosition = centerWorld();
     
@@ -101,7 +101,7 @@ PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), colli
     sf::Vector2f leftTopPosition = -size/2.f;
     body.left = leftTopPosition.x;
     body.top = leftTopPosition.y;
-    moving = false;
+    translating = false;
     rotatingLocal = false;
 }
 PhysicsBody::~PhysicsBody() {
@@ -189,9 +189,9 @@ bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
     centerWorld = centerWorld() + delta;
     centerWorld.notify();
     
-    if (!moving()) {
-        moving = true;
-        moving.notify();
+    if (!translating()) {
+        translating = true;
+        translating.notify();
     }
     
     return true;

@@ -37,7 +37,7 @@ protected:
     Subject<float> rotation;
     Subject<sf::Vector2f> centerWorld;
     Subject<float> traveledDistance;
-    Subject<bool> moving;
+    Subject<bool> translating;
     Subject<bool> rotatingLocal;
     
     std::vector<sf::Vector2f> path;

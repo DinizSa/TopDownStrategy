@@ -24,7 +24,7 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     
     setMovementCollisions(true);
     
-    moving.subscribe(this, [&](bool isMoving) {
+    translating.subscribe(this, [&](bool isMoving) {
         if (isMoving)
             feet.setAnimation(Sprite(SpriteNames::soldierFeet, 0, 19, 80, true));
         else
