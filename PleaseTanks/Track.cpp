@@ -12,23 +12,24 @@
 Track::Track(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody(imageSize),
     AutoSprite(imageSize, 1.f, {SpriteNames::tracks, spriteIndex, spriteIndex+1, 0, false}),
-    Health(150), deltaTrack(17.f), previousTrackDistance(0.f), previousTrailDistance(0.f), deltaTrail(25)
+    Health(150), framesDelta(10), framesCounter(0)
 {
     setPosition(&centerWorld, &rotation);
 
     traveledDistance.subscribe(this, [&](float distance) {
-        if (distance > previousTrailDistance + deltaTrack ) {
+        if (framesCounter > framesDelta ) {
             setNextSprite();
-            previousTrailDistance = distance;
-        }
-        if (distance > previousTrackDistance + deltaTrail ) {
+            
             sf::Vector2f size = rect.getSize();
             new TrackTrail(size, 21, centerWorld(), rotation());
-            previousTrackDistance = distance;
+            framesCounter = 0;
         }
+        framesCounter++;
     });
 }
-
+Track::~Track() {
+    traveledDistance.unsubscribe(this);
+}
 void Track::receiveDamage(int damage) {
     updateHealth(-damage);
 }

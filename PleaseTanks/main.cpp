@@ -202,7 +202,6 @@ int main()
         }
 
         Drawable::updateDrawables();
-        AutoSprite::updateAutoSprites();
         PhysicsBody::updatePhysicsBodys();
         
         window.clear();

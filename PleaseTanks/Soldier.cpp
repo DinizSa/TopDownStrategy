@@ -27,7 +27,13 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     translating.subscribe(this, [&](bool isMoving) {
         if (isMoving)
             feet.setAnimation(Sprite(SpriteNames::soldierFeet, 0, 19, 80, true));
-        else
+        else if (!rotatingLocal())
+            feet.setAnimation(Sprite(SpriteNames::soldierFeet, 8, 8, 0, false));
+    });
+    rotatingLocal.subscribe(this, [&](bool rotating) {
+        if (rotating)
+            feet.setAnimation(Sprite(SpriteNames::soldierFeet, 0, 19, 80, true));
+        else if (!translating())
             feet.setAnimation(Sprite(SpriteNames::soldierFeet, 8, 8, 0, false));
     });
     
@@ -36,7 +42,10 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     secondaryWeapon = std::make_shared<Weapon>(Grenade());
     secondaryWeapon->addAmmunition(8, true);
 }
-Soldier::~Soldier() {}
+Soldier::~Soldier() {
+    rotatingLocal.unsubscribe(this);
+    translating.unsubscribe(this);
+}
 
 void Soldier::update() {
     PhysicsBody::update();

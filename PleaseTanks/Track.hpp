@@ -14,13 +14,11 @@
 
 class Track : public PhysicsBody, public AutoSprite, public CombatUnit, private Health {
 private:
-    float deltaTrack;
-    float previousTrackDistance;
-    
-    float deltaTrail;
-    float previousTrailDistance;
+    float framesDelta;
+    float framesCounter;
     
 public:
     Track(sf::Vector2f size, int spriteIndex);
+    ~Track();
     void receiveDamage(int damage) override;
 };

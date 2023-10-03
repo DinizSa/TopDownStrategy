@@ -18,13 +18,16 @@ void PhysicsBody::updatePhysicsBodys() {
         if (physicsBody->isExpired()) {
             delete physicsBody;
         } else {
-            it++;
+            ++it;
         }
     }
     
     for (auto physicsBody : PhysicsBody::allBodies) {
         physicsBody->update();
     }
+}
+void PhysicsBody::removeCollider() {
+    allBodies.erase(std::remove(PhysicsBody::allBodies.begin(), PhysicsBody::allBodies.end(), this), PhysicsBody::allBodies.end());
 }
 bool PhysicsBody::isExpired() {
     return expired;
@@ -65,7 +68,7 @@ void PhysicsBody::processPath() {
         setVelocityAndRotate(vel);
         shouldConsumePath = false;
     }
-    if (Utils::getDistance(centerWorld(), destination) < (maxRadius / 5.f)) {
+    if (Utils::getDistance(centerWorld(), destination) < (maxRadius / 2.f)) {
         path.pop_back();
         
         if (path.size() == 0) {
@@ -89,9 +92,6 @@ void PhysicsBody::setAngularSpeed(float newAngularSpeed) {
 }
 void PhysicsBody::setCollisionMaskId(int groupId) {
     collisionMaskId = groupId;
-}
-void PhysicsBody::removeCollider() {
-    allBodies.erase(std::remove(allBodies.begin(), allBodies.end(), this), allBodies.end());
 }
 PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f), speed(0.f), angularSpeed(0.f), shouldConsumePath(false), lastLocalRotation(0.f) {
     traveledDistance = 0.f;
@@ -189,7 +189,8 @@ bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
     centerWorld = centerWorld() + delta;
     centerWorld.notify();
     
-    if (!translating()) {
+    
+    if (isTravel && !translating()) {
         translating = true;
         translating.notify();
     }

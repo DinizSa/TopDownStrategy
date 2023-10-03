@@ -16,4 +16,5 @@ public:
         audioPlayerId = nextAudioPlayerId;
         nextAudioPlayerId++;
     }
+    virtual ~AudioPlayer(){};
 };

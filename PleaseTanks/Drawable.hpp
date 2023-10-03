@@ -32,6 +32,7 @@ public:
     
 
 protected:
+    bool dirty;
     sf::RectangleShape rect;
     const sf::Texture* texture;
     sf::Rect<int> textureRect;
@@ -46,6 +47,7 @@ protected:
     void setSprite(int index);
     virtual void updateDrawable(){};
     void updateTexture(SpriteNames spriteName, int spriteIndex);
+    bool isDirty();
 
 public:
     virtual ~Drawable();

@@ -20,4 +20,5 @@ protected:
     
 public:
     TrackTrail(sf::Vector2f size, int spriteIndex, sf::Vector2f position, float rotation);
+    ~TrackTrail();
 };

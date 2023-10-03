@@ -11,6 +11,7 @@ class Health {
     float maxHealth, currentHealth;
 public:
     Health(float maxHealth);
+    virtual ~Health(){};
     void updateHealth(float delta);
     float getCurrentHealth();
     float getMaxHealth();

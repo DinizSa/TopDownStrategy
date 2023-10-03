@@ -37,7 +37,10 @@ Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
         }
     });
 }
-
+Gun::~Gun(){
+    secondaryWeapon->triggerAutomatic.unsubscribe(this);
+    rotatingLocal.unsubscribe(this);
+}
 bool Gun::attackPrimary() {
     bool fired = primaryWeapon->fire();
     if (primaryWeapon == nullptr)

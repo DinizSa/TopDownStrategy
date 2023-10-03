@@ -11,29 +11,39 @@
 
 #include "Drawable.hpp"
 
-std::multimap<float, Drawable*> Drawable::drawables;
+typedef std::multimap<float, Drawable*> Multimap;
+Multimap Drawable::drawables;
 
 void Drawable::addDrawable(Drawable* drawable, float zIndex) {
     Drawable::drawables.insert(std::pair{zIndex, drawable});
-}
-void Drawable::removeDrawable(Drawable* drawable) {
-    std::erase_if(Drawable::drawables, [drawable](const auto& pair) {
-        auto const& [key, value] = pair;
-        return value == drawable;
-    });
 }
 void Drawable::drawAll(sf::RenderWindow& window) {
     for (auto drawable : Drawable::drawables) {
         drawable.second->draw(window);
     }
 }
+void Drawable::removeDrawable(Drawable* drawable) {
+    for (Multimap::iterator it = Drawable::drawables.begin(); it != Drawable::drawables.end();) {
+        Multimap::iterator erase_it = it++;
+        if (erase_it->second == drawable) {
+            Drawable::drawables.erase(erase_it);
+            break;
+        }
+    }
+}
 void Drawable::updateDrawables() {
-    for (auto drawable : Drawable::drawables) {
-        drawable.second->updateDrawable();
+    std::cout << Drawable::drawables.size() << std::endl;
+    for (Multimap::iterator it = Drawable::drawables.begin(); it != Drawable::drawables.end();) {
+        Multimap::iterator current_it = it++;
+        if (current_it->second->isDirty()) {
+            delete current_it->second;
+        } else {
+            current_it->second->updateDrawable();
+        }
     }
 }
 
-Drawable::Drawable(sf::Vector2f size, float zIndex, SpriteNames spriteName, int spriteIndex): currentSpriteIndex(spriteIndex), zIndex(zIndex), rotationSub(nullptr), positionSub(nullptr)
+Drawable::Drawable(sf::Vector2f size, float zIndex, SpriteNames spriteName, int spriteIndex): currentSpriteIndex(spriteIndex), zIndex(zIndex), rotationSub(nullptr), positionSub(nullptr), dirty(false)
 {
     rect.setSize(size);
     rect.setOrigin(size / 2.f);
@@ -112,7 +122,9 @@ sf::Uint8 Drawable::getOpacity() {
     auto color = rect.getFillColor();
     return color.a;
 }
-
+bool Drawable::isDirty() {
+    return dirty;
+}
 void Drawable::draw(sf::RenderWindow& window) {
     window.draw(rect);
 }

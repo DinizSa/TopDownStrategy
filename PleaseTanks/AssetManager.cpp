@@ -52,6 +52,7 @@ void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& file
     auto buffer = new sf::SoundBuffer();
     if (!buffer->loadFromFile(soundsPrefix + fileName)) {
         std::cout << "Error loading sound: " << soundsPrefix + fileName << std::endl;
+        return;
     }
     soundBuffers.insert_or_assign(soundName, buffer);
     
@@ -65,9 +66,11 @@ AssetManager::~AssetManager() {
             delete sound;
         }
     }
+    
     for (auto& soundBuffer : soundBuffers) {
         delete soundBuffer.second;
     }
+    
 }
 SpriteSheet* AssetManager::getSprite(SpriteNames sprite) {
     return spriteSheets.at(sprite);

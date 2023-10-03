@@ -22,6 +22,7 @@ private:
     std::shared_ptr<Weapon> secondaryWeapon;
 public:
     Gun(sf::Vector2f size, int spriteIndex);
+    virtual ~Gun();
     bool attackPrimary() override;
     bool attackSecondary() override;
     void receiveDamage(int damage) override;

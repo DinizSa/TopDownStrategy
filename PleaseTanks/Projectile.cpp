@@ -13,7 +13,7 @@
 
 Projectile::Projectile(sf::Vector2f position, float angleDegrees, int maskId, const std::shared_ptr<Weapon> weapon):
     PhysicsBody(weapon->projectilePhysicsSize),
-    AutoSprite(weapon->projectileImageSize, zIndex, *weapon->missileSprite), timerSeconds(0.f), timeCollision(-1.f),
+    AutoSprite(weapon->projectileImageSize, weapon->zIndex, *weapon->missileSprite), timerSeconds(0.f), timeCollision(-1.f),
     weapon(weapon), shouldDetonate(false)
 {
     setPosition(&centerWorld, &rotation);
@@ -29,12 +29,11 @@ Projectile::Projectile(sf::Vector2f position, float angleDegrees, int maskId, co
         AssetManager::get()->playSound(*weapon->launchSound, audioPlayerId);
     
     if (weapon->launchSprite != nullptr) {
-        auto launchEffect = new AutoSprite(weapon->lauchSize, zIndex+3, *weapon->launchSprite);
+        auto launchEffect = new AutoSprite(weapon->lauchSize, weapon->zIndex, *weapon->launchSprite);
         launchEffect->setPosition(position, rotation());
     }
 }
-Projectile::~Projectile() {
-}
+Projectile::~Projectile() {}
 void Projectile::update() {
     PhysicsBody::update();
     

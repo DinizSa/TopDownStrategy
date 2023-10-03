@@ -16,8 +16,15 @@ AutoSprite(size, 0.f, {SpriteNames::effects2, 21, 21, 5000, false}), currentOpac
     setPosition(position, rotation);
 }
 
+TrackTrail::~TrackTrail(){
+}
+
 void TrackTrail::updateDrawable() {
     AutoSprite::updateDrawable();
     currentOpacity -= deltaOpacity;
-    setOpacity(round(currentOpacity));
+    int newOpacity = round(currentOpacity);
+    if (newOpacity <= 0){
+        dirty = true;
+    }
+    setOpacity(newOpacity);
 }

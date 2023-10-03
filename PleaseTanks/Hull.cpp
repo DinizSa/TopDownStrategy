@@ -16,9 +16,8 @@ Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     setPosition(&centerWorld, &rotation);
     
     exhaust = new AutoSprite({{100.f, 100.f}, 2.f, {SpriteNames::effects, 0, 2, 90, true}});
-    exhaust->setPosition(&exhaustPosition, &rotation);
     
-    PhysicsBody::centerWorld.subscribe(exhaust, [&](sf::Vector2f center) {
+    centerWorld.subscribe(exhaust, [&](sf::Vector2f center) {
         float currentRotation = PhysicsBody::rotation();
         float radius = (body.height / 2.f) - 5;
         sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
@@ -27,9 +26,9 @@ Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     });
     
     sf::Sound* sound = AssetManager::get()->playSound({SoundNames::movingTank, 10.f, true}, audioPlayerId);
-    
+
     translating.subscribe(exhaust, [&](bool isMoving) {
-        sf::Sound* sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
+        sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
         if (isMoving) {
             sound->setVolume(80.f);
         } else {
@@ -39,6 +38,8 @@ Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
 }
 
 Hull::~Hull() {
+    centerWorld.unsubscribe(exhaust);
+    translating.unsubscribe(exhaust);
     delete exhaust;
 }
 

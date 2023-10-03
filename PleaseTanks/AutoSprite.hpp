@@ -21,7 +21,6 @@ class AutoSprite : public Drawable {
 private:
     std::deque<Sprite> spritesQueue;
 protected:
-    bool dirty;
     Sprite sprite;
 private:
     std::chrono::time_point<clock> spriteAnimationStart;
@@ -38,18 +37,8 @@ private:
 protected:
     void updateDrawable() override;
     void setNextSprite();
-    bool isDirty();
 
 public:
     void addAnimation(Sprite sprite);
     void setAnimation(Sprite sprite);
-    
-    
-    
-private:
-    static std::vector<AutoSprite*> autoSprites;
-public:
-    static void addAutoSprite(AutoSprite* autoSprite);
-    static void removeAutoSprite(AutoSprite* autoSprite);
-    static void updateAutoSprites();
 };
