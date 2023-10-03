@@ -15,9 +15,8 @@ AutoSprite::AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite): Drawable
 {
     spriteAnimationStart = clock::now();
 }
-AutoSprite::~AutoSprite() {
-    int b = 5;
-}
+AutoSprite::~AutoSprite() {}
+
 void AutoSprite::updateSprite(Sprite newSprite) {
     updateTexture(newSprite.spriteName, newSprite.minIndex);
     sprite = newSprite;
@@ -76,4 +75,9 @@ void AutoSprite::setNextAnimation() {
     if (spritesQueue.size() > 0) {
         updateSprite(spritesQueue.front());
     }
+}
+
+void AutoSprite::pauseAnimation() {
+    sprite.singleImageDurationMs = 0;
+    sprite.loop = false;
 }

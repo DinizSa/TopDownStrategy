@@ -41,4 +41,5 @@ protected:
 public:
     void addAnimation(Sprite sprite);
     void setAnimation(Sprite sprite);
+    void pauseAnimation();
 };

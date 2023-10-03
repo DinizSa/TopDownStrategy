@@ -102,4 +102,14 @@ bool Soldier::fireGrenade() {
 
 void Soldier::receiveDamage(int damage) {
     updateHealth(-damage);
+    AssetManager::get()->playSound({SoundNames::hurt, 50.f, false}, audioPlayerId);
+    
+    if (getCurrentHealth() == 0) {
+        alive = false;
+        soldierBody.setColor(sf::Color(255, 0, 0, 100));
+        feet.setColor(sf::Color(0, 0, 0, 0));
+        PhysicsBody::removeCollider();
+        soldierBody.pauseAnimation();
+        return;
+    }
 }

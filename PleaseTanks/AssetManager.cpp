@@ -46,6 +46,7 @@ AssetManager::AssetManager() {
     loadSoundBuffer(SoundNames::grenadePinPull, "grenadePinPull.mp3");
     loadSoundBuffer(SoundNames::grenadeThrow, "grenadeThrow.mp3");
     loadSoundBuffer(SoundNames::bigExplosion, "bigExplosion.mp3");
+    loadSoundBuffer(SoundNames::hurt, "hurt.mp3");
 }
 void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& fileName) {
     const static std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";

@@ -46,9 +46,9 @@ protected:
 
 private:
     bool collidedMovement() const;
-    void removeCollider();
 
 protected:
+    void removeCollider();
     std::array<sf::Vector2f, 4> getVertices() const;
     void setMovementCollisions(bool hasCollisions);
     float getTraveledDistance();

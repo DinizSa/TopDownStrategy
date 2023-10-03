@@ -9,6 +9,7 @@
 
 class CombatUnit {
 public:
+    bool alive = true;
     virtual ~CombatUnit(){};
     virtual void receiveDamage(int damage) {};
     virtual bool attackPrimary() {return false;};

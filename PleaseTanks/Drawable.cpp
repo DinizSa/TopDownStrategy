@@ -103,6 +103,9 @@ void Drawable::setZIndex(int index) {
 float Drawable::getZIndex() {
     return zIndex;
 }
+void Drawable::setColor(sf::Color color) {
+    rect.setFillColor(color);
+}
 void Drawable::setSingleSpriteSize(const sf::Vector2f& size) {
     textureRect.width = size.x;
     textureRect.height = size.y;

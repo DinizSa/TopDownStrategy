@@ -20,17 +20,8 @@ class Drawable : public Observer {
     using clock = std::chrono::steady_clock;
     
 private:
-    static std::multimap<float, Drawable*> drawables;
-private:
     Subject<sf::Vector2f>* positionSub;
     Subject<float>* rotationSub;
-public:
-    static void addDrawable(Drawable* shape, float zIndex);
-    static void removeDrawable(Drawable* shape);
-    static void drawAll(sf::RenderWindow& window);
-    static void updateDrawables();
-    
-
 protected:
     bool dirty;
     sf::RectangleShape rect;
@@ -50,8 +41,8 @@ protected:
     bool isDirty();
 
 public:
-    virtual ~Drawable();
     Drawable(sf::Vector2f size, float zIndex, SpriteNames spriteName, int spriteIndex);
+    virtual ~Drawable();
     void setOpacity(sf::Uint8 opacity);
     sf::Uint8 getOpacity();
     void draw(sf::RenderWindow& window);
@@ -59,6 +50,14 @@ public:
     void setPosition(sf::Vector2f position, float rotation, bool centerWithSize = false);
 
     void setZIndex(int index);
-    
     float getZIndex();
+    void setColor(sf::Color color);
+    
+private:
+    static std::multimap<float, Drawable*> drawables;
+public:
+    static void addDrawable(Drawable* shape, float zIndex);
+    static void removeDrawable(Drawable* shape);
+    static void drawAll(sf::RenderWindow& window);
+    static void updateDrawables();
 };
