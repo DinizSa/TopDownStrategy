@@ -49,7 +49,7 @@ AssetManager::AssetManager() {
 }
 void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& fileName) {
     const static std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";
-    auto buffer = new sf::SoundBuffer();
+    std::shared_ptr<sf::SoundBuffer> buffer = std::make_shared<sf::SoundBuffer>();
     if (!buffer->loadFromFile(soundsPrefix + fileName)) {
         std::cout << "Error loading sound: " << soundsPrefix + fileName << std::endl;
         return;
@@ -67,9 +67,10 @@ AssetManager::~AssetManager() {
         }
     }
     
-    for (auto& soundBuffer : soundBuffers) {
-        delete soundBuffer.second;
-    }
+    soundBuffers.clear();
+//    for (auto& soundBuffer : soundBuffers) {
+//        delete soundBuffer.second;
+//    }
     
 }
 SpriteSheet* AssetManager::getSprite(SpriteNames sprite) {
@@ -93,11 +94,10 @@ sf::Sound* AssetManager::playSound(Sound sound, int audioPlayerId) {
     return s;
 }
 sf::Sound* AssetManager::playSound(SoundNames soundName, int audioPlayerId) {
-    sf::SoundBuffer* soundBuffer = soundBuffers.at(soundName);
     std::vector<sf::Sound*>& soundsFromId = soundsPool[audioPlayerId];
     for (auto sound : soundsFromId) {
         if (sound->getStatus() == sf::Sound::Stopped) {
-            if (sound->getBuffer() != soundBuffer) {
+            if (sound->getBuffer() != soundBuffers.at(soundName).get()) {
                 sound->setBuffer(*soundBuffers.at(soundName));
             }
             sound->play();
@@ -106,18 +106,17 @@ sf::Sound* AssetManager::playSound(SoundNames soundName, int audioPlayerId) {
     }
     
     sf::Sound* sound = new sf::Sound;
-    sound->setBuffer(*soundBuffer);
+    sound->setBuffer(*soundBuffers.at(soundName));
     sound->play();
     soundsFromId.push_back(sound);
     return sound;
 }
 
 void AssetManager::stopSound(SoundNames soundName, int audioPlayerId) {
-    sf::SoundBuffer* soundBuffer = soundBuffers.at(soundName);
     std::vector<sf::Sound*>& soundsFromId = soundsPool[audioPlayerId];
     for (auto sound : soundsFromId) {
         if (sound->getStatus() == sf::Sound::Playing) {
-            if (sound->getBuffer() == soundBuffer) {
+            if (sound->getBuffer() == soundBuffers.at(soundName).get()) {
                 sound->stop();
             }
         }

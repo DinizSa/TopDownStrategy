@@ -32,7 +32,7 @@ void Drawable::removeDrawable(Drawable* drawable) {
     }
 }
 void Drawable::updateDrawables() {
-    std::cout << Drawable::drawables.size() << std::endl;
+//    std::cout << Drawable::drawables.size() << std::endl;
     for (Multimap::iterator it = Drawable::drawables.begin(); it != Drawable::drawables.end();) {
         Multimap::iterator current_it = it++;
         if (current_it->second->isDirty()) {

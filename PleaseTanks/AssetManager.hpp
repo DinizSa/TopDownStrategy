@@ -19,7 +19,7 @@ class AssetManager {
 private:
     std::unordered_map<SpriteNames, SpriteSheet*> spriteSheets;
     
-    std::unordered_map<SoundNames, sf::SoundBuffer*> soundBuffers;
+    std::unordered_map<SoundNames, std::shared_ptr<sf::SoundBuffer>> soundBuffers;
     std::unordered_map<int, std::vector<sf::Sound*>> soundsPool;
 
 private:

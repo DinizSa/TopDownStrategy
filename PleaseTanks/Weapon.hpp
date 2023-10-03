@@ -172,7 +172,7 @@ public:
         velocityScalar = 7.f;
         zIndex = 3.f;
         collisionDetonationSeconds = 0.f;
-        projectileImageSize = {95.f, 95.f};
+        projectileImageSize = {75.f, 75.f};
         projectilePhysicsSize = {10.f, 10.f};
         explosionImageSize = {200.f, 200.f};
         explosionPhysicsSize = {150.f, 150.f};
