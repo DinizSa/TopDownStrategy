@@ -146,7 +146,7 @@ public:
         reloadTimeSeconds = 3.f;
         velocityScalar = 3.f;
         selfDetonationSeconds = 4.f;
-        zIndex = 1.f;
+        zIndex = 0.f;
         projectileImageSize = {20.f, 20.f};
         projectilePhysicsSize = {5.f, 5.f};
         explosionImageSize = {130.f, 130.f};
@@ -177,7 +177,7 @@ public:
         projectilePhysicsSize = {10.f, 10.f};
         explosionImageSize = {200.f, 200.f};
         explosionPhysicsSize = {150.f, 150.f};
-        lauchSize = {70.f, 70.f};
+        lauchSize = {120.f, 120.f};
         explodeOnMaxRange = true;
         loseForceOnMaxRange = false;
         
