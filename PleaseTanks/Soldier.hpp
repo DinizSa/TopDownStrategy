@@ -17,7 +17,7 @@
 
 #pragma once
 
-class Soldier : public PhysicsBody, public CombatUnit, public Health, private Observer, private AudioPlayer {
+class Soldier : public PhysicsBody, public CombatUnit, private Observer, private AudioPlayer {
 private:
     AutoSprite feet;
     AutoSprite soldierBody;

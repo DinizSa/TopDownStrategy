@@ -7,9 +7,11 @@
 
 #pragma once
 
-class CombatUnit {
+#include "Health.hpp"
+
+class CombatUnit: public Health {
 public:
-    bool alive = true;
+    CombatUnit(float maxHealth): Health(maxHealth) {};
     virtual ~CombatUnit(){};
     virtual void receiveDamage(int damage) {};
     virtual bool attackPrimary() {return false;};

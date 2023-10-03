@@ -12,11 +12,12 @@
 #include "AudioPlayer.hpp"
 #include "CombatUnit.hpp"
 
-class Hull : public PhysicsBody, public Drawable, private Health, public CombatUnit, private AudioPlayer {
+class Hull : public PhysicsBody, public Drawable, public CombatUnit, private AudioPlayer {
 private:
     AutoSprite* exhaust;
     Subject<sf::Vector2f> exhaustPosition;
     float speed;
+    AutoSprite* damageSmoke;
 public:
     Hull(sf::Vector2f size, int spriteIndex);
     ~Hull();

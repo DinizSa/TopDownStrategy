@@ -29,6 +29,7 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::soldierGrenade, new SpriteSheet({4, 2, imagesPath + "soldierGrenade.png", sf::Vector2f({115.f, 149.f}), 0.96f}));
     spriteSheets.insert_or_assign(SpriteNames::grenade, new SpriteSheet({1, 1, imagesPath + "grenade.png", sf::Vector2f({256.f, 256.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::smoke, new SpriteSheet({5, 3, imagesPath + "smoke.png", sf::Vector2f({256.f, 256.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::blood, new SpriteSheet({6, 1, imagesPath + "blood.png", sf::Vector2f({128.f, 128.f}), 1.f}));
 
     loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
     loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");

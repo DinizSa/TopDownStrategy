@@ -12,7 +12,7 @@
 #include "Health.hpp"
 #include "CombatUnit.hpp"
 
-class Track : public PhysicsBody, public AutoSprite, public CombatUnit, private Health {
+class Track : public PhysicsBody, public AutoSprite, public CombatUnit {
 private:
     float framesDelta;
     float framesCounter;

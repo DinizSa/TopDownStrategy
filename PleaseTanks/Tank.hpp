@@ -32,4 +32,6 @@ public:
     
     bool attackPrimary() override;
     bool attackSecondary() override;
+    bool canMove();
+    bool canAttack();
 };

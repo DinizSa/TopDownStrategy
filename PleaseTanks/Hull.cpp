@@ -11,7 +11,7 @@
 Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x * (6.f/10.f), imageSize.y}),
     Drawable(imageSize, 2.f, SpriteNames::hulls, spriteIndex),
-    Health(200), speed(2.f)
+    CombatUnit(200), speed(2.f), damageSmoke(nullptr)
 {
     setPosition(&centerWorld, &rotation);
     
@@ -44,7 +44,16 @@ Hull::~Hull() {
 }
 
 void Hull::receiveDamage(int damage) {
-    updateHealth(-damage);
+    bool healthRacio = updateHealth(-damage);
+    
+    if (healthRacio < 0.5) {
+        if (damageSmoke == nullptr) {
+            damageSmoke = new AutoSprite({150.f, 150.f}, 3.f, Sprite(SpriteNames::smoke, 0, 14, 90, true));
+            damageSmoke->setPosition(centerWorld(), rotation());
+        }
+        int smokeOpacity = round((1.f - healthRacio) * 255);
+        damageSmoke->setColor(sf::Color(255, 255, 255, smokeOpacity));
+    }
 }
 
 void Hull::setSpeed(float newSpeed) {

@@ -7,19 +7,20 @@
 
 #pragma once
 
-#include "Drawable.hpp"
 #include "PhysicsBody.hpp"
 #include "Health.hpp"
 #include "AudioPlayer.hpp"
 #include "AudioPlayer.hpp"
 #include "CombatUnit.hpp"
 #include "Weapon.hpp"
+#include "AutoSprite.hpp"
 
-class Gun : public PhysicsBody, public Drawable, private Health, public CombatUnit, private AudioPlayer {
+class Gun : public PhysicsBody, public Drawable, public CombatUnit, private AudioPlayer {
 private:
     void rotateGun(float speed);
     std::shared_ptr<Weapon> primaryWeapon;
     std::shared_ptr<Weapon> secondaryWeapon;
+    AutoSprite* damageSmoke;
 public:
     Gun(sf::Vector2f size, int spriteIndex);
     virtual ~Gun();

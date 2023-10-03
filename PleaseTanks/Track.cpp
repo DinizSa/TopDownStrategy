@@ -12,7 +12,7 @@
 Track::Track(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody(imageSize),
     AutoSprite(imageSize, 1.f, {SpriteNames::tracks, spriteIndex, spriteIndex+1, 0, false}),
-    Health(150), framesDelta(10), framesCounter(0)
+    CombatUnit(150), framesDelta(10), framesCounter(0)
 {
     setPosition(&centerWorld, &rotation);
 

@@ -14,7 +14,7 @@
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),
     Drawable(imageSize, 3.f, SpriteNames::guns, spriteIndex),
-    Health(100)
+    CombatUnit(100), damageSmoke(nullptr)
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
@@ -73,7 +73,16 @@ bool Gun::attackSecondary() {
 }
 
 void Gun::receiveDamage(int damage) {
-    updateHealth(-damage);
+    bool healthRacio = updateHealth(-damage);
+    
+    if (healthRacio < 0.5) {
+        if (damageSmoke == nullptr) {
+            damageSmoke = new AutoSprite({150.f, 150.f}, 3.f, Sprite(SpriteNames::smoke, 0, 14, 90, true));
+            damageSmoke->setPosition(centerWorld(), rotation());
+        }
+        int smokeOpacity = round((1.f - healthRacio) * 255);
+        damageSmoke->setColor(sf::Color(255, 255, 255, smokeOpacity));
+    }
 }
 
 void Gun::update() {

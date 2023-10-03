@@ -9,6 +9,7 @@
 #include "Configs.hpp"
 #include "Sound.hpp"
 #include "Observer.hpp"
+#include "Sprite.hpp"
 
 class Ammunition {
 private:
@@ -139,7 +140,7 @@ class Grenade : public Weapon {
 public:
     Grenade(): Weapon(1) {
         range = 150.f;
-        damage = 60.f;
+        damage = 35.f;
         penetration = 20.f;
         rotation = 0.4f;
         reloadTimeSeconds = 3.f;

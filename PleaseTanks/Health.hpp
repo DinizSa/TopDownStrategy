@@ -9,10 +9,13 @@
 
 class Health {
     float maxHealth, currentHealth;
+    bool alive = true;
 public:
     Health(float maxHealth);
     virtual ~Health(){};
-    void updateHealth(float delta);
+    float updateHealth(float delta);
     float getCurrentHealth();
     float getMaxHealth();
+    float getHealthRacio();
+    bool isAlive();
 };
