@@ -24,11 +24,11 @@ Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     primaryWeapon->addAmmunition(10, true);
     secondaryWeapon = std::make_shared<Weapon>(AutomaticRifle());
     secondaryWeapon->addAmmunition(20, true);
-    secondaryWeapon->triggerAutomatic.subscribe(this, [&](int loadedAmmo){
+    triggerObserverId = secondaryWeapon->triggerAutomatic.subscribe([&](int loadedAmmo){
         attackSecondary();
     });
     
-    rotatingLocal.subscribe(this, [&](bool isRotating){
+    rotatingLocalObserverId = rotatingLocal.subscribe([&](bool isRotating){
         if (isRotating) {
             AssetManager::get()->playSound({SoundNames::rotationGun, 40.f, true}, audioPlayerId);
         } else {
@@ -38,8 +38,8 @@ Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     });
 }
 Gun::~Gun(){
-    secondaryWeapon->triggerAutomatic.unsubscribe(this);
-    rotatingLocal.unsubscribe(this);
+    secondaryWeapon->triggerAutomatic.unsubscribe(triggerObserverId);
+    rotatingLocal.unsubscribe(rotatingLocalObserverId);
 }
 bool Gun::attackPrimary() {
     bool fired = primaryWeapon->fire();
@@ -73,16 +73,7 @@ bool Gun::attackSecondary() {
 }
 
 void Gun::receiveDamage(int damage) {
-    bool healthRacio = updateHealth(-damage);
-    
-    if (healthRacio < 0.5) {
-        if (damageSmoke == nullptr) {
-            damageSmoke = new AutoSprite({150.f, 150.f}, 3.f, Sprite(SpriteNames::smoke, 0, 14, 90, true));
-            damageSmoke->setPosition(centerWorld(), rotation());
-        }
-        int smokeOpacity = round((1.f - healthRacio) * 255);
-        damageSmoke->setColor(sf::Color(255, 255, 255, smokeOpacity));
-    }
+    updateHealth(-damage);
 }
 
 void Gun::update() {

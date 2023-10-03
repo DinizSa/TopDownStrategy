@@ -42,13 +42,13 @@ void Drawable::setPosition(Subject<sf::Vector2f>* pos, Subject<float>* rot) {
     std::function<void(sf::Vector2f)> callbackPosition = [&](const sf::Vector2f& newPosition) {
         rect.setPosition(newPosition.x, newPosition.y);
     };
-    positionSub->subscribe(this, callbackPosition);
+    positionOberverId = positionSub->subscribe(callbackPosition);
     
     rotationSub = rot;
     std::function<void(float)> callbackRotation = [&](float newRotation) {
         rect.setRotation(newRotation);
     };
-    rotationSub->subscribe(this, callbackRotation);
+    rotationOberverId = rotationSub->subscribe(callbackRotation);
 }
 void Drawable::setPosition(sf::Vector2f pos, float rot, bool centerWithSize){
     if (centerWithSize) {
@@ -60,10 +60,10 @@ void Drawable::setPosition(sf::Vector2f pos, float rot, bool centerWithSize){
 
 Drawable::~Drawable() {
     if (rotationSub != nullptr)
-        rotationSub->unsubscribe(this);
+        rotationSub->unsubscribe(positionOberverId);
     
     if (positionSub != nullptr)
-        positionSub->unsubscribe(this);
+        positionSub->unsubscribe(rotationOberverId);
     
     Drawable::removeDrawable(this);
 }

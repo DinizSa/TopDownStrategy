@@ -9,7 +9,6 @@
 
 #include "PhysicsBody.hpp"
 #include "AutoSprite.hpp"
-#include "Observer.hpp"
 #include "CombatUnit.hpp"
 #include "Weapon.hpp"
 #include "AudioPlayer.hpp"
@@ -17,12 +16,13 @@
 
 #pragma once
 
-class Soldier : public PhysicsBody, public CombatUnit, private Observer, private AudioPlayer {
+class Soldier : public PhysicsBody, public CombatUnit, private AudioPlayer {
 private:
     AutoSprite feet;
     AutoSprite soldierBody;
     std::shared_ptr<Weapon> primaryWeapon;
     std::shared_ptr<Weapon> secondaryWeapon;
+    int translatingOberverId, rotatingLocalOberverId;
     
     bool fireRifle();
     bool fireGrenade();

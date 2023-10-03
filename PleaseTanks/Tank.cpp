@@ -36,18 +36,23 @@ Tank::Tank(sf::Vector2f size, sf::Vector2f position): PhysicsBody({size.x * (6.f
     trackB.translate(position + deltaTracks, isTravel);
 }
 bool Tank::attackPrimary() {
+    if (!canAttack())
+        return false;
     return gun.attackPrimary();
 }
 bool Tank::attackSecondary() {
+    if (!canAttack())
+        return false;
     return gun.attackSecondary();
-//    bool gunAlignedWithHull = fabs(hull.getRotation() - gun.getRotation()) < 90;
-//    gunAlignedWithHull ? translateBack() : translateFront();
-//    return true;
 }
 void Tank::rotateGunClock() {
+    if (!canAttack())
+        return;
     gun.rotateClock();
 }
 void Tank::rotateGunAntiClock() {
+    if (!canAttack())
+        return;
     gun.rotateAntiClock();
 }
 
@@ -63,6 +68,8 @@ bool Tank::rotate(float deltaAngle) {
     return true;
 }
 bool Tank::translate(sf::Vector2f delta, bool isTravel) {
+    if (!canMove())
+        return false;
     bool translated = PhysicsBody::translate(delta, isTravel);
     if (!translated)
         return false;
@@ -88,5 +95,5 @@ bool Tank::canMove() {
     return hull.isAlive() && trackA.isAlive() && trackB.isAlive();
 }
 bool Tank::canAttack() {
-    return hull.isAlive() && gun.isAlive();
+    return gun.isAlive();
 }

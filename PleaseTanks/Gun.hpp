@@ -21,6 +21,7 @@ private:
     std::shared_ptr<Weapon> primaryWeapon;
     std::shared_ptr<Weapon> secondaryWeapon;
     AutoSprite* damageSmoke;
+    int triggerObserverId, rotatingLocalObserverId;
 public:
     Gun(sf::Vector2f size, int spriteIndex);
     virtual ~Gun();

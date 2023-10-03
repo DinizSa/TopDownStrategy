@@ -10,13 +10,11 @@
 #include <set>
 #include <unordered_map>
 
-#import "Observer.hpp"
-
 template <class T>
 class Subject {
     T value = T();
-    std::unordered_map<const Observer*, std::function<void(T)>> observers;
-    
+    std::unordered_map<int, std::function<void(T)>> observers;
+    static int counter;
 public:
     Subject() = default;
     Subject(T v);
@@ -28,7 +26,7 @@ public:
         return value;
     }
 
-    void subscribe(const Observer* observer, std::function<void(T)> callback);
-    void unsubscribe(const Observer*);
+    int subscribe(std::function<void(T)> callback);
+    void unsubscribe(int);
     void notify();
 };

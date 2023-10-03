@@ -13,9 +13,13 @@
 Health::Health(float maxHealth): maxHealth(maxHealth), currentHealth(maxHealth) {
 }
 float Health::updateHealth(float delta) {
+    if (!alive)
+        return 0.f;
+    
     int updatedHealth = currentHealth + delta;
     currentHealth = std::fmax(0, std::fmin(maxHealth, updatedHealth));
     std::cout << currentHealth << "/" << maxHealth << '\n';
+    alive = currentHealth > 0.f;
     return getHealthRacio();
 }
 

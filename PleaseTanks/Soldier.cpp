@@ -24,13 +24,13 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     
     setMovementCollisions(true);
     
-    translating.subscribe(this, [&](bool isMoving) {
+    translatingOberverId = translating.subscribe([&](bool isMoving) {
         if (isMoving)
             feet.setAnimation(Sprite(SpriteNames::soldierFeet, 0, 19, 80, true));
         else if (!rotatingLocal())
             feet.setAnimation(Sprite(SpriteNames::soldierFeet, 8, 8, 0, false));
     });
-    rotatingLocal.subscribe(this, [&](bool rotating) {
+    rotatingLocalOberverId = rotatingLocal.subscribe([&](bool rotating) {
         if (rotating)
             feet.setAnimation(Sprite(SpriteNames::soldierFeet, 0, 19, 80, true));
         else if (!translating())
@@ -43,8 +43,8 @@ Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f
     secondaryWeapon->addAmmunition(8, true);
 }
 Soldier::~Soldier() {
-    rotatingLocal.unsubscribe(this);
-    translating.unsubscribe(this);
+    rotatingLocal.unsubscribe(translatingOberverId);
+    translating.unsubscribe(rotatingLocalOberverId);
 }
 
 void Soldier::update() {

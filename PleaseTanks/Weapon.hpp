@@ -8,7 +8,6 @@
 #pragma once
 #include "Configs.hpp"
 #include "Sound.hpp"
-#include "Observer.hpp"
 #include "Sprite.hpp"
 
 class Ammunition {

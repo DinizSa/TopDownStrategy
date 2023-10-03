@@ -16,7 +16,7 @@ class Track : public PhysicsBody, public AutoSprite, public CombatUnit {
 private:
     float framesDelta;
     float framesCounter;
-    
+    int traveledDistanceObserverId;
 public:
     Track(sf::Vector2f size, int spriteIndex);
     ~Track();

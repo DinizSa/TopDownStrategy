@@ -13,15 +13,15 @@
 #include <map>
 
 #include "Subject.hpp"
-#include "Observer.hpp"
 #include "AssetManager.hpp"
 
-class Drawable : public Observer {
+class Drawable {
     using clock = std::chrono::steady_clock;
     
 private:
     Subject<sf::Vector2f>* positionSub;
     Subject<float>* rotationSub;
+    int positionOberverId, rotationOberverId;
 protected:
     bool dirty;
     sf::RectangleShape rect;

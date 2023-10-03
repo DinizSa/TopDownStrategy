@@ -16,7 +16,7 @@ Track::Track(sf::Vector2f imageSize, int spriteIndex) :
 {
     setPosition(&centerWorld, &rotation);
 
-    traveledDistance.subscribe(this, [&](float distance) {
+    traveledDistanceObserverId = traveledDistance.subscribe([&](float distance) {
         if (framesCounter > framesDelta ) {
             setNextSprite();
             
@@ -28,7 +28,7 @@ Track::Track(sf::Vector2f imageSize, int spriteIndex) :
     });
 }
 Track::~Track() {
-    traveledDistance.unsubscribe(this);
+    traveledDistance.unsubscribe(traveledDistanceObserverId);
 }
 void Track::receiveDamage(int damage) {
     updateHealth(-damage);

@@ -12,10 +12,15 @@
 template <class T> Subject<T>::Subject(T v) {
     value = v;
 }
-template <class T> void Subject<T>::subscribe(const Observer* observer, std::function<void(T)> callback) {
-    observers.insert_or_assign(observer, callback);
+template <class T> int Subject<T>::counter = 1;
+
+template <class T> int Subject<T>::subscribe(std::function<void(T)> callback) {
+    int key = Subject::counter;
+    observers.insert_or_assign(key, callback);
+    Subject::counter++;
+    return key;
 }
-template <class T> void Subject<T>::unsubscribe(const Observer* observer) {
+template <class T> void Subject<T>::unsubscribe(int observer) {
     observers.erase(observer);
 }
 template <class T> void Subject<T>::notify() {

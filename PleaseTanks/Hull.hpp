@@ -18,6 +18,7 @@ private:
     Subject<sf::Vector2f> exhaustPosition;
     float speed;
     AutoSprite* damageSmoke;
+    int centerWorldObserverId, translatingObserverId;
 public:
     Hull(sf::Vector2f size, int spriteIndex);
     ~Hull();
