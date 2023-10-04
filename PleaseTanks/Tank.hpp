@@ -13,8 +13,9 @@
 #include "Gun.hpp"
 #include "Track.hpp"
 #include "CombatUnit.hpp"
+#include "AudioPlayer.hpp"
 
-class Tank : public PhysicsBody, public CombatUnit {
+class Tank : public PhysicsBody, public CombatUnit, private AudioPlayer {
 private:
     float angularSpeed;
     Gun gun;
@@ -34,4 +35,5 @@ public:
     bool attackSecondary() override;
     bool canMove();
     bool canAttack();
+    virtual void receiveDamage(int damage) override;
 };

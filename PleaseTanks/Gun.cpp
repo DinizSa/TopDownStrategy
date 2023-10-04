@@ -14,7 +14,7 @@
 Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),
     Drawable(imageSize, 3.f, SpriteNames::guns, spriteIndex),
-    CombatUnit(100), damageSmoke(nullptr)
+    CombatUnit(210), damageSmoke(nullptr)
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});

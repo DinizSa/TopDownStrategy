@@ -11,7 +11,7 @@
 Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
     PhysicsBody({imageSize.x * (6.f/10.f), imageSize.y}),
     Drawable(imageSize, 2.f, SpriteNames::hulls, spriteIndex),
-    CombatUnit(200), speed(2.f), damageSmoke(nullptr)
+    CombatUnit(100), speed(2.f), damageSmoke(nullptr)
 {
     setPosition(&centerWorld, &rotation);
     
