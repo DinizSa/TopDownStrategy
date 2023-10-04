@@ -11,22 +11,35 @@
 #include "Explosion.hpp"
 #include "AssetManager.hpp"
 
-Gun::Gun(GunParams gunParams) :
-    PhysicsBody(gunParams.sizePhysics),
-    Drawable(gunParams.sizeImage, 3.f, SpriteNames::guns, gunParams.spriteIndex),
-    CombatUnit(gunParams.hp), gunParams(gunParams)
+Gun::Gun(GunParams&& params) :
+    PhysicsBody(params.sizePhysics),
+    Drawable(params.sizeImage, 3.f, SpriteNames::guns, params.spriteIndex),
+    CombatUnit(params.hp), gunParams(std::move(params))
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter(gunParams.centerPhysics);
     setAngularSpeed(gunParams.angularSpeed);
     
-    gunParams.primaryWeapon->addAmmunition(10, true);
-    gunParams.secondaryWeapon->addAmmunition(20, true);
-    triggerObserverId = gunParams.secondaryWeapon->triggerAutomatic.subscribe([&](int loadedAmmo){
-        attackSecondary();
-    });
     
-    rotatingLocalObserverId = rotatingLocal.subscribe([&](bool isRotating){
+    if (gunParams.primaryWeapon != nullptr) {
+        this->gunParams.primaryWeapon->addAmmunition(10, true);
+        gunParams.primaryWeapon->addAmmunition(20, true);
+        if (gunParams.primaryWeapon->automatic) {
+            gunParams.primaryWeapon->triggerAutomatic.subscribe([&](int loadedAmmo){
+                attackPrimary();
+            });
+        }
+    }
+    if (gunParams.secondaryWeapon != nullptr) {
+        gunParams.secondaryWeapon->addAmmunition(20, true);
+        if (gunParams.secondaryWeapon->automatic) {
+            gunParams.secondaryWeapon->triggerAutomatic.subscribe([&](int loadedAmmo){
+                attackSecondary();
+            });
+        }
+    }
+    
+    rotatingLocal.subscribe([&](bool isRotating){
         if (isRotating) {
             AssetManager::get()->playSound({SoundNames::rotationGun, 40.f, true}, audioPlayerId);
         } else {
@@ -36,8 +49,10 @@ Gun::Gun(GunParams gunParams) :
     });
 }
 Gun::~Gun(){
-    gunParams.secondaryWeapon->triggerAutomatic.unsubscribe(triggerObserverId);
-    rotatingLocal.unsubscribe(rotatingLocalObserverId);
+}
+
+void Gun::setupGun(int initialAmmunition) {
+    
 }
 bool Gun::attackPrimary() {
     bool fired = gunParams.primaryWeapon->fire();
@@ -47,10 +62,14 @@ bool Gun::attackPrimary() {
         return false;
 
     float currentRotation = PhysicsBody::rotation();
-    sf::Vector2f deltaPos = Utils::getVector(currentRotation, gunParams.projectileStartDistance);
-    sf::Vector2f pos = centerWorld() + deltaPos;
 
-    new Projectile(pos, currentRotation, collisionMaskId, gunParams.primaryWeapon);
+    float startPosDelta = (gunParams.simultaneousShots - 1)/2.f;
+    for (int i = 0; i < gunParams.simultaneousShots; i++) {
+        float deltaAngle = (i - startPosDelta) * 10.f;
+        sf::Vector2f deltaPos = Utils::getVector(currentRotation + deltaAngle, gunParams.projectileStartDistance);
+        sf::Vector2f pos = centerWorld() + deltaPos;
+        new Projectile(pos, currentRotation, collisionMaskId, gunParams.primaryWeapon);
+    }
     return true;
 }
 bool Gun::attackSecondary() {

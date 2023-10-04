@@ -33,7 +33,8 @@ Projectile::Projectile(sf::Vector2f position, float angleDegrees, int maskId, co
         launchEffect->setPosition(position, rotation());
     }
 }
-Projectile::~Projectile() {}
+Projectile::~Projectile() {
+}
 void Projectile::update() {
     PhysicsBody::update();
     

@@ -57,7 +57,6 @@ private:
     float secondsSinceShot, secondsSinceEmpty;
     bool readyFromReload, readyFromShot;
 public:
-    int amountShots;
     float range, damage, penetration, zIndex, velocityScalar, rotation, reloadTimeSeconds, shotsIntervalSeconds;
     float selfDetonationSeconds, collisionDetonationSeconds;
     sf::Vector2f projectileImageSize, projectilePhysicsSize, explosionImageSize, explosionPhysicsSize, lauchSize;
@@ -68,6 +67,9 @@ public:
     std::unique_ptr<Sound> launchSound, explosionSound;
     
     Weapon(int maxLoad): Ammunition(0, maxLoad), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), readyFromReload(true), readyFromShot(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f), shotsIntervalSeconds(0), automatic(false), rampUpExplosiveOpacity(false) {};
+//    ~Weapon(){
+//        int a = 2;
+//    }
     bool fire() {
         if (readyFromShot && readyFromReload && Ammunition::consume()) {
             secondsSinceShot = 0.f;

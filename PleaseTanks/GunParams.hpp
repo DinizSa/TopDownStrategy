@@ -16,7 +16,7 @@ class GunParams {
 public:
     sf::Vector2f sizeImage, sizePhysics, centerPhysics;
     float angularSpeed, hp, projectileStartDistance;
-    int spriteIndex;
+    int spriteIndex, simultaneousShots;
     std::shared_ptr<Weapon> primaryWeapon;
     std::shared_ptr<Weapon> secondaryWeapon;
 };
@@ -31,6 +31,7 @@ public:
         hp = 150;
         spriteIndex = 0;
         projectileStartDistance = Utils::getLength(sizeImage) / 2.5f;
+        simultaneousShots = 1;
         
         primaryWeapon = std::make_shared<Weapon>(CannonHighExplosive());
         primaryWeapon->range = 700.f;
@@ -49,8 +50,25 @@ public:
         hp = 150;
         spriteIndex = 1;
         projectileStartDistance = Utils::getLength(sizeImage) / 2.5f;
+        simultaneousShots = 1;
         
         primaryWeapon = std::make_shared<Weapon>(SmokeWeapon());
         secondaryWeapon = std::make_shared<Weapon>(AutomaticRifle());
+    }
+};
+
+class DoubleGunParams: public GunParams {
+public:
+    DoubleGunParams() {
+        sizeImage = {100.f, 100.f};
+        sizePhysics = {sizeImage.x * (3.f/10.f), sizeImage.y * (6.f/10.f)};
+        centerPhysics = {0.f, sizeImage.y * (0.6f/10.f)};
+        angularSpeed = 2.f;
+        hp = 130;
+        spriteIndex = 5;
+        projectileStartDistance = Utils::getLength(sizeImage) / 3.f;
+        simultaneousShots = 2;
+        
+        primaryWeapon = std::make_shared<Weapon>(AutomaticRifle());
     }
 };

@@ -20,9 +20,10 @@ class Gun : public PhysicsBody, public Drawable, public CombatUnit, private Audi
 private:
     void rotateGun(float speed);
     GunParams gunParams;
-    int triggerObserverId, rotatingLocalObserverId;
+    
+    void setupGun(int initialAmmunition);
 public:
-    Gun(GunParams GunParams);
+    Gun(GunParams&& GunParams);
     virtual ~Gun();
     bool attackPrimary() override;
     bool attackSecondary() override;
