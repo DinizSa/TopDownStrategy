@@ -27,16 +27,34 @@ public:
         sizeImage = {100.f, 100.f};
         sizePhysics = {sizeImage.x * (3.f/10.f), sizeImage.y * (6.f/10.f)};
         centerPhysics = {0.f, sizeImage.y * (1.5f/10.f)};
-        angularSpeed = 2.f;
+        angularSpeed = 1.f;
         hp = 150;
         spriteIndex = 0;
         projectileStartDistance = Utils::getLength(sizeImage) / 2.5f;
         simultaneousShots = 1;
         
         primaryWeapon = std::make_shared<Weapon>(CannonHighExplosive());
-        primaryWeapon->range = 700.f;
-        primaryWeapon->reloadTimeSeconds = 6.f;
         secondaryWeapon = std::make_shared<Weapon>(AutomaticRifle());
+    }
+};
+
+class CannonPenetrationGunParams: public GunParams {
+public:
+    CannonPenetrationGunParams() {
+        sizeImage = {100.f, 100.f};
+        sizePhysics = {sizeImage.x * (3.f/10.f), sizeImage.y * (6.f/10.f)};
+        centerPhysics = {0.f, sizeImage.y * (1.5f/10.f)};
+        angularSpeed = 1.f;
+        hp = 150;
+        spriteIndex = 7;
+        projectileStartDistance = Utils::getLength(sizeImage) / 2.5f;
+        simultaneousShots = 1;
+        
+        primaryWeapon = std::make_shared<Weapon>(CannonPenetration());
+        secondaryWeapon = std::make_shared<Weapon>(Rifle());
+        secondaryWeapon->range = 550;
+        secondaryWeapon->velocityScalar = 10;
+        secondaryWeapon->damage = 50;
     }
 };
 
@@ -46,7 +64,7 @@ public:
         sizeImage = {100.f, 100.f};
         sizePhysics = {sizeImage.x * (3.f/10.f), sizeImage.y * (6.f/10.f)};
         centerPhysics = {0.f, sizeImage.y * (0.6f/10.f)};
-        angularSpeed = 2.f;
+        angularSpeed = 1.f;
         hp = 150;
         spriteIndex = 1;
         projectileStartDistance = Utils::getLength(sizeImage) / 2.5f;

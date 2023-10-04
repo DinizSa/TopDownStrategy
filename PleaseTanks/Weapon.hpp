@@ -66,10 +66,8 @@ public:
     std::unique_ptr<Sprite> launchSprite, missileSprite, explosionSprite;
     std::unique_ptr<Sound> launchSound, explosionSound;
     
-    Weapon(int maxLoad): Ammunition(0, maxLoad), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), readyFromReload(true), readyFromShot(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f), shotsIntervalSeconds(0), automatic(false), rampUpExplosiveOpacity(false) {};
-//    ~Weapon(){
-//        int a = 2;
-//    }
+    Weapon(int maxLoad): Ammunition(0, maxLoad), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), readyFromReload(true), readyFromShot(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f), shotsIntervalSeconds(0), automatic(false), rampUpExplosiveOpacity(false) {}
+
     bool fire() {
         if (readyFromShot && readyFromReload && Ammunition::consume()) {
             secondsSinceShot = 0.f;
@@ -160,6 +158,34 @@ public:
         
         explosionSprite = std::make_unique<Sprite>(SpriteNames::effects, 21, 28, 80, false, true);
         explosionSound = std::make_unique<Sound>(SoundNames::grenadeExplosion, 50.f, false);
+    };
+};
+
+class CannonPenetration : public Weapon {
+public:
+    CannonPenetration(): Weapon(1) {
+        range = 650.f;
+        damage = 120.f;
+        penetration = 60.f;
+        rotation = 0.f;
+        reloadTimeSeconds = 5.f;
+        velocityScalar = 9.f;
+        zIndex = 3.f;
+        collisionDetonationSeconds = 0.f;
+        projectileImageSize = {65.f, 65.f};
+        projectilePhysicsSize = {10.f, 10.f};
+        explosionImageSize = {70.f, 70.f};
+        explosionPhysicsSize = {70.f, 70.f};
+        lauchSize = {80.f, 80.f};
+        explodeOnMaxRange = false;
+        loseForceOnMaxRange = true;
+        
+        launchSprite = std::make_unique<Sprite>(SpriteNames::effects, 39, 42, 40, false, 1);
+        missileSprite = std::make_unique<Sprite>(SpriteNames::effects2, 14, 14, 0, false);
+        launchSound = std::make_unique<Sound>(SoundNames::tankGunBlast, 50.f, false);
+        
+        explosionSprite = std::make_unique<Sprite>(SpriteNames::effects, 21, 28, 80, false, true);
+        explosionSound = std::make_unique<Sound>(SoundNames::shellExplosion, 60.f, false);
     };
 };
 
