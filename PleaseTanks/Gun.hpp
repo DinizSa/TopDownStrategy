@@ -14,16 +14,15 @@
 #include "CombatUnit.hpp"
 #include "Weapon.hpp"
 #include "AutoSprite.hpp"
+#include "GunParams.hpp"
 
 class Gun : public PhysicsBody, public Drawable, public CombatUnit, private AudioPlayer {
 private:
     void rotateGun(float speed);
-    std::shared_ptr<Weapon> primaryWeapon;
-    std::shared_ptr<Weapon> secondaryWeapon;
-    AutoSprite* damageSmoke;
+    GunParams gunParams;
     int triggerObserverId, rotatingLocalObserverId;
 public:
-    Gun(sf::Vector2f size, int spriteIndex);
+    Gun(GunParams GunParams);
     virtual ~Gun();
     bool attackPrimary() override;
     bool attackSecondary() override;

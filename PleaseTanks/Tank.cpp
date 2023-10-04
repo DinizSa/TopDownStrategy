@@ -10,8 +10,9 @@
 
 #include "Tank.hpp"
 #include "Utils.hpp"
+#include "GunParams.hpp"
 
-Tank::Tank(sf::Vector2f size, sf::Vector2f position): PhysicsBody({size.x * (6.f/10.f), size.y}), angularSpeed(1.f), hull(size, 7), gun(size, 4), trackA({size.x/4, size.y*1.03f}, 6), trackB({size.x/4, size.y*1.03f}, 6), CombatUnit(300) {
+Tank::Tank(sf::Vector2f size, sf::Vector2f position): PhysicsBody({size.x * (6.f/10.f), size.y}), angularSpeed(1.f), hull(size, 7), gun(SmokeGunParams()), trackA({size.x/4, size.y*1.03f}, 6), trackB({size.x/4, size.y*1.03f}, 6), CombatUnit(300) {
     
     int maskId = PhysicsBody::getAndIncrementMaskId();
     setCollisionMaskId(maskId);

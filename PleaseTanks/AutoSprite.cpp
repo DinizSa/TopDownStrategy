@@ -11,7 +11,7 @@
 
 #include "AutoSprite.hpp"
 
-AutoSprite::AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite): Drawable(size, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0))
+AutoSprite::AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite): Drawable(size, zIndex, sprite.spriteName, sprite.minIndex), sprite(sprite), spriteAnimationStart(std::chrono::milliseconds(0)), loopsMade(0), framesCounter(0)
 {
     spriteAnimationStart = clock::now();
 }
@@ -25,14 +25,15 @@ void AutoSprite::updateSprite(Sprite newSprite) {
 }
 void AutoSprite::setNextSprite() {
     if (currentSpriteIndex == sprite.maxIndex) {
+        loopsMade++;
+        if (loopsMade == sprite.loopsUntilCleanup) {
+            dirty = true;
+        }
         if (sprite.loop) {
             currentSpriteIndex = sprite.minIndex;
         } else if (sprite.singleImageDurationMs > 0) {
             sprite.endCallback();
             setNextAnimation();
-            if (sprite.cleanupOnFinish) {
-                dirty = true;
-            }
             return;
         } else {
             currentSpriteIndex = sprite.minIndex;
@@ -65,6 +66,7 @@ void AutoSprite::setAnimation(Sprite sp) {
 }
 
 void AutoSprite::updateDrawable() {
+    framesCounter++;
     updateSpriteAnimation();
 }
 

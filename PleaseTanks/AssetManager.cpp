@@ -28,7 +28,8 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::soldierShoot, new SpriteSheet({3, 1, imagesPath + "soldierShoot.png", sf::Vector2f({95.f, 149.f}), 0.96f}));
     spriteSheets.insert_or_assign(SpriteNames::soldierGrenade, new SpriteSheet({4, 2, imagesPath + "soldierGrenade.png", sf::Vector2f({115.f, 149.f}), 0.96f}));
     spriteSheets.insert_or_assign(SpriteNames::grenade, new SpriteSheet({1, 1, imagesPath + "grenade.png", sf::Vector2f({256.f, 256.f}), 1.f}));
-    spriteSheets.insert_or_assign(SpriteNames::smoke, new SpriteSheet({5, 3, imagesPath + "smoke.png", sf::Vector2f({256.f, 256.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::smoke, new SpriteSheet({4, 4, imagesPath + "smoke.png", sf::Vector2f({256.f, 256.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::smokeDense, new SpriteSheet({4, 4, imagesPath + "smokeDense.png", sf::Vector2f({256.f, 256.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::blood, new SpriteSheet({6, 1, imagesPath + "blood.png", sf::Vector2f({128.f, 128.f}), 1.f}));
 
     loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
@@ -48,6 +49,8 @@ AssetManager::AssetManager() {
     loadSoundBuffer(SoundNames::grenadeThrow, "grenadeThrow.mp3");
     loadSoundBuffer(SoundNames::bigExplosion, "bigExplosion.mp3");
     loadSoundBuffer(SoundNames::hurt, "hurt.mp3");
+    loadSoundBuffer(SoundNames::smokeGrenade, "smokeGrenade.mp3");
+    loadSoundBuffer(SoundNames::smokeGrenadeLaunch, "smokeGrenadeLaunch.mp3");
 }
 void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& fileName) {
     const static std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";

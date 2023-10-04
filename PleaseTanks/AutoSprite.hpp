@@ -22,8 +22,10 @@ private:
     std::deque<Sprite> spritesQueue;
 protected:
     Sprite sprite;
+    int framesCounter;
 private:
     std::chrono::time_point<clock> spriteAnimationStart;
+    int loopsMade;
 
 public:
     AutoSprite(sf::Vector2f size, float zIndex, Sprite sprite);
@@ -35,7 +37,7 @@ private:
     void setNextAnimation();
 
 protected:
-    void updateDrawable() override;
+    virtual void updateDrawable() override;
     void setNextSprite();
 
 public:

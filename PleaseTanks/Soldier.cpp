@@ -75,8 +75,8 @@ bool Soldier::fireRifle() {
     new Projectile(pos, currentRotation, collisionMaskId, primaryWeapon);
     
     soldierBody.setAnimation(Sprite(SpriteNames::soldierShoot, 0, 2, 100, false));
-    AssetManager::get()->playSound({SoundNames::rifleReload, 50.f, false}, audioPlayerId);
     if (primaryWeapon->isReloading()) {
+        AssetManager::get()->playSound({SoundNames::rifleReload, 50.f, false}, audioPlayerId);
         soldierBody.addAnimation(Sprite(SpriteNames::soldierReload, 0, 19, 80, false));
     }
     soldierBody.addAnimation(Sprite(SpriteNames::soldierMove, 0, 19, 80, true));
@@ -89,7 +89,7 @@ bool Soldier::fireGrenade() {
     
     AssetManager::get()->playSound({SoundNames::grenadePinPull, 50.f, false}, audioPlayerId);
     
-    soldierBody.setAnimation(Sprite(SpriteNames::soldierGrenade, 0, 7, 80, false, false, [&](){
+    soldierBody.setAnimation(Sprite(SpriteNames::soldierGrenade, 0, 7, 80, false, 0, [&](){
         float currentRotation = PhysicsBody::rotation();
         sf::Vector2f deltaPos = Utils::getVector(currentRotation + 23.f, maxRadius + 8.f);
         sf::Vector2f pos = centerWorld() + deltaPos;
@@ -104,7 +104,7 @@ void Soldier::receiveDamage(int damage) {
     bool survived = updateHealth(-damage) > 0.f;
     
     AssetManager::get()->playSound({SoundNames::hurt, 50.f, false}, audioPlayerId);
-    auto blood = new AutoSprite({50.f, 50.f}, 3.f, Sprite(SpriteNames::blood, 0, 5, 80, false, true));
+    auto blood = new AutoSprite({50.f, 50.f}, 3.f, Sprite(SpriteNames::blood, 0, 5, 80, false, 1));
     blood->setPosition(centerWorld(), rotation());
     blood->setColor(sf::Color(255, 255, 255, 180));
     

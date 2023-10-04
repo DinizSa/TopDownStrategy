@@ -11,20 +11,18 @@
 #include "Explosion.hpp"
 #include "AssetManager.hpp"
 
-Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
-    PhysicsBody({imageSize.x*(3.f/10.f), imageSize.y*(6.f/10.f)}),
-    Drawable(imageSize, 3.f, SpriteNames::guns, spriteIndex),
-    CombatUnit(210), damageSmoke(nullptr)
+Gun::Gun(GunParams gunParams) :
+    PhysicsBody(gunParams.sizePhysics),
+    Drawable(gunParams.sizeImage, 3.f, SpriteNames::guns, gunParams.spriteIndex),
+    CombatUnit(gunParams.hp), gunParams(gunParams)
 {
     setPosition(&centerWorld, &rotation);
-    setLocalRotationCenter({0.f, imageSize.y * (1.5f/10.f)});
-    setAngularSpeed(2.f);
+    setLocalRotationCenter(gunParams.centerPhysics);
+    setAngularSpeed(gunParams.angularSpeed);
     
-    primaryWeapon = std::make_shared<Weapon>(CannonHighExplosive());
-    primaryWeapon->addAmmunition(10, true);
-    secondaryWeapon = std::make_shared<Weapon>(AutomaticRifle());
-    secondaryWeapon->addAmmunition(20, true);
-    triggerObserverId = secondaryWeapon->triggerAutomatic.subscribe([&](int loadedAmmo){
+    gunParams.primaryWeapon->addAmmunition(10, true);
+    gunParams.secondaryWeapon->addAmmunition(20, true);
+    triggerObserverId = gunParams.secondaryWeapon->triggerAutomatic.subscribe([&](int loadedAmmo){
         attackSecondary();
     });
     
@@ -38,37 +36,36 @@ Gun::Gun(sf::Vector2f imageSize, int spriteIndex) :
     });
 }
 Gun::~Gun(){
-    secondaryWeapon->triggerAutomatic.unsubscribe(triggerObserverId);
+    gunParams.secondaryWeapon->triggerAutomatic.unsubscribe(triggerObserverId);
     rotatingLocal.unsubscribe(rotatingLocalObserverId);
 }
 bool Gun::attackPrimary() {
-    bool fired = primaryWeapon->fire();
-    if (primaryWeapon == nullptr)
+    bool fired = gunParams.primaryWeapon->fire();
+    if (gunParams.primaryWeapon == nullptr)
         return false;
     if (!fired)
         return false;
 
     float currentRotation = PhysicsBody::rotation();
-    float radius = body.width > body.height ? body.width : body.height;
-    sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius * 0.9f);
+    sf::Vector2f deltaPos = Utils::getVector(currentRotation, gunParams.projectileStartDistance);
     sf::Vector2f pos = centerWorld() + deltaPos;
 
-    new Projectile(pos, currentRotation, collisionMaskId, primaryWeapon);
+    new Projectile(pos, currentRotation, collisionMaskId, gunParams.primaryWeapon);
     return true;
 }
 bool Gun::attackSecondary() {
-    if (secondaryWeapon == nullptr)
+    if (gunParams.secondaryWeapon == nullptr)
         return false;
-    bool fired = secondaryWeapon->fire();
+    bool fired = gunParams.secondaryWeapon->fire();
     if (!fired)
         return false;
 
     float currentRotation = PhysicsBody::rotation();
     float radius = body.width > body.height ? body.width : body.height;
-    sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
+    sf::Vector2f deltaPos = Utils::getVector(currentRotation, gunParams.projectileStartDistance);
     sf::Vector2f pos = centerWorld() + deltaPos;
 
-    new Projectile(pos, currentRotation, collisionMaskId, secondaryWeapon);
+    new Projectile(pos, currentRotation, collisionMaskId, gunParams.secondaryWeapon);
     return true;
 }
 
@@ -79,8 +76,8 @@ void Gun::receiveDamage(int damage) {
 void Gun::update() {
     PhysicsBody::update();
 
-    if (primaryWeapon != nullptr)
-        primaryWeapon->updateReloadTimer();
-    if (secondaryWeapon != nullptr)
-        secondaryWeapon->updateReloadTimer();
+    if (gunParams.primaryWeapon != nullptr)
+        gunParams.primaryWeapon->updateReloadTimer();
+    if (gunParams.secondaryWeapon != nullptr)
+        gunParams.secondaryWeapon->updateReloadTimer();
 }

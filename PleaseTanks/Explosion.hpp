@@ -17,7 +17,9 @@
 class Explosion : public PhysicsBody, public AutoSprite, protected AudioPlayer {
 protected:
     float damage;
+    bool rampUpOpacity;
 public:
     Explosion(sf::Vector2f position, int collisionMaskId, const std::shared_ptr<Weapon> weapon);
     ~Explosion();
+    virtual void updateDrawable() override;
 };
