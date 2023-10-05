@@ -11,7 +11,7 @@
 Hull::Hull(HullParams&& params) :
     PhysicsBody(params.physicsSize),
     Drawable(params.imageSize, 2.f, SpriteNames::hulls, params.spriteIndex),
-    Health(params.maxHealth, params.armour), damageSmoke(nullptr), workingSound(std::move(params.workingSound))
+    Health(params.maxHealth, params.armour), damageSmoke(nullptr), workingSoundVolume(params.workingSound->volume)
 {
     setPosition(&centerWorld, &rotation);
     
@@ -28,16 +28,14 @@ Hull::Hull(HullParams&& params) :
         exhaustPosition.notify();
     });
     
-    sf::Sound* sound = AssetManager::get()->playSound(*workingSound, audioPlayerId);
-    sound->setVolume(workingSound->volume / 12.f);
+    workingSound = AssetManager::get()->playSound(*params.workingSound, audioPlayerId);
+    workingSound->setVolume(workingSoundVolume / 10.f);
 
     translating.subscribe([&](bool isMoving) {
-        sound = AssetManager::get()->getPlayingSound(workingSound->name, audioPlayerId);
         if (isMoving) {
-            std::cout << "volume: " << workingSound->volume << std::endl;
-            sound->setVolume(workingSound->volume);
+            workingSound->setVolume(workingSoundVolume);
         } else {
-            sound->setVolume(workingSound->volume / 12.f);
+            workingSound->setVolume(workingSoundVolume / 10.f);
         }
     });
 }
@@ -52,7 +50,7 @@ float Hull::receiveDamage(float damage, float armourPenetration) {
     
     float healthRacio = Health::receiveDamage(damage, armourPenetration);
 
-    if (healthRacio < 0.5) {
+    if (healthRacio < 0.8) {
         if (damageSmoke == nullptr) {
             damageSmoke = new AutoSprite(rect.getSize(), 3.f, Sprite(SpriteNames::smoke, 0, 14, 90, true));
             damageSmoke->setPosition(&centerWorld, &rotation);

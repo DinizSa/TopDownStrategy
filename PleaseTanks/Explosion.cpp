@@ -30,7 +30,7 @@ PhysicsBody(weapon->explosionPhysicsSize), AutoSprite(weapon->explosionImageSize
     if (damage > 0) {
         std::vector<PhysicsBody*> collided = getCollided();
         for (auto body : collided) {
-            CombatUnit* combatUnit = dynamic_cast<CombatUnit*>(body);
+            Health* combatUnit = dynamic_cast<Health*>(body);
             if (combatUnit != nullptr) {
                 combatUnit->receiveDamage(damage, armourPenetration);
             }
@@ -44,7 +44,6 @@ void Explosion::updateDrawable() {
     
     if (rampUpOpacity) {
         int newOpacity = std::min(255, framesCounter*2);
-        std::cout << "newOpacity: " << newOpacity << std::endl;
         setOpacity(newOpacity);
     }
 }

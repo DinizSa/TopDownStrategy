@@ -12,7 +12,7 @@
 #include "Utils.hpp"
 #include "GunParams.hpp"
 
-Tank::Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams): CombatUnit({size.x * (6.f/10.f), size.y}, 300, 0), angularSpeed(1.f), hull(std::move(hullParams)), gun(std::move(gunParams)), trackA({size.x/4, size.y*1.03f}, 6, 200, 50), trackB({size.x/4, size.y*1.03f}, 6, 200, 50) {
+Tank::Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams, int trackId, float angularSpeed): CombatUnit({size.x * (6.f/10.f), size.y}, 300, 0), hull(std::move(hullParams)), gun(std::move(gunParams)), trackA({size.x/4, size.y*1.03f}, trackId, 200, 50), trackB({size.x/4, size.y*1.03f}, trackId, 200, 50) {
     
     int maskId = PhysicsBody::getAndIncrementMaskId();
     setCollisionMaskId(maskId);
@@ -22,7 +22,7 @@ Tank::Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunP
     gun.setCollisionMaskId(maskId);
     
     setSpeed(hull.getSpeed());
-    setAngularSpeed(1.5f);
+    setAngularSpeed(angularSpeed);
     
     setMovementCollisions(true);
     

@@ -25,7 +25,7 @@ private:
     Hull hull;
 
 public:
-    Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams);
+    Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams, int trackId, float angularSpeed);
     void rotateGunClock();
     void rotateGunAntiClock();
     

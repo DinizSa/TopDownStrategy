@@ -10,7 +10,7 @@
 #include <cmath>
 #include <iostream>
 
-Health::Health(float maxHealth, float armour): maxHealth(maxHealth), currentHealth(maxHealth), armour(armour) {
+Health::Health(float maxHealth, float armour): maxHealth(maxHealth), currentHealth(maxHealth), armour(armour), alive(true) {
 }
 float Health::receiveDamage(float damage, float armourPenetration) {
     if (!alive)

@@ -18,7 +18,8 @@ private:
     AutoSprite* exhaust;
     Subject<sf::Vector2f> exhaustPosition;
     AutoSprite* damageSmoke;
-    std::unique_ptr<Sound> workingSound;
+    float workingSoundVolume;
+    sf::Sound* workingSound;
 public:
     Hull(HullParams&& params);
     ~Hull();

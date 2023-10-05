@@ -38,7 +38,7 @@ public:
     MediumHullParams() {
         imageSize = {100.f, 100.f};
         physicsSize = {50.f, 100.f};
-        spriteIndex = 7;
+        spriteIndex = 1;
         maxHealth = 300;
         armour = 50;
         speed = 1.5f;
@@ -52,7 +52,7 @@ public:
     HeavyHullParams() {
         imageSize = {100.f, 100.f};
         physicsSize = {60.f, 100.f};
-        spriteIndex = 5;
+        spriteIndex = 0;
         maxHealth = 400;
         armour = 70;
         speed = 1.f;

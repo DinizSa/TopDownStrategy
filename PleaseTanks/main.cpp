@@ -10,12 +10,12 @@
 #include "TileMap.hpp"
 #include "StaticEnvironment.hpp"
 #include "Utils.hpp"
-#include "Soldier.hpp"
 #include "CombatUnit.hpp"
 #include "Configs.hpp"
 #include "Weapon.hpp"
 #include "HullParams.hpp"
 #include "GunParams.hpp"
+#include "Gameplay.hpp"
 
 #define ASIO_STANDALONE
 #include <asio.hpp>
@@ -24,17 +24,17 @@
 
 int main()
 {
-    asio::error_code ec;
-    asio::io_context context;
-    asio::ip::tcp::endpoint endpoint(asio::ip::make_address("93.184.216.34", ec), 80);
-    asio::ip::tcp::socket socket(context);
-    
-    socket.connect(endpoint, ec);
-    if (!ec) {
-        std::cout << "Connected! \n";
-    } else {
-        std::cout << "Error connecting: " << ec.message() << " \n";
-    }
+//    asio::error_code ec;
+//    asio::io_context context;
+//    asio::ip::tcp::endpoint endpoint(asio::ip::make_address("93.184.216.34", ec), 80);
+//    asio::ip::tcp::socket socket(context);
+//
+//    socket.connect(endpoint, ec);
+//    if (!ec) {
+//        std::cout << "Connected! \n";
+//    } else {
+//        std::cout << "Error connecting: " << ec.message() << " \n";
+//    }
     
     int fps = CONFIGS::FPS;
     int windowWidth = 1200;
@@ -42,22 +42,9 @@ int main()
     sf::Vector2f windowDimensions = {(float)windowWidth, (float)windowHeight };
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Please Tanks");
     
-    sf::Vector2f size = {100.f, 100.f};
-    sf::Vector2f position = {200.f, 200.f};
-    Tank tank = Tank(size, position, LightHullParams(), DoubleGunParams());
-    
-    sf::Vector2f position2 = {800.f, 250.f};
-    Tank tank2 = Tank(size, position2, MediumHullParams(), SmokeGunParams());
-    
-    sf::Vector2f position3 = {500.f, 150.f};
-    Tank tank3 = Tank(size, position3, HeavyHullParams(), CannonPenetrationGunParams());
-    
-    sf::Vector2f sizeSoldier = {65.f, 65.f};
-    sf::Vector2f positionSolider = {200.f, 500.f};
-    Soldier soldier = Soldier(sizeSoldier, positionSolider);
+    Gameplay gameplay;
     
     
-    PhysicsBody* selectedBody = &tank;
     
     bool forwardPressed = false;
     bool turnClockPressed = false;
@@ -65,6 +52,8 @@ int main()
     bool backwardPressed = false;
     bool turnClockGunPressed = false;
     bool turnAnticlockGunPressed = false;
+    bool attackPrimary = false;
+    bool attackSecondary = false;
     
     sf::Text framesText;
     framesText.setCharacterSize(30);
@@ -111,15 +100,7 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "click: " << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
-                    if (tank.instersects(point)) {
-                        selectedBody = &tank;
-                    } else if (tank2.instersects(point)) {
-                        selectedBody = &tank2;
-                    }  else if (soldier.instersects(point)) {
-                        selectedBody = &soldier;
-                    } else {
-                        selectedBody->travelToDestination(point);
-                    }
+                    gameplay.clicked(point);
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -148,12 +129,10 @@ int main()
                         turnAnticlockGunPressed = true;
                         break;
                     case sf::Keyboard::Scan::N:
-                        if (dynamic_cast<CombatUnit*>(selectedBody) != nullptr)
-                            dynamic_cast<CombatUnit*>(selectedBody)->attackPrimary();
+                        attackPrimary = true;
                         break;
                     case sf::Keyboard::Scan::M:
-                        if (dynamic_cast<CombatUnit*>(selectedBody) != nullptr)
-                            dynamic_cast<CombatUnit*>(selectedBody)->attackSecondary();
+                        attackSecondary = true;
                         break;
                     default:
                         break;
@@ -179,32 +158,29 @@ int main()
                     case sf::Keyboard::Scan::Q:
                         turnAnticlockGunPressed = false;
                         break;
+                    case sf::Keyboard::Scan::N:
+                        attackPrimary = false;
+                        break;
+                    case sf::Keyboard::Scan::M:
+                        attackSecondary = false;
+                        break;
                     default:
                         break;
                 }
             }
         }
 
-        if (forwardPressed){
-            selectedBody->translateFront();
-        }
-        if (backwardPressed)
-            selectedBody->translateBack();
-        if (turnClockPressed)
-            selectedBody->rotateClock();
-        if (turnAnticlockPressed)
-            selectedBody->rotateAntiClock();
-        if (turnClockGunPressed) {
-            Tank* tank = dynamic_cast<Tank*>(selectedBody);
-            if (tank != nullptr) {
-                tank->rotateGunClock();
-            }
-        } if (turnAnticlockGunPressed) {
-            Tank* tank = dynamic_cast<Tank*>(selectedBody);
-            if (tank != nullptr) {
-                tank->rotateGunAntiClock();
-            }
-        }
+        PressedButtons buttons {
+            forwardPressed,
+            backwardPressed,
+            turnClockPressed,
+            turnAnticlockPressed,
+            turnClockGunPressed,
+            turnAnticlockGunPressed,
+            attackPrimary,
+            attackSecondary
+        };
+        gameplay.handleControls(buttons);
 
         Drawable::updateDrawables();
         PhysicsBody::updatePhysicsBodys();
