@@ -65,6 +65,24 @@ int main()
     int frames = 0;
     const int secondsMs = pow(10, 3);
     
+    sf::Text playerATurnText, playerBTurnText, pausedText;
+    playerATurnText.setCharacterSize(40);
+    playerATurnText.setFont(font);
+    playerATurnText.setPosition(320.f, 30.f);
+    playerATurnText.setFillColor(sf::Color(255, 0, 0));
+    playerATurnText.setString("Player A");
+    playerBTurnText.setCharacterSize(40);
+    playerBTurnText.setFont(font);
+    playerBTurnText.setPosition(720.f, 30.f);
+    playerBTurnText.setFillColor(sf::Color(0, 0, 255));
+    playerBTurnText.setString("Player B");
+    pausedText.setCharacterSize(50);
+    pausedText.setFont(font);
+    pausedText.setPosition(1000.f, 30.f);
+    pausedText.setFillColor(sf::Color(255, 255, 255));
+    pausedText.setString("Paused");
+    
+    
     using clock = std::chrono::steady_clock;
     
     std::chrono::time_point<clock> next_frame = clock::now();
@@ -134,6 +152,12 @@ int main()
                     case sf::Keyboard::Scan::M:
                         attackSecondary = true;
                         break;
+                    case sf::Keyboard::Scan::P:
+                        gameplay.togglePause();
+                        break;
+                    case sf::Keyboard::Scan::Space:
+                        gameplay.togglePlayTurn();
+                        break;
                     default:
                         break;
                 }
@@ -169,6 +193,15 @@ int main()
                 }
             }
         }
+        
+        if (gameplay.getPlayerTurn() == Gameplay::PlayerTurn::playerA) {
+            playerATurnText.setFillColor(sf::Color(255, 0, 0, 255));
+            playerBTurnText.setFillColor(sf::Color(0, 0, 255, 100));
+        } else {
+            playerATurnText.setString("Player B");
+            playerATurnText.setFillColor(sf::Color(0, 0, 255, 100));
+            playerBTurnText.setFillColor(sf::Color(255, 0, 0, 255));
+        }
 
         PressedButtons buttons {
             forwardPressed,
@@ -190,6 +223,10 @@ int main()
         window.draw(terrain);
         Drawable::drawAll(window);
         window.draw(framesText);
+        window.draw(playerATurnText);
+        window.draw(playerBTurnText);
+        if (gameplay.isPaused())
+            window.draw(pausedText);
         window.display();
         
         next_frame += std::chrono::milliseconds(secondsMs / fps);

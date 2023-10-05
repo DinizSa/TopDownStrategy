@@ -16,10 +16,14 @@ struct PressedButtons {
 };
 
 class Gameplay {
+public:
+    enum PlayerTurn { playerA, playerB};
 private:
     std::vector<CombatUnit*> teamA;
     std::vector<CombatUnit*> teamB;
     CombatUnit* selected;
+    PlayerTurn playerTurn;
+    bool paused;
 public:
     Gameplay() {
         
@@ -37,26 +41,43 @@ public:
         teamB.push_back(new Tank({100.f, 100.f}, {1100.f, 600.f}, HeavyHullParams(), CannonPenetrationGunParams(), 2, 1.f));
         
         for (float y = 300.f; y < 500.f; y += 55.f) {
-            teamA.push_back(new Soldier(sizeSoldier, {1000.f, y}));
+            teamB.push_back(new Soldier(sizeSoldier, {1000.f, y}));
         }
         
         selected = teamA[0];
+        playerTurn = PlayerTurn::playerA;
     }
     void clicked(sf::Vector2f clickPoint) {
-        for (auto combatUnit : teamA){
+        if (paused)
+            return;
+        
+        std::vector<CombatUnit*> team = playerTurn == PlayerTurn::playerA ? teamA : teamB;
+        for (auto combatUnit : team){
             if (combatUnit->instersects(clickPoint)){
                 selected = combatUnit;
                 return;
             }
         }
-        for (auto combatUnit : teamB) {
-            if (combatUnit->instersects(clickPoint)){
-                selected = combatUnit;
-                return;
-            }
+        if (selected) {
+            bool isUnitFromTeam = std::find(team.begin(), team.end(), selected) != team.end();
+            if (isUnitFromTeam)
+                selected->travelToDestination(clickPoint);
         }
-        if (selected)
-            selected->travelToDestination(clickPoint);
+    }
+    
+    void togglePause() {
+        paused = !paused;
+    }
+    
+    void togglePlayTurn() {
+        playerTurn = playerTurn == PlayerTurn::playerB ? PlayerTurn::playerA : PlayerTurn::playerB;
+        selected = nullptr;
+    }
+    bool isPaused() {
+        return paused;
+    }
+    PlayerTurn getPlayerTurn() {
+        return playerTurn;
     }
     
     void handleControls(PressedButtons buttons) {
