@@ -8,56 +8,62 @@
 #include "Hull.hpp"
 #include "Utils.hpp"
 
-Hull::Hull(sf::Vector2f imageSize, int spriteIndex) :
-    PhysicsBody({imageSize.x * (6.f/10.f), imageSize.y}),
-    Drawable(imageSize, 2.f, SpriteNames::hulls, spriteIndex),
-    CombatUnit(100), speed(2.f), damageSmoke(nullptr)
+Hull::Hull(HullParams&& params) :
+    PhysicsBody(params.physicsSize),
+    Drawable(params.imageSize, 2.f, SpriteNames::hulls, params.spriteIndex),
+    CombatUnit(params.maxHealth, params.armour), damageSmoke(nullptr), workingSound(std::move(params.workingSound))
 {
     setPosition(&centerWorld, &rotation);
     
-    exhaust = new AutoSprite({{100.f, 100.f}, 2.f, {SpriteNames::effects, 0, 2, 90, true}});
+    setSpeed(params.speed);
     
-    centerWorldObserverId = centerWorld.subscribe([&](sf::Vector2f center) {
+    exhaust = new AutoSprite({{20.f, 20.f}, 2.f, {SpriteNames::smoke, 0, 14, 90, true}});
+    exhaust->setPosition(&exhaustPosition, &rotation);
+    
+    centerWorld.subscribe([&](sf::Vector2f center) {
         float currentRotation = PhysicsBody::rotation();
-        float radius = (body.height / 2.f) - 5;
+        float radius = (body.height / 2.f) ;
         sf::Vector2f deltaPos = Utils::getVector(currentRotation, radius);
         exhaustPosition = center - deltaPos;
         exhaustPosition.notify();
     });
     
-    sf::Sound* sound = AssetManager::get()->playSound({SoundNames::movingTank, 10.f, true}, audioPlayerId);
+    sf::Sound* sound = AssetManager::get()->playSound(*workingSound, audioPlayerId);
 
-    translatingObserverId = translating.subscribe([&](bool isMoving) {
-        sound = AssetManager::get()->getPlayingSound(SoundNames::movingTank, audioPlayerId);
+    translating.subscribe([&](bool isMoving) {
+        sound = AssetManager::get()->getPlayingSound(workingSound->name, audioPlayerId);
         if (isMoving) {
-            sound->setVolume(80.f);
+            sound->setVolume(workingSound->volume);
         } else {
-            sound->setVolume(10.f);
+            sound->setVolume(workingSound->volume / 10.f);
         }
     });
 }
 
 Hull::~Hull() {
-    centerWorld.unsubscribe(centerWorldObserverId);
-    translating.unsubscribe(translatingObserverId);
     delete exhaust;
 }
 
-void Hull::receiveDamage(int damage) {
-    float healthRacio = updateHealth(-damage);
+void Hull::receiveDamage(float damage, float armourPenetration) {
+    if (!isAlive())
+        return;
+    
+    float healthRacio = updateHealth(damage, armourPenetration);
 
     if (healthRacio < 0.5) {
         if (damageSmoke == nullptr) {
-            damageSmoke = new AutoSprite({150.f, 150.f}, 3.f, Sprite(SpriteNames::smoke, 0, 14, 90, true));
+            damageSmoke = new AutoSprite(rect.getSize(), 3.f, Sprite(SpriteNames::smoke, 0, 14, 90, true));
             damageSmoke->setPosition(&centerWorld, &rotation);
         }
         int smokeOpacity = round((1.f - healthRacio) * 255);
         damageSmoke->setColor(sf::Color(255, 255, 255, smokeOpacity));
+        
+        if (healthRacio == 0.f) {
+            auto explosion = new AutoSprite(rect.getSize()*2.f, 4.f, Sprite{SpriteNames::darkExplosion, 0, 8, 80, false, 1});
+            explosion->setPosition(centerWorld(), 0.f);
+            AssetManager::get()->playSound(Sound{SoundNames::bigExplosion, 100.f, false}, audioPlayerId);
+        }
     }
-}
-
-void Hull::setSpeed(float newSpeed) {
-    speed = newSpeed;
 }
 
 float Hull::getSpeed() const {

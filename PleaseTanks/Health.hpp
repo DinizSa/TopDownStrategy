@@ -8,12 +8,12 @@
 #pragma once
 
 class Health {
-    float maxHealth, currentHealth;
+    float maxHealth, currentHealth, armour;
     bool alive = true;
 public:
-    Health(float maxHealth);
+    Health(float maxHealth, float armour);
     virtual ~Health(){};
-    float updateHealth(float delta);
+    float updateHealth(float damage, float armourPenetration);
     float getCurrentHealth();
     float getMaxHealth();
     float getHealthRacio();

@@ -18,7 +18,7 @@ private:
     float framesCounter;
     int traveledDistanceObserverId;
 public:
-    Track(sf::Vector2f size, int spriteIndex);
+    Track(sf::Vector2f size, int spriteIndex, float maxHealth, float armour);
     ~Track();
-    void receiveDamage(int damage) override;
+    void receiveDamage(float damage, float armourPenetration) override;
 };

@@ -14,6 +14,8 @@
 #include "Track.hpp"
 #include "CombatUnit.hpp"
 #include "AudioPlayer.hpp"
+#include "HullParams.hpp"
+#include "GunParams.hpp"
 
 class Tank : public PhysicsBody, public CombatUnit, private AudioPlayer {
 private:
@@ -23,7 +25,7 @@ private:
     Hull hull;
 
 public:
-    Tank(sf::Vector2f size, sf::Vector2f position);
+    Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams);
     void rotateGunClock();
     void rotateGunAntiClock();
     
@@ -35,5 +37,4 @@ public:
     bool attackSecondary() override;
     bool canMove();
     bool canAttack();
-    virtual void receiveDamage(int damage) override;
 };

@@ -14,7 +14,7 @@
 
 Explosion::Explosion(sf::Vector2f position, int maskId, const std::shared_ptr<Weapon> weapon):
 PhysicsBody(weapon->explosionPhysicsSize), AutoSprite(weapon->explosionImageSize, 4.f, *weapon->explosionSprite),
-    damage(weapon->damage), rampUpOpacity(weapon->rampUpExplosiveOpacity)
+    damage(weapon->damage), armourPenetration(weapon->penetration), rampUpOpacity(weapon->rampUpExplosiveOpacity)
 {
     setMovementCollisions(false);
     setCollisionMaskId(maskId);
@@ -32,7 +32,7 @@ PhysicsBody(weapon->explosionPhysicsSize), AutoSprite(weapon->explosionImageSize
         for (auto body : collided) {
             CombatUnit* combatUnit = dynamic_cast<CombatUnit*>(body);
             if (combatUnit != nullptr) {
-                combatUnit->receiveDamage(damage);
+                combatUnit->receiveDamage(damage, armourPenetration);
             }
         }
     }

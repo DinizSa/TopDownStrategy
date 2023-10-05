@@ -10,13 +10,14 @@
 #include <cmath>
 #include <iostream>
 
-Health::Health(float maxHealth): maxHealth(maxHealth), currentHealth(maxHealth) {
+Health::Health(float maxHealth, float armour): maxHealth(maxHealth), currentHealth(maxHealth), armour(armour) {
 }
-float Health::updateHealth(float delta) {
+float Health::updateHealth(float damage, float armourPenetration) {
     if (!alive)
         return 0.f;
-    
-    int updatedHealth = currentHealth + delta;
+
+    float mitigatedDamage = damage * (1 - ((std::fmax(armour - armourPenetration, 0.f))/100));
+    float updatedHealth = float((int)((currentHealth - mitigatedDamage) * 100)/100);
     currentHealth = std::fmax(0, std::fmin(maxHealth, updatedHealth));
     std::cout << currentHealth << "/" << maxHealth << '\n';
     alive = currentHealth > 0.f;

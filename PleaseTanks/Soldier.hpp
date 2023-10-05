@@ -30,7 +30,7 @@ public:
     Soldier(sf::Vector2f size, sf::Vector2f position);
     ~Soldier();
     void update() override;
-    void receiveDamage(int damage) override;
+    void receiveDamage(float damage, float armourPenetration) override;
     bool attackPrimary() override;
     bool attackSecondary() override;
 };

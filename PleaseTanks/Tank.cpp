@@ -12,7 +12,7 @@
 #include "Utils.hpp"
 #include "GunParams.hpp"
 
-Tank::Tank(sf::Vector2f size, sf::Vector2f position): PhysicsBody({size.x * (6.f/10.f), size.y}), angularSpeed(1.f), hull(size, 7), gun(CannonPenetrationGunParams()), trackA({size.x/4, size.y*1.03f}, 6), trackB({size.x/4, size.y*1.03f}, 6), CombatUnit(300) {
+Tank::Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams): PhysicsBody({size.x * (6.f/10.f), size.y}), angularSpeed(1.f), hull(std::move(hullParams)), gun(std::move(gunParams)), trackA({size.x/4, size.y*1.03f}, 6, 200, 50), trackB({size.x/4, size.y*1.03f}, 6, 200, 50), CombatUnit(300, 0) {
     
     int maskId = PhysicsBody::getAndIncrementMaskId();
     setCollisionMaskId(maskId);
@@ -21,7 +21,7 @@ Tank::Tank(sf::Vector2f size, sf::Vector2f position): PhysicsBody({size.x * (6.f
     hull.setCollisionMaskId(maskId);
     gun.setCollisionMaskId(maskId);
     
-    setSpeed(2.f);
+    setSpeed(hull.getSpeed());
     setAngularSpeed(1.5f);
     
     setMovementCollisions(true);
@@ -97,13 +97,4 @@ bool Tank::canMove() {
 }
 bool Tank::canAttack() {
     return gun.isAlive();
-}
-
-void Tank::receiveDamage(int damage) {
-    float healthRacio = CombatUnit::updateHealth(-damage);
-    if (healthRacio == 0.f) {
-        auto explosion = new AutoSprite({250.f, 250.f}, 4.f, Sprite{SpriteNames::darkExplosion, 0, 8, 80, false, true});
-        explosion->setPosition(centerWorld(), 0.f);
-        AssetManager::get()->playSound(Sound{SoundNames::bigExplosion, 100.f, false}, audioPlayerId);
-    }
 }

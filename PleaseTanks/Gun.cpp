@@ -14,7 +14,7 @@
 Gun::Gun(GunParams&& params) :
     PhysicsBody(params.sizePhysics),
     Drawable(params.sizeImage, 3.f, SpriteNames::guns, params.spriteIndex),
-    CombatUnit(params.hp), gunParams(std::move(params))
+    CombatUnit(params.hp, params.armour), gunParams(std::move(params))
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter(gunParams.centerPhysics);
@@ -80,7 +80,6 @@ bool Gun::attackSecondary() {
         return false;
 
     float currentRotation = PhysicsBody::rotation();
-    float radius = body.width > body.height ? body.width : body.height;
     sf::Vector2f deltaPos = Utils::getVector(currentRotation, gunParams.projectileStartDistance);
     sf::Vector2f pos = centerWorld() + deltaPos;
 
@@ -88,8 +87,8 @@ bool Gun::attackSecondary() {
     return true;
 }
 
-void Gun::receiveDamage(int damage) {
-    updateHealth(-damage);
+void Gun::receiveDamage(float damage, float armourPenetration) {
+    updateHealth(damage, armourPenetration);
 }
 
 void Gun::update() {

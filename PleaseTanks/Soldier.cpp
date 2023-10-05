@@ -10,7 +10,7 @@
 #include "Explosion.hpp"
 #include "Utils.hpp"
 
-Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f), feet(size/1.5f, 1.f, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), soldierBody(size, 2.f, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)), CombatUnit(100) {
+Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f), feet(size/1.5f, 1.f, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), soldierBody(size, 2.f, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)), CombatUnit(100, 10) {
 
     feet.setPosition(&centerWorld, &rotation);
     soldierBody.setPosition(&centerWorld, &rotation);
@@ -89,7 +89,7 @@ bool Soldier::fireGrenade() {
     
     AssetManager::get()->playSound({SoundNames::grenadePinPull, 50.f, false}, audioPlayerId);
     
-    soldierBody.setAnimation(Sprite(SpriteNames::soldierGrenade, 0, 7, 80, false, 0, [&](){
+    soldierBody.setAnimation(Sprite(SpriteNames::soldierGrenade, 0, 7, 80, false, 1, [&](){
         float currentRotation = PhysicsBody::rotation();
         sf::Vector2f deltaPos = Utils::getVector(currentRotation + 23.f, maxRadius + 8.f);
         sf::Vector2f pos = centerWorld() + deltaPos;
@@ -100,8 +100,8 @@ bool Soldier::fireGrenade() {
     return true;
 }
 
-void Soldier::receiveDamage(int damage) {
-    bool survived = updateHealth(-damage) > 0.f;
+void Soldier::receiveDamage(float damage, float armourPenetration) {
+    bool survived = updateHealth(damage, armourPenetration) > 0.f;
     
     AssetManager::get()->playSound({SoundNames::hurt, 50.f, false}, audioPlayerId);
     auto blood = new AutoSprite({50.f, 50.f}, 3.f, Sprite(SpriteNames::blood, 0, 5, 80, false, 1));

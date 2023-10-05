@@ -15,7 +15,7 @@
 class GunParams {
 public:
     sf::Vector2f sizeImage, sizePhysics, centerPhysics;
-    float angularSpeed, hp, projectileStartDistance;
+    float angularSpeed, hp, projectileStartDistance, armour;
     int spriteIndex, simultaneousShots;
     std::shared_ptr<Weapon> primaryWeapon;
     std::shared_ptr<Weapon> secondaryWeapon;
@@ -29,6 +29,7 @@ public:
         centerPhysics = {0.f, sizeImage.y * (1.5f/10.f)};
         angularSpeed = 1.f;
         hp = 150;
+        armour = 50;
         spriteIndex = 0;
         projectileStartDistance = Utils::getLength(sizeImage) / 2.5f;
         simultaneousShots = 1;
@@ -46,13 +47,14 @@ public:
         centerPhysics = {0.f, sizeImage.y * (1.5f/10.f)};
         angularSpeed = 1.f;
         hp = 150;
+        armour = 30;
         spriteIndex = 7;
         projectileStartDistance = Utils::getLength(sizeImage) / 2.5f;
         simultaneousShots = 1;
         
         primaryWeapon = std::make_shared<Weapon>(CannonPenetration());
         secondaryWeapon = std::make_shared<Weapon>(Rifle());
-        secondaryWeapon->range = 550;
+        secondaryWeapon->range = 350;
         secondaryWeapon->velocityScalar = 10;
         secondaryWeapon->damage = 50;
     }
@@ -66,6 +68,7 @@ public:
         centerPhysics = {0.f, sizeImage.y * (0.6f/10.f)};
         angularSpeed = 1.f;
         hp = 150;
+        armour = 30;
         spriteIndex = 1;
         projectileStartDistance = Utils::getLength(sizeImage) / 2.5f;
         simultaneousShots = 1;
@@ -83,6 +86,7 @@ public:
         centerPhysics = {0.f, sizeImage.y * (0.6f/10.f)};
         angularSpeed = 2.f;
         hp = 130;
+        armour = 20;
         spriteIndex = 5;
         projectileStartDistance = Utils::getLength(sizeImage) / 3.f;
         simultaneousShots = 2;

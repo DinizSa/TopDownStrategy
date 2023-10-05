@@ -11,18 +11,18 @@
 #include "Health.hpp"
 #include "AudioPlayer.hpp"
 #include "CombatUnit.hpp"
+#include "HullParams.hpp"
 
 class Hull : public PhysicsBody, public Drawable, public CombatUnit, private AudioPlayer {
 private:
     AutoSprite* exhaust;
     Subject<sf::Vector2f> exhaustPosition;
-    float speed;
     AutoSprite* damageSmoke;
-    int centerWorldObserverId, translatingObserverId;
+    std::unique_ptr<Sound> workingSound;
+    std::unique_ptr<Sound> sufferDamageSound;
 public:
-    Hull(sf::Vector2f size, int spriteIndex);
+    Hull(HullParams&& params);
     ~Hull();
-    void receiveDamage(int damage) override;
-    void setSpeed(float newSpeed);
+    void receiveDamage(float damage, float armourPenetration) override;
     float getSpeed() const;
 };

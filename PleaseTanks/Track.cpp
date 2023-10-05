@@ -9,10 +9,10 @@
 #include "Utils.hpp"
 #include "TrackTrail.hpp"
 
-Track::Track(sf::Vector2f imageSize, int spriteIndex) :
+Track::Track(sf::Vector2f imageSize, int spriteIndex, float maxHealth, float armour) :
     PhysicsBody(imageSize),
     AutoSprite(imageSize, 1.f, {SpriteNames::tracks, spriteIndex, spriteIndex+1, 0, false}),
-    CombatUnit(150), framesDelta(10), framesCounter(0)
+    CombatUnit(maxHealth, armour), framesDelta(10), framesCounter(0)
 {
     setPosition(&centerWorld, &rotation);
 
@@ -30,6 +30,6 @@ Track::Track(sf::Vector2f imageSize, int spriteIndex) :
 Track::~Track() {
     traveledDistance.unsubscribe(traveledDistanceObserverId);
 }
-void Track::receiveDamage(int damage) {
-    updateHealth(-damage);
+void Track::receiveDamage(float damage, float armourPenetration) {
+    updateHealth(damage, armourPenetration);
 }

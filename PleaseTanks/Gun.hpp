@@ -27,6 +27,6 @@ public:
     virtual ~Gun();
     bool attackPrimary() override;
     bool attackSecondary() override;
-    void receiveDamage(int damage) override;
+    void receiveDamage(float damage, float armourPenetration) override;
     void update() override;
 };

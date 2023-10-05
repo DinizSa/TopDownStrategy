@@ -14,6 +14,8 @@
 #include "CombatUnit.hpp"
 #include "Configs.hpp"
 #include "Weapon.hpp"
+#include "HullParams.hpp"
+#include "GunParams.hpp"
 
 #define ASIO_STANDALONE
 #include <asio.hpp>
@@ -42,10 +44,13 @@ int main()
     
     sf::Vector2f size = {100.f, 100.f};
     sf::Vector2f position = {200.f, 200.f};
-    Tank tank = Tank(size, position);
+    Tank tank = Tank(size, position, LightHullParams(), DoubleGunParams());
     
     sf::Vector2f position2 = {800.f, 250.f};
-    Tank tank2 = Tank(size, position2);
+    Tank tank2 = Tank(size, position2, MediumHullParams(), SmokeGunParams());
+    
+    sf::Vector2f position3 = {500.f, 150.f};
+    Tank tank3 = Tank(size, position3, HeavyHullParams(), CannonPenetrationGunParams());
     
     sf::Vector2f sizeSoldier = {65.f, 65.f};
     sf::Vector2f positionSolider = {200.f, 500.f};
