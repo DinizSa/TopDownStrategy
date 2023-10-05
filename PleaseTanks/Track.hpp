@@ -10,9 +10,9 @@
 #include "PhysicsBody.hpp"
 #include "AutoSprite.hpp"
 #include "Health.hpp"
-#include "CombatUnit.hpp"
+#include "Health.hpp"
 
-class Track : public PhysicsBody, public AutoSprite, public CombatUnit {
+class Track : public PhysicsBody, public AutoSprite, public Health {
 private:
     float framesDelta;
     float framesCounter;
@@ -20,5 +20,5 @@ private:
 public:
     Track(sf::Vector2f size, int spriteIndex, float maxHealth, float armour);
     ~Track();
-    void receiveDamage(float damage, float armourPenetration) override;
+    float receiveDamage(float damage, float armourPenetration) override;
 };

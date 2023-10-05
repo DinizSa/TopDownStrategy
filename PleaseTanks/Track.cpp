@@ -12,7 +12,7 @@
 Track::Track(sf::Vector2f imageSize, int spriteIndex, float maxHealth, float armour) :
     PhysicsBody(imageSize),
     AutoSprite(imageSize, 1.f, {SpriteNames::tracks, spriteIndex, spriteIndex+1, 0, false}),
-    CombatUnit(maxHealth, armour), framesDelta(10), framesCounter(0)
+    Health(maxHealth, armour), framesDelta(10), framesCounter(0)
 {
     setPosition(&centerWorld, &rotation);
 
@@ -30,6 +30,6 @@ Track::Track(sf::Vector2f imageSize, int spriteIndex, float maxHealth, float arm
 Track::~Track() {
     traveledDistance.unsubscribe(traveledDistanceObserverId);
 }
-void Track::receiveDamage(float damage, float armourPenetration) {
-    updateHealth(damage, armourPenetration);
+float Track::receiveDamage(float damage, float armourPenetration) {
+    return Health::receiveDamage(damage, armourPenetration);
 }

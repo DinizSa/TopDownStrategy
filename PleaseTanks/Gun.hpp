@@ -16,7 +16,7 @@
 #include "AutoSprite.hpp"
 #include "GunParams.hpp"
 
-class Gun : public PhysicsBody, public Drawable, public CombatUnit, private AudioPlayer {
+class Gun : public CombatUnit, public Drawable, private AudioPlayer {
 private:
     void rotateGun(float speed);
     GunParams gunParams;
@@ -27,6 +27,5 @@ public:
     virtual ~Gun();
     bool attackPrimary() override;
     bool attackSecondary() override;
-    void receiveDamage(float damage, float armourPenetration) override;
     void update() override;
 };

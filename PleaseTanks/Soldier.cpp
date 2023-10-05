@@ -10,7 +10,7 @@
 #include "Explosion.hpp"
 #include "Utils.hpp"
 
-Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): PhysicsBody(size/2.f), feet(size/1.5f, 1.f, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), soldierBody(size, 2.f, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)), CombatUnit(100, 10) {
+Soldier::Soldier(sf::Vector2f size, sf::Vector2f position): CombatUnit(size/2.f, 100, 10), feet(size/1.5f, 1.f, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), soldierBody(size, 2.f, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)) {
 
     feet.setPosition(&centerWorld, &rotation);
     soldierBody.setPosition(&centerWorld, &rotation);
@@ -100,21 +100,21 @@ bool Soldier::fireGrenade() {
     return true;
 }
 
-void Soldier::receiveDamage(float damage, float armourPenetration) {
-    bool survived = updateHealth(damage, armourPenetration) > 0.f;
+float Soldier::receiveDamage(float damage, float armourPenetration) {
+    float healthRacio = Health::receiveDamage(damage, armourPenetration);
     
     AssetManager::get()->playSound({SoundNames::hurt, 50.f, false}, audioPlayerId);
     auto blood = new AutoSprite({50.f, 50.f}, 3.f, Sprite(SpriteNames::blood, 0, 5, 80, false, 1));
     blood->setPosition(centerWorld(), rotation());
     blood->setColor(sf::Color(255, 255, 255, 180));
     
-    if (!survived) {
+    if (healthRacio > 0.f) {
         soldierBody.setColor(sf::Color(255, 0, 0, 100));
         feet.setColor(sf::Color(0, 0, 0, 0));
         feet.setZIndex(0.f);
         soldierBody.setZIndex(0.f);
         PhysicsBody::removeCollider();
         soldierBody.pauseAnimation();
-        return;
     }
+    return healthRacio;
 }

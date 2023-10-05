@@ -16,7 +16,7 @@
 
 #pragma once
 
-class Soldier : public PhysicsBody, public CombatUnit, private AudioPlayer {
+class Soldier : public CombatUnit, private AudioPlayer {
 private:
     AutoSprite feet;
     AutoSprite soldierBody;
@@ -30,7 +30,7 @@ public:
     Soldier(sf::Vector2f size, sf::Vector2f position);
     ~Soldier();
     void update() override;
-    void receiveDamage(float damage, float armourPenetration) override;
+    float receiveDamage(float damage, float armourPenetration) override;
     bool attackPrimary() override;
     bool attackSecondary() override;
 };

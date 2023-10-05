@@ -13,7 +13,7 @@ class Health {
 public:
     Health(float maxHealth, float armour);
     virtual ~Health(){};
-    float updateHealth(float damage, float armourPenetration);
+    virtual float receiveDamage(float damage, float armourPenetration);
     float getCurrentHealth();
     float getMaxHealth();
     float getHealthRacio();

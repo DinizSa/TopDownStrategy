@@ -17,7 +17,7 @@
 #include "HullParams.hpp"
 #include "GunParams.hpp"
 
-class Tank : public PhysicsBody, public CombatUnit, private AudioPlayer {
+class Tank : public CombatUnit, private AudioPlayer {
 private:
     float angularSpeed;
     Gun gun;

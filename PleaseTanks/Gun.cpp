@@ -12,9 +12,9 @@
 #include "AssetManager.hpp"
 
 Gun::Gun(GunParams&& params) :
-    PhysicsBody(params.sizePhysics),
+    CombatUnit(params.sizePhysics, params.hp, params.armour),
     Drawable(params.sizeImage, 3.f, SpriteNames::guns, params.spriteIndex),
-    CombatUnit(params.hp, params.armour), gunParams(std::move(params))
+    gunParams(std::move(params))
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter(gunParams.centerPhysics);
@@ -85,10 +85,6 @@ bool Gun::attackSecondary() {
 
     new Projectile(pos, currentRotation, collisionMaskId, gunParams.secondaryWeapon);
     return true;
-}
-
-void Gun::receiveDamage(float damage, float armourPenetration) {
-    updateHealth(damage, armourPenetration);
 }
 
 void Gun::update() {

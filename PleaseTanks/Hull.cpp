@@ -11,13 +11,13 @@
 Hull::Hull(HullParams&& params) :
     PhysicsBody(params.physicsSize),
     Drawable(params.imageSize, 2.f, SpriteNames::hulls, params.spriteIndex),
-    CombatUnit(params.maxHealth, params.armour), damageSmoke(nullptr), workingSound(std::move(params.workingSound))
+    Health(params.maxHealth, params.armour), damageSmoke(nullptr), workingSound(std::move(params.workingSound))
 {
     setPosition(&centerWorld, &rotation);
     
     setSpeed(params.speed);
     
-    exhaust = new AutoSprite({{20.f, 20.f}, 2.f, {SpriteNames::smoke, 0, 14, 90, true}});
+    exhaust = new AutoSprite({{60.f, 60.f}, 2.f, {SpriteNames::effects2, 17, 19, 90, true}});
     exhaust->setPosition(&exhaustPosition, &rotation);
     
     centerWorld.subscribe([&](sf::Vector2f center) {
@@ -29,13 +29,15 @@ Hull::Hull(HullParams&& params) :
     });
     
     sf::Sound* sound = AssetManager::get()->playSound(*workingSound, audioPlayerId);
+    sound->setVolume(workingSound->volume / 12.f);
 
     translating.subscribe([&](bool isMoving) {
         sound = AssetManager::get()->getPlayingSound(workingSound->name, audioPlayerId);
         if (isMoving) {
+            std::cout << "volume: " << workingSound->volume << std::endl;
             sound->setVolume(workingSound->volume);
         } else {
-            sound->setVolume(workingSound->volume / 10.f);
+            sound->setVolume(workingSound->volume / 12.f);
         }
     });
 }
@@ -44,11 +46,11 @@ Hull::~Hull() {
     delete exhaust;
 }
 
-void Hull::receiveDamage(float damage, float armourPenetration) {
+float Hull::receiveDamage(float damage, float armourPenetration) {
     if (!isAlive())
-        return;
+        return 0.f;
     
-    float healthRacio = updateHealth(damage, armourPenetration);
+    float healthRacio = Health::receiveDamage(damage, armourPenetration);
 
     if (healthRacio < 0.5) {
         if (damageSmoke == nullptr) {
@@ -64,6 +66,7 @@ void Hull::receiveDamage(float damage, float armourPenetration) {
             AssetManager::get()->playSound(Sound{SoundNames::bigExplosion, 100.f, false}, audioPlayerId);
         }
     }
+    return healthRacio;
 }
 
 float Hull::getSpeed() const {

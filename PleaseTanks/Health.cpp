@@ -12,7 +12,7 @@
 
 Health::Health(float maxHealth, float armour): maxHealth(maxHealth), currentHealth(maxHealth), armour(armour) {
 }
-float Health::updateHealth(float damage, float armourPenetration) {
+float Health::receiveDamage(float damage, float armourPenetration) {
     if (!alive)
         return 0.f;
 
