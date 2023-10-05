@@ -18,6 +18,7 @@ Gun::Gun(GunParams&& params) :
 {
     setPosition(&centerWorld, &rotation);
     setLocalRotationCenter(gunParams.centerPhysics);
+    setLocalRotationCenter(gunParams.centerPhysics);
     setAngularSpeed(gunParams.angularSpeed);
     
     

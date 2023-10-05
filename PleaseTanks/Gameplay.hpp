@@ -70,17 +70,10 @@ public:
             selected->rotateClock();
         if (buttons.rotateAntiClock)
             selected->rotateAntiClock();
-        if (buttons.rotateSecondaryClock) {
-            Tank* tank = dynamic_cast<Tank*>(selected);
-            if (tank != nullptr) {
-                tank->rotateGunClock();
-            }
-        } if (buttons.rotateSecondaryAntiClock) {
-            Tank* tank = dynamic_cast<Tank*>(selected);
-            if (tank != nullptr) {
-                tank->rotateGunAntiClock();
-            }
-        }
+        if (buttons.rotateSecondaryClock)
+            selected->rotateSecondaryClock();
+        if (buttons.rotateSecondaryAntiClock)
+            selected->rotateSecondaryAntiClock();
         if (buttons.attackPrimary)
             selected->attackPrimary();
         if (buttons.attackSecondary)

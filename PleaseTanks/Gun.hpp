@@ -18,7 +18,6 @@
 
 class Gun : public CombatUnit, public Drawable, private AudioPlayer {
 private:
-    void rotateGun(float speed);
     GunParams gunParams;
     
     void setupGun(int initialAmmunition);

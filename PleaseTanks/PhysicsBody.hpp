@@ -80,6 +80,8 @@ public:
     virtual bool translate(float delta, bool isTravel = true);
     virtual bool rotateClock();
     virtual bool rotateAntiClock();
+    virtual void rotateSecondaryClock(){};
+    virtual void rotateSecondaryAntiClock(){};
     virtual bool rotate(float deltaAngle);
     virtual bool rotate(float deltaAngle, sf::Vector2f origin);
     void travelToDestination(sf::Vector2f destination);

@@ -26,8 +26,8 @@ private:
 
 public:
     Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams, int trackId, float angularSpeed);
-    void rotateGunClock();
-    void rotateGunAntiClock();
+    void rotateSecondaryClock() override;
+    void rotateSecondaryAntiClock() override;
     
     bool translate(float delta, bool isTravel = true) override;
     bool translate(sf::Vector2f delta, bool isTravel = true) override;

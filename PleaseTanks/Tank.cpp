@@ -46,12 +46,12 @@ bool Tank::attackSecondary() {
         return false;
     return gun.attackSecondary();
 }
-void Tank::rotateGunClock() {
+void Tank::rotateSecondaryClock() {
     if (!canAttack())
         return;
     gun.rotateClock();
 }
-void Tank::rotateGunAntiClock() {
+void Tank::rotateSecondaryAntiClock() {
     if (!canAttack())
         return;
     gun.rotateAntiClock();
