@@ -21,6 +21,7 @@ private:
     
     std::unordered_map<SoundNames, std::shared_ptr<sf::SoundBuffer>> soundBuffers;
     std::unordered_map<int, std::vector<sf::Sound*>> soundsPool;
+    sf::Font font;
 
 private:
     AssetManager();
@@ -37,4 +38,5 @@ public:
     sf::Sound* playSound(SoundNames soundName, int audioPlayerId);
     void stopSound(SoundNames soundName, int audioPlayerId);
     sf::Sound* getPlayingSound(SoundNames soundName, int audioPlayerId);
+    const sf::Font& getFont();
 };

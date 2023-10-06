@@ -16,6 +16,7 @@
 #include "HullParams.hpp"
 #include "GunParams.hpp"
 #include "Gameplay.hpp"
+#include "UnitHud.hpp"
 
 #define ASIO_STANDALONE
 #include <asio.hpp>
@@ -57,8 +58,7 @@ int main()
     
     sf::Text framesText;
     framesText.setCharacterSize(30);
-    sf::Font font;
-    font.loadFromFile("/Users/Shared/merda/PleaseTanks/fonts/Drunk & Proud.otf");
+    sf::Font font = AssetManager::get()->getFont();
     framesText.setFont(font);
     framesText.setPosition(50.f, 50.f);
     framesText.setFillColor(sf::Color(255, 0, 0));
@@ -110,6 +110,8 @@ int main()
     new Tree({120.f, 120.f}, {450.f, 300.f});
     new Tree({130.f, 130.f}, {600.f, 350.f});
     
+    UnitHud unitHud;
+    
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event))
@@ -118,7 +120,12 @@ int main()
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "click: " << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
                     sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
-                    gameplay.clicked(point);
+                    gameplay.handleClick(point);
+                    
+                    unitHud.handleClick(point);
+                    
+                    const CombatUnit* selectedUnit = gameplay.getSelected();
+                    unitHud.setSelectedUnit(selectedUnit);
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -225,6 +232,7 @@ int main()
         window.draw(framesText);
         window.draw(playerATurnText);
         window.draw(playerBTurnText);
+        unitHud.draw(window);
         if (gameplay.isPaused())
             window.draw(pausedText);
         window.display();

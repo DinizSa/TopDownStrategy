@@ -25,7 +25,7 @@ private:
     PlayerTurn playerTurn;
     bool paused;
 public:
-    Gameplay() {
+    Gameplay(): selected(nullptr) {
         
         teamA.push_back(new Tank({80.f, 80.f}, {100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f));
         teamA.push_back(new Tank({90.f, 90.f}, {100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f));
@@ -44,10 +44,9 @@ public:
             teamB.push_back(new Soldier(sizeSoldier, {1000.f, y}));
         }
         
-        selected = teamA[0];
         playerTurn = PlayerTurn::playerA;
     }
-    void clicked(sf::Vector2f clickPoint) {
+    void handleClick(sf::Vector2f clickPoint) {
         if (paused)
             return;
         
@@ -64,7 +63,9 @@ public:
                 selected->travelToDestination(clickPoint);
         }
     }
-    
+    CombatUnit* getSelected() {
+        return selected;
+    }
     void togglePause() {
         paused = !paused;
     }

@@ -14,8 +14,8 @@ public:
     Health(float maxHealth, float armour);
     virtual ~Health(){};
     virtual float receiveDamage(float damage, float armourPenetration);
-    float getCurrentHealth();
-    float getMaxHealth();
-    float getHealthRacio();
-    bool isAlive();
+    float getCurrentHealth() const;
+    float getMaxHealth() const;
+    float getHealthRacio() const;
+    bool isAlive() const;
 };

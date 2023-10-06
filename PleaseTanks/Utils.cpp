@@ -195,6 +195,8 @@ std::vector<sf::Vector2f> Utils::getPathPoints(PhysicsBody* walker, sf::Vector2f
     };
     
     while (true) {
+        if (open.size() == 0)
+            return points;
         Node current = getLowerCostNode(open);
         open = removeNode(open, current);
         closed.push_back(current);

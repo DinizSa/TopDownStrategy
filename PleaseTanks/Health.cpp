@@ -24,15 +24,15 @@ float Health::receiveDamage(float damage, float armourPenetration) {
     return getHealthRacio();
 }
 
-float Health::getCurrentHealth() {
+float Health::getCurrentHealth() const {
     return currentHealth;
 }
-float Health::getMaxHealth() {
+float Health::getMaxHealth() const {
     return maxHealth;
 }
-float Health::getHealthRacio() {
+float Health::getHealthRacio() const {
     return currentHealth / maxHealth;
 }
-bool Health::isAlive() {
+bool Health::isAlive() const {
     return currentHealth > 0.f;
 }

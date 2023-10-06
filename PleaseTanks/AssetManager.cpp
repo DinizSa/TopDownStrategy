@@ -51,6 +51,10 @@ AssetManager::AssetManager() {
     loadSoundBuffer(SoundNames::hurt, "hurt.mp3");
     loadSoundBuffer(SoundNames::smokeGrenade, "smokeGrenade.mp3");
     loadSoundBuffer(SoundNames::smokeGrenadeLaunch, "smokeGrenadeLaunch.mp3");
+    
+    std::string fontPath = "/Users/Shared/merda/PleaseTanks/fonts/brodies.ttf";
+    if (!font.loadFromFile(fontPath))
+        std::cout << "Error loading font: " << fontPath << std::endl;
 }
 void AssetManager::loadSoundBuffer(SoundNames soundName, const std::string& fileName) {
     const static std::string soundsPrefix = "/Users/Shared/merda/PleaseTanks/sound/";
@@ -90,6 +94,10 @@ sf::Sound* AssetManager::getPlayingSound(SoundNames soundName, int audioPlayerId
         }
     }
     return nullptr;
+}
+
+const sf::Font& AssetManager::getFont() {
+    return font;
 }
 
 sf::Sound* AssetManager::playSound(Sound sound, int audioPlayerId) {
