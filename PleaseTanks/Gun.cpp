@@ -12,7 +12,7 @@
 #include "AssetManager.hpp"
 
 Gun::Gun(GunParams&& params) :
-    CombatUnit(params.sizePhysics, params.hp, params.armour),
+    CombatUnit(params.sizePhysics, params.hp, params.armour, -1.f),
     Drawable(params.sizeImage, 3.f, SpriteNames::guns, params.spriteIndex),
     gunParams(std::move(params))
 {

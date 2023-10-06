@@ -93,7 +93,7 @@ void PhysicsBody::setAngularSpeed(float newAngularSpeed) {
 void PhysicsBody::setCollisionMaskId(int groupId) {
     collisionMaskId = groupId;
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f), speed(0.f), angularSpeed(0.f), shouldConsumePath(false), lastLocalRotation(0.f) {
+PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f), speed(0.f), angularSpeed(0.f), shouldConsumePath(false), lastLocalRotation(0.f), canMove(true) {
     traveledDistance = 0.f;
     setSize(size);
     allBodies.push_back(this);
@@ -174,9 +174,13 @@ bool PhysicsBody::translate(float delta, bool isTravel) {
     return translate(deltaPos, isTravel);
 }
 bool PhysicsBody::translate(sf::Vector2f delta, bool isTravel) {
+
     if (isTravel) {
         traveledDistance = traveledDistance() + Utils::getLength(delta);
         traveledDistance.notify();
+        
+        if (!canMove)
+            return false;
     }
     body.left += delta.x;
     body.top += delta.y;

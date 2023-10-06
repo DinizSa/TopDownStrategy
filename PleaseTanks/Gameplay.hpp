@@ -51,7 +51,7 @@ public:
         if (paused)
             return;
         
-        std::vector<CombatUnit*> team = playerTurn == PlayerTurn::playerA ? teamA : teamB;
+        std::vector<CombatUnit*>& team = getCurrentTeam();
         for (auto combatUnit : team){
             if (combatUnit->instersects(clickPoint)){
                 selected = combatUnit;
@@ -69,8 +69,18 @@ public:
         paused = !paused;
     }
     
+    std::vector<CombatUnit*>& getCurrentTeam() {
+        return playerTurn == PlayerTurn::playerA ? teamA : teamB;
+    }
+    
     void togglePlayTurn() {
+        
         playerTurn = playerTurn == PlayerTurn::playerB ? PlayerTurn::playerA : PlayerTurn::playerB;
+        
+        std::vector<CombatUnit*>& team = getCurrentTeam();
+        for (auto combatUnit : team) {
+            combatUnit->resetTurn();
+        }
         selected = nullptr;
     }
     bool isPaused() {

@@ -17,6 +17,7 @@ class PhysicsBody {
     static int nextMaskId;
 protected:
     bool expired = false;
+    bool canMove;
 public:
     static std::vector<PhysicsBody*> allBodies;
     static void updatePhysicsBodys();
@@ -70,7 +71,7 @@ public:
     void setSize(sf::Vector2f size);
     void setLocalRotationCenter(sf::Vector2f localRotationCenter);
 
-    void setVelocity(sf::Vector2f velocity);
+    virtual void setVelocity(sf::Vector2f velocity);
     void setVelocityAndRotate(sf::Vector2f velocity);
     sf::Vector2f getVelocity();
     bool applyVelocity();

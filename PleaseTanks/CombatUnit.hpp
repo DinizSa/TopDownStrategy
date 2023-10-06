@@ -10,9 +10,24 @@
 #include "Health.hpp"
 
 class CombatUnit: public PhysicsBody, public Health {
+private:
+    float startTurnDistance;
 public:
-    CombatUnit(sf::Vector2f size, float maxHealth, float armour): PhysicsBody(size), Health(maxHealth, armour) {};
+    float maxDistancePerTurn;
+    CombatUnit(sf::Vector2f size, float maxHealth, float armour, float maxDistance): PhysicsBody(size), Health(maxHealth, armour), maxDistancePerTurn(maxDistance) {
+        PhysicsBody::traveledDistance.subscribe([&](float distance){
+            if (canMove && maxDistancePerTurn  > 0.01f && distance > startTurnDistance + maxDistancePerTurn) {
+                PhysicsBody::canMove = false;
+                setVelocity({0.f, 0.f});
+                PhysicsBody::path.clear(); 
+                startTurnDistance = distance;
+            }
+        });
+    };
     virtual ~CombatUnit(){};
     virtual bool attackPrimary() {return false;};
     virtual bool attackSecondary() {return false;};
+    void resetTurn(){
+        PhysicsBody::canMove = true;
+    };
 };
