@@ -117,6 +117,10 @@ void PhysicsBody::setSize(sf::Vector2f size) {
     maxRadius = Utils::getLength(body.width/2.f, body.height/2.f);
 }
 void PhysicsBody::travelToDestination(sf::Vector2f destination) {
+    for (auto b : allBodies) {
+        if (b->instersects(destination))
+            return;
+    }
     path = Utils::getPathPoints(this, destination);
     shouldConsumePath = true;
 }
