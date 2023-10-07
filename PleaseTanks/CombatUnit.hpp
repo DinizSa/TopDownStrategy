@@ -14,8 +14,9 @@ class CombatUnit: public PhysicsBody, public Health {
 private:
     float startTurnDistance;
 public:
+    std::string category;
     float maxDistancePerTurn;
-    CombatUnit(sf::Vector2f size, float maxHealth, float armour, float maxDistance): PhysicsBody(size), Health(maxHealth, armour), maxDistancePerTurn(maxDistance) {
+    CombatUnit(sf::Vector2f size, float maxHealth, float armour, float maxDistance, std::string category): PhysicsBody(size), Health(maxHealth, armour), maxDistancePerTurn(maxDistance), category(category) {
         PhysicsBody::traveledDistance.subscribe([&](float distance){
             if (canMove && maxDistancePerTurn  > 0.01f && distance > startTurnDistance + maxDistancePerTurn) {
                 PhysicsBody::canMove = false;

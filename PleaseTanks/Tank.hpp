@@ -25,7 +25,7 @@ private:
     Hull hull;
 
 public:
-    Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams, int trackId, float angularSpeed);
+    Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams, int trackId, float angularSpeed, std::string category);
     void rotateSecondaryClock() override;
     void rotateSecondaryAntiClock() override;
     

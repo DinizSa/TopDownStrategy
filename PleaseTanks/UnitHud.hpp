@@ -47,9 +47,8 @@ public:
         show = true;
         startX = 5;
         
-        std::string nameString = "Tank";
         int y = startY;
-        name = std::make_unique<TextboxIcon>(sf::Vector2f(startX, y), sf::Vector2f(width, height), nameString, Sprite(SpriteNames::icons, -1, 0, 0, false));
+        name = std::make_unique<TextboxIcon>(sf::Vector2f(startX, y), sf::Vector2f(width, height), unit->category, Sprite(SpriteNames::icons, -1, 0, 0, false));
         name->setTextColor(CONFIGS::primaryColor);
         name->setBackgroundColor(CONFIGS::baseColor);
         

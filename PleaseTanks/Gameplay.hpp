@@ -27,18 +27,18 @@ private:
 public:
     Gameplay(): selected(nullptr) {
         
-        teamA.push_back(new Tank({80.f, 80.f}, {100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f));
-        teamA.push_back(new Tank({90.f, 90.f}, {100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f));
-        teamA.push_back(new Tank({100.f, 100.f}, {100.f, 600.f}, HeavyHullParams(), CannonPenetrationGunParams(), 2, 1.f));
+        teamA.push_back(new Tank({80.f, 80.f}, {100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f, "Light Tank"));
+        teamA.push_back(new Tank({90.f, 90.f}, {100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f, "Tank"));
+        teamA.push_back(new Tank({100.f, 100.f}, {100.f, 600.f}, HeavyHullParams(), CannonPenetrationGunParams(), 2, 1.f, "Heavy Tank"));
         
         sf::Vector2f sizeSoldier = {50.f, 50.f};
         for (float y = 300.f; y < 500.f; y += 55.f) {
             teamA.push_back(new Soldier(sizeSoldier, {210.f, y}));
         }
         
-        teamB.push_back(new Tank({80.f, 80.f}, {1100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f));
-        teamB.push_back(new Tank({90.f, 90.f}, {1100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f));
-        teamB.push_back(new Tank({100.f, 100.f}, {1100.f, 600.f}, HeavyHullParams(), CannonPenetrationGunParams(), 2, 1.f));
+        teamB.push_back(new Tank({80.f, 80.f}, {1100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f, "Light Tank"));
+        teamB.push_back(new Tank({90.f, 90.f}, {1100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f, "Tank"));
+        teamB.push_back(new Tank({100.f, 100.f}, {1100.f, 600.f}, HeavyHullParams(), CannonPenetrationGunParams(), 2, 1.f, "Heavy Tank"));
         
         for (float y = 300.f; y < 500.f; y += 55.f) {
             teamB.push_back(new Soldier(sizeSoldier, {1000.f, y}));
