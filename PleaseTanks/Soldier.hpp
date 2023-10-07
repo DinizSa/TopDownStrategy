@@ -33,4 +33,7 @@ public:
     float receiveDamage(float damage, float armourPenetration) override;
     bool attackPrimary() override;
     bool attackSecondary() override;
+    
+    std::shared_ptr<Weapon> getPrimaryWeapon() const override;
+    std::shared_ptr<Weapon> getSecondaryWeapon() const override;
 };

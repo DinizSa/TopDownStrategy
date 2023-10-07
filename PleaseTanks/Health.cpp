@@ -30,6 +30,9 @@ float Health::getCurrentHealth() const {
 float Health::getMaxHealth() const {
     return maxHealth;
 }
+float Health::getArmour() const {
+    return armour;
+}
 float Health::getHealthRacio() const {
     return currentHealth / maxHealth;
 }

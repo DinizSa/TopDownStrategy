@@ -35,6 +35,10 @@ Tank::Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunP
     gun.translate(position + deltaGun, isTravel);
     trackA.translate(position - deltaTracks, isTravel);
     trackB.translate(position + deltaTracks, isTravel);
+    
+    maxHealth = gun.getMaxHealth() + trackA.getMaxHealth() + trackB.getMaxHealth() + hull.getMaxHealth();
+    currentHealth = maxHealth;
+    armour = gun.getArmour() + trackA.getArmour() + trackB.getArmour() + hull.getArmour();
 }
 bool Tank::attackPrimary() {
     if (!canAttack())
@@ -97,4 +101,12 @@ bool Tank::canMove() {
 }
 bool Tank::canAttack() {
     return gun.isAlive();
+}
+
+std::shared_ptr<Weapon> Tank::getPrimaryWeapon() const {
+    return gun.getPrimary();
+}
+
+std::shared_ptr<Weapon> Tank::getSecondaryWeapon() const {
+    return gun.getSecondary();
 }

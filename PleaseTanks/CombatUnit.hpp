@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Health.hpp"
+#include "GunParams.hpp"
 
 class CombatUnit: public PhysicsBody, public Health {
 private:
@@ -27,6 +28,8 @@ public:
     virtual ~CombatUnit(){};
     virtual bool attackPrimary() {return false;};
     virtual bool attackSecondary() {return false;};
+    virtual std::shared_ptr<Weapon> getPrimaryWeapon() const = 0;
+    virtual std::shared_ptr<Weapon> getSecondaryWeapon() const = 0;
     void resetTurn(){
         PhysicsBody::canMove = true;
     };

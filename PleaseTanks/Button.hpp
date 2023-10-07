@@ -20,7 +20,7 @@ public:
         buttonText.setFont(font);
         buttonText.setString(textString);
         buttonText.setCharacterSize(24);
-        buttonText.setFillColor(sf::Color::White);
+        buttonText.setFillColor(sf::Color(114,73,30));
 
         // Center the text inside the button
         sf::FloatRect textRect = buttonText.getLocalBounds();

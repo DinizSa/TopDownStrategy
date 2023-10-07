@@ -37,4 +37,7 @@ public:
     bool attackSecondary() override;
     bool canMove();
     bool canAttack();
+    
+    std::shared_ptr<Weapon> getPrimaryWeapon() const override;
+    std::shared_ptr<Weapon> getSecondaryWeapon() const override;
 };

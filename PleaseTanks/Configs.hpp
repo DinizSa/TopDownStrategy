@@ -6,7 +6,10 @@
 //
 
 #pragma once
+#include <SFML/Graphics.hpp>
 
 struct CONFIGS {
     static constexpr float FPS = 60.f;
+    static sf::Color primaryColor;
+    static sf::Color baseColor;
 };

@@ -91,7 +91,7 @@ void Drawable::setSprite(int index) {
 }
 void Drawable::setOpacity(sf::Uint8 opacity) {
     auto color = sf::Color(255, 255, 255, opacity);
-    rect.setFillColor(color);
+    setColor(color);
 }
 sf::Uint8 Drawable::getOpacity() {
     auto color = rect.getFillColor();

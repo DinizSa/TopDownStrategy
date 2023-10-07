@@ -8,14 +8,16 @@
 #pragma once
 
 class Health {
+protected:
     float maxHealth, currentHealth, armour;
     bool alive = true;
 public:
     Health(float maxHealth, float armour);
     virtual ~Health(){};
     virtual float receiveDamage(float damage, float armourPenetration);
-    float getCurrentHealth() const;
-    float getMaxHealth() const;
-    float getHealthRacio() const;
-    bool isAlive() const;
+    virtual float getCurrentHealth() const;
+    virtual float getMaxHealth() const;
+    virtual float getArmour() const;
+    virtual float getHealthRacio() const;
+    virtual bool isAlive() const;
 };

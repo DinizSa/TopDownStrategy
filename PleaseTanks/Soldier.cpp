@@ -108,7 +108,7 @@ float Soldier::receiveDamage(float damage, float armourPenetration) {
     blood->setPosition(centerWorld(), rotation());
     blood->setColor(sf::Color(255, 255, 255, 180));
     
-    if (healthRacio > 0.f) {
+    if (healthRacio < 0.001f) {
         soldierBody.setColor(sf::Color(255, 0, 0, 100));
         feet.setColor(sf::Color(0, 0, 0, 0));
         feet.setZIndex(0.f);
@@ -117,4 +117,12 @@ float Soldier::receiveDamage(float damage, float armourPenetration) {
         soldierBody.pauseAnimation();
     }
     return healthRacio;
+}
+
+std::shared_ptr<Weapon> Soldier::getPrimaryWeapon() const {
+    return primaryWeapon;
+}
+
+std::shared_ptr<Weapon> Soldier::getSecondaryWeapon() const {
+    return secondaryWeapon;
 }

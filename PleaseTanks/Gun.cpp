@@ -12,7 +12,8 @@
 #include "AssetManager.hpp"
 
 Gun::Gun(GunParams&& params) :
-    CombatUnit(params.sizePhysics, params.hp, params.armour, -1.f),
+    PhysicsBody(params.sizePhysics),
+    Health(params.hp, params.armour),
     Drawable(params.sizeImage, 3.f, SpriteNames::guns, params.spriteIndex),
     gunParams(std::move(params))
 {
@@ -72,6 +73,12 @@ bool Gun::attackPrimary() {
         new Projectile(pos, currentRotation, collisionMaskId, gunParams.primaryWeapon);
     }
     return true;
+}
+std::shared_ptr<Weapon> Gun::getPrimary() const {
+    return gunParams.primaryWeapon;
+}
+std::shared_ptr<Weapon> Gun::getSecondary() const{
+    return gunParams.secondaryWeapon;
 }
 bool Gun::attackSecondary() {
     if (gunParams.secondaryWeapon == nullptr)

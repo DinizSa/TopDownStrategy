@@ -92,5 +92,6 @@ public:
         simultaneousShots = 2;
         
         primaryWeapon = std::make_shared<Weapon>(AutomaticRifle());
+        primaryWeapon->name = "Double " + primaryWeapon->name;
     }
 };

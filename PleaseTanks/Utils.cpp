@@ -8,6 +8,10 @@
 #include "Utils.hpp"
 #include <cmath>
 
+std::string Utils::floatToString(float value, int precision) {
+    std::string stringValue = std::to_string(value);
+    return stringValue.substr(0, stringValue.find(".") + precision);
+}
 float Utils::getDistance(const sf::Vector2f& a, const sf::Vector2f& b) {
     return getLength(b.x - a.x, b.y - a.y);
 }
