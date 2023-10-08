@@ -10,12 +10,13 @@
 #include <vector>
 #include "Tank.hpp"
 #include "Soldier.hpp"
+#include "VisionMask.hpp"
 
 struct PressedButtons {
     bool moveFront, moveBack, rotateClock, rotateAntiClock, rotateSecondaryClock, rotateSecondaryAntiClock, attackPrimary, attackSecondary;
 };
 
-class Gameplay {
+class Gameplay: public VisionMask {
 public:
     enum PlayerTurn { playerA, playerB};
 private:
@@ -27,24 +28,27 @@ private:
 public:
     Gameplay(): selected(nullptr) {
         
-        teamA.push_back(new Tank({80.f, 80.f}, {100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f, "Light Tank"));
-        teamA.push_back(new Tank({90.f, 90.f}, {100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f, "Tank"));
-        teamA.push_back(new Tank({100.f, 100.f}, {100.f, 600.f}, HeavyHullParams(), CannonPenetrationGunParams(), 2, 1.f, "Heavy Tank"));
+        teamA.push_back(new Tank({80.f, 80.f}, {100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f, "Light Tank", Team::teamA));
+        teamA.push_back(new Tank({90.f, 90.f}, {100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f, "Tank", Team::teamA));
+        teamA.push_back(new Tank({100.f, 100.f}, {100.f, 600.f}, HeavyHullParams(), CannonPenetrationGunParams(), 2, 1.f, "Heavy Tank", Team::teamA));
         
         sf::Vector2f sizeSoldier = {50.f, 50.f};
         for (float y = 300.f; y < 500.f; y += 55.f) {
-            teamA.push_back(new Soldier(sizeSoldier, {210.f, y}));
+            teamA.push_back(new Soldier(sizeSoldier, {210.f, y}, Team::teamA));
         }
         
-        teamB.push_back(new Tank({80.f, 80.f}, {1100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f, "Light Tank"));
-        teamB.push_back(new Tank({90.f, 90.f}, {1100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f, "Tank"));
-        teamB.push_back(new Tank({100.f, 100.f}, {1100.f, 600.f}, HeavyHullParams(), CannonPenetrationGunParams(), 2, 1.f, "Heavy Tank"));
+        teamB.push_back(new Tank({80.f, 80.f}, {1100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f, "Light Tank", Team::teamB));
+        teamB.push_back(new Tank({90.f, 90.f}, {1100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f, "Tank", Team::teamB));
+        teamB.push_back(new Tank({100.f, 100.f}, {1100.f, 600.f}, HeavyHullParams(), CannonPenetrationGunParams(), 2, 1.f, "Heavy Tank", Team::teamB));
         
         for (float y = 300.f; y < 500.f; y += 55.f) {
-            teamB.push_back(new Soldier(sizeSoldier, {1000.f, y}));
+            teamB.push_back(new Soldier(sizeSoldier, {1000.f, y}, Team::teamB));
         }
         
         playerTurn = PlayerTurn::playerA;
+    }
+    void update() {
+        VisionMask::update(getCurrentTeam(), getNonCurrentTeam());
     }
     void handleClick(sf::Vector2f clickPoint) {
         if (paused)
@@ -72,6 +76,9 @@ public:
     
     std::vector<CombatUnit*>& getCurrentTeam() {
         return playerTurn == PlayerTurn::playerA ? teamA : teamB;
+    }
+    std::vector<CombatUnit*>& getNonCurrentTeam() {
+        return playerTurn == PlayerTurn::playerA ? teamB : teamA;
     }
     
     void togglePlayTurn() {

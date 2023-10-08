@@ -10,6 +10,7 @@
 
 struct CONFIGS {
     static constexpr float FPS = 60.f;
+    static sf::Vector2<int> windowSize;
     static sf::Color primaryColor;
     static sf::Color baseColor;
 };

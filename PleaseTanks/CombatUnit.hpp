@@ -9,14 +9,15 @@
 
 #include "Health.hpp"
 #include "GunParams.hpp"
-
+enum Team { teamA, teamB};
 class CombatUnit: public PhysicsBody, public Health {
 private:
     float startTurnDistance;
 public:
     std::string category;
+    Team team;
     float maxDistancePerTurn;
-    CombatUnit(sf::Vector2f size, float maxHealth, float armour, float maxDistance, std::string category): PhysicsBody(size), Health(maxHealth, armour), maxDistancePerTurn(maxDistance), category(category) {
+    CombatUnit(sf::Vector2f size, float maxHealth, float armour, float maxDistance, std::string category, Team team): PhysicsBody(size), Health(maxHealth, armour), maxDistancePerTurn(maxDistance), category(category), team(team) {
         PhysicsBody::traveledDistance.subscribe([&](float distance){
             if (canMove && maxDistancePerTurn  > 0.01f && distance > startTurnDistance + maxDistancePerTurn) {
                 PhysicsBody::canMove = false;

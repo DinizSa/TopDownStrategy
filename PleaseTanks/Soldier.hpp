@@ -17,6 +17,17 @@
 #pragma once
 
 class Soldier : public CombatUnit, private AudioPlayer {
+public:
+    Soldier(sf::Vector2f size, sf::Vector2f position, Team team);
+    ~Soldier();
+    void update() override;
+    float receiveDamage(float damage, float armourPenetration) override;
+    bool attackPrimary() override;
+    bool attackSecondary() override;
+    
+    std::shared_ptr<Weapon> getPrimaryWeapon() const override;
+    std::shared_ptr<Weapon> getSecondaryWeapon() const override;
+
 private:
     AutoSprite feet;
     AutoSprite soldierBody;
@@ -26,14 +37,4 @@ private:
     
     bool fireRifle();
     bool fireGrenade();
-public:
-    Soldier(sf::Vector2f size, sf::Vector2f position);
-    ~Soldier();
-    void update() override;
-    float receiveDamage(float damage, float armourPenetration) override;
-    bool attackPrimary() override;
-    bool attackSecondary() override;
-    
-    std::shared_ptr<Weapon> getPrimaryWeapon() const override;
-    std::shared_ptr<Weapon> getSecondaryWeapon() const override;
 };

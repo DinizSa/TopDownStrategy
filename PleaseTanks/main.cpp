@@ -233,6 +233,10 @@ int main()
         window.draw(playerATurnText);
         window.draw(playerBTurnText);
         unitHud.draw(window);
+    
+        gameplay.update();
+        gameplay.draw(window);
+
         if (gameplay.isPaused())
             window.draw(pausedText);
         window.display();
