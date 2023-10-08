@@ -38,16 +38,8 @@ public:
     bool canMove();
     bool canAttack();
     
-    
-    void setVisible(bool visible) override{
-        hull.visible = visible;
-        gun.visible = visible;
-        trackA.visible = visible;
-        trackB.visible = visible;
-    };
-    bool isVisible() override{
-        return hull.visible;
-    };
+    void setVisible(bool visible) override;
+    bool isVisible() override;
     
     std::shared_ptr<Weapon> getPrimaryWeapon() const override;
     std::shared_ptr<Weapon> getSecondaryWeapon() const override;

@@ -103,7 +103,12 @@ bool Drawable::isDirty() {
 void Drawable::draw(sf::RenderWindow& window) {
     window.draw(rect);
 }
-
+void Drawable::setVisible(bool isVisible) {
+    visible = isVisible;
+}
+bool Drawable::isVisible() {
+    return visible;
+}
 
 typedef std::multimap<float, Drawable*> Multimap;
 Multimap Drawable::drawables;

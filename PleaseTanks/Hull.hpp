@@ -25,4 +25,5 @@ public:
     ~Hull();
     float receiveDamage(float damage, float armourPenetration) override;
     float getSpeed() const;
+    void setVisible(bool isVisible) override;
 };

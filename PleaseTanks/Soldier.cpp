@@ -10,7 +10,7 @@
 #include "Explosion.hpp"
 #include "Utils.hpp"
 
-Soldier::Soldier(sf::Vector2f size, sf::Vector2f position, Team team): CombatUnit(size/2.f, 100, 10, 50.f, "Soldier", team), feet(size/1.5f, 1.f, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), soldierBody(size, 2.f, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)) {
+Soldier::Soldier(sf::Vector2f size, sf::Vector2f position, Team team): CombatUnit(size/2.f, 100, 10, 1.0 * CONFIGS::maxDistanceBySpeedFactor, "Soldier", team), feet(size/1.5f, 1.f, Sprite(SpriteNames::soldierFeet, 8, 8, 0, false)), soldierBody(size, 2.f, Sprite(SpriteNames::soldierMove, 0, 19, 80, true)) {
 
     feet.setPosition(&centerWorld, &rotation);
     soldierBody.setPosition(&centerWorld, &rotation);
@@ -126,3 +126,11 @@ std::shared_ptr<Weapon> Soldier::getPrimaryWeapon() const {
 std::shared_ptr<Weapon> Soldier::getSecondaryWeapon() const {
     return secondaryWeapon;
 }
+
+void Soldier::setVisible(bool visible) {
+    soldierBody.setVisible(visible);
+    feet.setVisible(visible);
+};
+bool Soldier::isVisible() {
+    return soldierBody.isVisible();
+};

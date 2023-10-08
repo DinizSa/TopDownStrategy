@@ -12,6 +12,7 @@
 #include "Utils.hpp"
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
 class VisionMask {
 public:
@@ -19,6 +20,8 @@ public:
     }
     void update(const std::vector<CombatUnit*>& turnUnits, const std::vector<CombatUnit*>& nonTurnUnits) {
         image.create(1200, 800, sf::Color(0, 0, 0, 100));
+        
+//        todo: good candidate for threads?
         for (auto unit : turnUnits) {
             if (!unit->getMovementCollisions())
                 continue;
@@ -46,9 +49,7 @@ public:
             sf::Vector2f center = unit->getCenter();
             sf::Vector2<int> centerInt = {(int)floor(center.x), (int)floor(center.y)};
             sf::Color currentColor = image.getPixel(centerInt.x, centerInt.y);
-            if (currentColor.a > 0) {
-                unit->setVisible(false);
-            }
+            unit->setVisible(currentColor.a == 0);
         }
 
         texture.loadFromImage(image);

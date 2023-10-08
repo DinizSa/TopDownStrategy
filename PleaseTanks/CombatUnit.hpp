@@ -34,6 +34,7 @@ public:
     virtual std::shared_ptr<Weapon> getSecondaryWeapon() const = 0;
     void resetTurn(){
         PhysicsBody::canMove = true;
+        setVisible(true);
     };
     virtual void setVisible(bool visible) = 0;
     virtual bool isVisible() = 0;

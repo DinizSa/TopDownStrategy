@@ -70,3 +70,8 @@ float Hull::receiveDamage(float damage, float armourPenetration) {
 float Hull::getSpeed() const {
     return speed;
 }
+void Hull::setVisible(bool isVisible) {
+    Drawable::setVisible(isVisible);
+    
+    exhaust->setVisible(visible);
+}

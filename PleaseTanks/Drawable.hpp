@@ -30,6 +30,8 @@ public:
     void setZIndex(int index);
     float getZIndex();
     void setColor(sf::Color color);
+    virtual void setVisible(bool visible);
+    bool isVisible();
     
 protected:
     void setSprite(int index);
@@ -40,10 +42,8 @@ protected:
 private:
     void setSingleSpriteSize(const sf::Vector2f& size);
     
-public:
-    bool visible;
 protected:
-    bool dirty;
+    bool dirty, visible;
     sf::RectangleShape rect;
     const sf::Texture* texture;
     sf::Rect<int> textureRect;
