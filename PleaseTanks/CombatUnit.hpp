@@ -35,4 +35,6 @@ public:
     void resetTurn(){
         PhysicsBody::canMove = true;
     };
+    virtual void setVisible(bool visible) = 0;
+    virtual bool isVisible() = 0;
 };

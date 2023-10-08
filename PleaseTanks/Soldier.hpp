@@ -37,4 +37,12 @@ private:
     
     bool fireRifle();
     bool fireGrenade();
+    
+    void setVisible(bool visible) override{
+        soldierBody.visible = visible;
+        feet.visible = visible;
+    };
+    bool isVisible() override{
+        return soldierBody.visible;
+    };
 };

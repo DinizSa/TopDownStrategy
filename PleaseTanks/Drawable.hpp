@@ -18,28 +18,6 @@
 class Drawable {
     using clock = std::chrono::steady_clock;
     
-private:
-    Subject<sf::Vector2f>* positionSub;
-    Subject<float>* rotationSub;
-    int positionOberverId, rotationOberverId;
-protected:
-    bool dirty;
-    sf::RectangleShape rect;
-    const sf::Texture* texture;
-    sf::Rect<int> textureRect;
-    int zIndex;
-    int currentSpriteIndex;
-    const SpriteSheet* spriteSheet;
-
-private:
-    void setSingleSpriteSize(const sf::Vector2f& size);
-
-protected:
-    void setSprite(int index);
-    virtual void updateDrawable(){};
-    void updateTexture(SpriteNames spriteName, int spriteIndex);
-    bool isDirty();
-
 public:
     Drawable(sf::Vector2f size, float zIndex, SpriteNames spriteName, int spriteIndex);
     virtual ~Drawable();
@@ -52,6 +30,30 @@ public:
     void setZIndex(int index);
     float getZIndex();
     void setColor(sf::Color color);
+    
+protected:
+    void setSprite(int index);
+    virtual void updateDrawable(){};
+    void updateTexture(SpriteNames spriteName, int spriteIndex);
+    bool isDirty();
+    
+private:
+    void setSingleSpriteSize(const sf::Vector2f& size);
+    
+public:
+    bool visible;
+protected:
+    bool dirty;
+    sf::RectangleShape rect;
+    const sf::Texture* texture;
+    sf::Rect<int> textureRect;
+    int zIndex;
+    int currentSpriteIndex;
+    const SpriteSheet* spriteSheet;
+private:
+    Subject<sf::Vector2f>* positionSub;
+    Subject<float>* rotationSub;
+    int positionOberverId, rotationOberverId;
     
 private:
     static std::multimap<float, Drawable*> drawables;

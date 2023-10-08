@@ -47,7 +47,7 @@ public:
             sf::Vector2<int> centerInt = {(int)floor(center.x), (int)floor(center.y)};
             sf::Color currentColor = image.getPixel(centerInt.x, centerInt.y);
             if (currentColor.a > 0) {
-//                unit->shouldDraw = false;
+                unit->setVisible(false);
             }
         }
 

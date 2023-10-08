@@ -11,7 +11,7 @@
 
 #include "Drawable.hpp"
 
-Drawable::Drawable(sf::Vector2f size, float zIndex, SpriteNames spriteName, int spriteIndex): currentSpriteIndex(spriteIndex), zIndex(zIndex), rotationSub(nullptr), positionSub(nullptr), dirty(false)
+Drawable::Drawable(sf::Vector2f size, float zIndex, SpriteNames spriteName, int spriteIndex): currentSpriteIndex(spriteIndex), zIndex(zIndex), rotationSub(nullptr), positionSub(nullptr), dirty(false), visible(true)
 {
     rect.setSize(size);
     rect.setOrigin(size / 2.f);
@@ -122,7 +122,8 @@ void Drawable::removeDrawable(Drawable* drawable) {
 }
 void Drawable::drawAll(sf::RenderWindow& window) {
     for (auto drawable : Drawable::drawables) {
-        drawable.second->draw(window);
+        if (drawable.second->visible)
+            drawable.second->draw(window);
     }
 }
 void Drawable::updateDrawables() {
