@@ -18,9 +18,10 @@ class Projectile : public PhysicsBody, public AutoSprite, protected AudioPlayer 
 protected:
     std::shared_ptr<Weapon> weapon;
     float timerSeconds, timeCollision;
-    bool shouldDetonate;
+    bool shouldDetonate, canCollide;
+    float range;
 public:
-    Projectile(sf::Vector2f position, float angleDegrees, int collisionMaskId, const std::shared_ptr<Weapon> weapon);
+    Projectile(sf::Vector2f position, float angleDegrees, int collisionMaskId, const std::shared_ptr<Weapon> weapon, float forcePercentage = 100.f);
     virtual ~Projectile();
     virtual void update() override;
 };

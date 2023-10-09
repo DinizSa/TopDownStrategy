@@ -56,7 +56,7 @@ Gun::~Gun(){
 void Gun::setupGun(int initialAmmunition) {
     
 }
-bool Gun::attackPrimary() {
+bool Gun::attackPrimary(float forcePercentage) {
     bool fired = gunParams.primaryWeapon->fire();
     if (gunParams.primaryWeapon == nullptr)
         return false;
@@ -70,7 +70,7 @@ bool Gun::attackPrimary() {
         float deltaAngle = (i - startPosDelta) * 10.f;
         sf::Vector2f deltaPos = Utils::getVector(currentRotation + deltaAngle, gunParams.projectileStartDistance);
         sf::Vector2f pos = centerWorld() + deltaPos;
-        new Projectile(pos, currentRotation, collisionMaskId, gunParams.primaryWeapon);
+        new Projectile(pos, currentRotation, collisionMaskId, gunParams.primaryWeapon, forcePercentage);
     }
     return true;
 }
@@ -80,7 +80,7 @@ std::shared_ptr<Weapon> Gun::getPrimary() const {
 std::shared_ptr<Weapon> Gun::getSecondary() const{
     return gunParams.secondaryWeapon;
 }
-bool Gun::attackSecondary() {
+bool Gun::attackSecondary(float forcePercentage) {
     if (gunParams.secondaryWeapon == nullptr)
         return false;
     bool fired = gunParams.secondaryWeapon->fire();
@@ -91,7 +91,7 @@ bool Gun::attackSecondary() {
     sf::Vector2f deltaPos = Utils::getVector(currentRotation, gunParams.projectileStartDistance);
     sf::Vector2f pos = centerWorld() + deltaPos;
 
-    new Projectile(pos, currentRotation, collisionMaskId, gunParams.secondaryWeapon);
+    new Projectile(pos, currentRotation, collisionMaskId, gunParams.secondaryWeapon, forcePercentage);
     return true;
 }
 
@@ -102,4 +102,25 @@ void Gun::update() {
         gunParams.primaryWeapon->updateReloadTimer();
     if (gunParams.secondaryWeapon != nullptr)
         gunParams.secondaryWeapon->updateReloadTimer();
+}
+
+void Gun::handleDrag(sf::Vector2f deltaDrag, bool isFinished) {
+    float currentAngle = rect.getRotation() + 90.f;
+    if (currentAngle > 360.f)
+        currentAngle = currentAngle - 360.f;
+    
+    float dragAngle = Utils::getAngle(deltaDrag);
+    float deltaAngle = dragAngle - currentAngle;
+//    std::cout << "currentAngle: " << currentAngle << std::endl;
+//    std::cout << "dragAngle: " << dragAngle << std::endl;
+//    std::cout << "DELTA: " << deltaAngle << std::endl;
+    rotate(deltaAngle);
+    
+    if (!isFinished) {
+        return;
+    }
+    
+    float velocityScalar = Utils::getLength(deltaDrag);
+    
+    attackPrimary(velocityScalar);
 }

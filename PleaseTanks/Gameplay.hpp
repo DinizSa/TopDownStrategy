@@ -12,8 +12,17 @@
 #include "Soldier.hpp"
 #include "VisionMask.hpp"
 
+struct Drag {
+    sf::Vector2f start;
+    sf::Vector2f current;
+    bool isDragging, isFinish;
+    Drag(): isDragging(false), isFinish(false) {}
+};
+
 struct PressedButtons {
     bool moveFront, moveBack, rotateClock, rotateAntiClock, rotateSecondaryClock, rotateSecondaryAntiClock, attackPrimary, attackSecondary;
+    Drag drag;
+    PressedButtons(): moveFront(false), moveBack(false), rotateClock(false), rotateAntiClock(false), rotateSecondaryClock(false), rotateSecondaryAntiClock(false), attackPrimary(false), attackSecondary(false) {};
 };
 
 class Gameplay: public VisionMask {
@@ -44,6 +53,8 @@ public:
         for (float y = 300.f; y < 500.f; y += 55.f) {
             teamB.push_back(new Soldier(sizeSoldier, {1000.f, y}, Team::teamB));
         }
+        
+        selected = teamA[0];
         
         playerTurn = PlayerTurn::playerA;
     }
@@ -101,6 +112,13 @@ public:
     void handleControls(PressedButtons buttons) {
         if (selected == nullptr)
             return;
+        if (selected != nullptr) {
+            if (buttons.drag.isDragging) {
+//                selected->handleDrag(buttons.drag.start - buttons.drag.current, false);
+            } else if (buttons.drag.isFinish) {
+                selected->handleDrag(buttons.drag.current - buttons.drag.start, true);
+            }
+        }
         if (buttons.moveFront)
             selected->translateFront();
         if (buttons.moveBack)

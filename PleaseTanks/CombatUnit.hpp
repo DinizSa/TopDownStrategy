@@ -16,8 +16,9 @@ private:
 public:
     std::string category;
     Team team;
+    float depthOfVision;
     float maxDistancePerTurn;
-    CombatUnit(sf::Vector2f size, float maxHealth, float armour, float maxDistance, std::string category, Team team): PhysicsBody(size), Health(maxHealth, armour), maxDistancePerTurn(maxDistance), category(category), team(team) {
+    CombatUnit(sf::Vector2f size, float maxHealth, float armour, float maxDistance, std::string category, Team team, float depthOfVision): PhysicsBody(size), Health(maxHealth, armour), maxDistancePerTurn(maxDistance), category(category), team(team), depthOfVision(depthOfVision) {
         PhysicsBody::traveledDistance.subscribe([&](float distance){
             if (canMove && maxDistancePerTurn  > 0.01f && distance > startTurnDistance + maxDistancePerTurn) {
                 PhysicsBody::canMove = false;
@@ -38,4 +39,5 @@ public:
     };
     virtual void setVisible(bool visible) = 0;
     virtual bool isVisible() = 0;
+    virtual void handleDrag(sf::Vector2f deltaDrag, bool isFinished) {};
 };

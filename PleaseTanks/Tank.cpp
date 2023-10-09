@@ -12,7 +12,7 @@
 #include "Utils.hpp"
 #include "GunParams.hpp"
 
-Tank::Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams, int trackId, float angularSpeed, std::string category, Team team): CombatUnit({size.x * (6.f/10.f), size.y}, 0, 0, hullParams.speed * CONFIGS::maxDistanceBySpeedFactor, category, team), hull(std::move(hullParams)), gun(std::move(gunParams)), trackA({size.x/4, size.y*1.03f}, trackId, 200, 50), trackB({size.x/4, size.y*1.03f}, trackId, 200, 50) {
+Tank::Tank(sf::Vector2f size, sf::Vector2f position, HullParams hullParams, GunParams gunParams, int trackId, float angularSpeed, std::string category, Team team): CombatUnit({size.x * (6.f/10.f), size.y}, 0, 0, hullParams.speed * CONFIGS::maxDistanceBySpeedFactor, category, team, 400.f), hull(std::move(hullParams)), gun(std::move(gunParams)), trackA({size.x/4, size.y*1.03f}, trackId, 200, 50), trackB({size.x/4, size.y*1.03f}, trackId, 200, 50) {
     
     int maskId = PhysicsBody::getAndIncrementMaskId();
     setCollisionMaskId(maskId);
@@ -119,4 +119,8 @@ std::shared_ptr<Weapon> Tank::getPrimaryWeapon() const {
 
 std::shared_ptr<Weapon> Tank::getSecondaryWeapon() const {
     return gun.getSecondary();
+}
+
+void Tank::handleDrag(sf::Vector2f deltaDrag, bool isFinished) {
+    gun.handleDrag(deltaDrag, isFinished);
 }

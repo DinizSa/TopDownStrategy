@@ -60,14 +60,14 @@ public:
     float range, damage, penetration, zIndex, velocityScalar, rotation, reloadTimeSeconds, shotsIntervalSeconds;
     float selfDetonationSeconds, collisionDetonationSeconds;
     sf::Vector2f projectileImageSize, projectilePhysicsSize, explosionImageSize, explosionPhysicsSize, lauchSize;
-    bool explodeOnMaxRange, loseForceOnMaxRange, automatic, rampUpExplosiveOpacity;
+    bool explodeOnMaxRange, loseForceOnMaxRange, automatic, rampUpExplosiveOpacity, isDraggable;
     Subject<int> triggerAutomatic;
     std::string name;
     
     std::unique_ptr<Sprite> launchSprite, missileSprite, explosionSprite;
     std::unique_ptr<Sound> launchSound, explosionSound;
     
-    Weapon(int maxLoad, std::string&& name): Ammunition(0, maxLoad), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), readyFromReload(true), readyFromShot(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f), shotsIntervalSeconds(0), automatic(false), rampUpExplosiveOpacity(false), name(std::move(name)) {}
+    Weapon(int maxLoad, std::string&& name, bool isDraggable): Ammunition(0, maxLoad), range(0.f), damage(0.f), penetration(0.f), reloadTimeSeconds(0.f), secondsSinceShot(0.f), readyFromReload(true), readyFromShot(true), collisionDetonationSeconds(-1), selfDetonationSeconds(-1), rotation(0.f), shotsIntervalSeconds(0), automatic(false), rampUpExplosiveOpacity(false), name(std::move(name)), isDraggable(isDraggable) {}
 
     bool fire() {
         if (readyFromShot && readyFromReload && Ammunition::consume()) {
@@ -110,7 +110,7 @@ public:
 
 class Rifle : public Weapon {
 public:
-    Rifle(): Weapon(3, "Rifle") {
+    Rifle(): Weapon(3, "Rifle", false) {
         reloadTimeSeconds = 2.f;
         shotsIntervalSeconds = 1.f;
         range = 250.f;
@@ -138,7 +138,7 @@ public:
 
 class Grenade : public Weapon {
 public:
-    Grenade(): Weapon(1, "Grenade") {
+    Grenade(): Weapon(1, "Grenade", false) {
         range = 150.f;
         damage = 35.f;
         penetration = 20.f;
@@ -164,7 +164,7 @@ public:
 
 class CannonPenetration : public Weapon {
 public:
-    CannonPenetration(): Weapon(1, "Piercing explosive") {
+    CannonPenetration(): Weapon(1, "Piercing explosive", true) {
         range = 650.f;
         damage = 120.f;
         penetration = 60.f;
@@ -192,7 +192,7 @@ public:
 
 class CannonHighExplosive : public Weapon {
 public:
-    CannonHighExplosive(): Weapon(1, "High explosive") {
+    CannonHighExplosive(): Weapon(1, "High explosive", true) {
         range = 550.f;
         damage = 120.f;
         penetration = 20.f;
@@ -220,7 +220,7 @@ public:
 
 class SmokeWeapon : public Weapon {
 public:
-    SmokeWeapon(): Weapon(1, "Smoke grenade") {
+    SmokeWeapon(): Weapon(1, "Smoke grenade", true) {
         range = 250.f;
         damage = 0.f;
         penetration = 0.f;
@@ -248,7 +248,7 @@ public:
 
 class MineAntiTank : public Weapon {
 public:
-    MineAntiTank(): Weapon(1, "Mine") {
+    MineAntiTank(): Weapon(1, "Mine", false) {
         range = 0.f;
         damage = 200.f;
         penetration = 60.f;
@@ -275,7 +275,7 @@ public:
 
 class AutomaticRifle : public Weapon {
 public:
-    AutomaticRifle(): Weapon(5, "Automatic") {
+    AutomaticRifle(): Weapon(5, "Automatic", false) {
         range = 200.f;
         damage = 20.f;
         penetration = 4.f;

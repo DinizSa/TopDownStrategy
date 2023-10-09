@@ -93,7 +93,7 @@ void PhysicsBody::setAngularSpeed(float newAngularSpeed) {
 void PhysicsBody::setCollisionMaskId(int groupId) {
     collisionMaskId = groupId;
 }
-PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(0.f), speed(0.f), angularSpeed(0.f), shouldConsumePath(false), lastLocalRotation(0.f), canMove(true) {
+PhysicsBody::PhysicsBody(sf::Vector2f size): hasMovementCollisions(false), collisionMaskId(0), velocity({0.f, 0.f}), localRotation(90.f), speed(0.f), angularSpeed(0.f), shouldConsumePath(false), lastLocalRotation(0.f), canMove(true) {
     traveledDistance = 0.f;
     setSize(size);
     allBodies.push_back(this);
@@ -152,8 +152,7 @@ void PhysicsBody::setVelocityAndRotate(sf::Vector2f v) {
     float velocityAngle = Utils::getAngle(v);
     float currentRot = rotation();
     float angle = imagesInitialAngle + velocityAngle - currentRot;
-    if (angle > 0.001f)
-        rotate(angle);
+    rotate(angle);
 
     setVelocity(v);
 }

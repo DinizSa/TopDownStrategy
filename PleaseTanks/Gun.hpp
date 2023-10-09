@@ -19,11 +19,13 @@ class Gun : public PhysicsBody, public Health, public Drawable, private AudioPla
 public:
     Gun(GunParams&& GunParams);
     virtual ~Gun();
-    bool attackPrimary();
-    bool attackSecondary();
+    bool attackPrimary(float forcePercentage = 100.f);
+    bool attackSecondary(float forcePercentage = 100.f);
     void update() override;
     std::shared_ptr<Weapon> getPrimary() const;
     std::shared_ptr<Weapon> getSecondary() const;
+    
+    void handleDrag(sf::Vector2f deltaDrag, bool isFinished);
     
 private:
     GunParams gunParams;

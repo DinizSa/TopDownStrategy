@@ -11,17 +11,21 @@
 #include "Explosion.hpp"
 #include "Configs.hpp"
 
-Projectile::Projectile(sf::Vector2f position, float angleDegrees, int maskId, const std::shared_ptr<Weapon> weapon):
+Projectile::Projectile(sf::Vector2f position, float angleDegrees, int maskId, const std::shared_ptr<Weapon> weapon, float forcePercentage):
     PhysicsBody(weapon->projectilePhysicsSize),
     AutoSprite(weapon->projectileImageSize, weapon->zIndex, *weapon->missileSprite), timerSeconds(0.f), timeCollision(-1.f),
-    weapon(weapon), shouldDetonate(false)
+weapon(weapon), shouldDetonate(false), canCollide(!weapon->isDraggable)
 {
     setPosition(&centerWorld, &rotation);
     setCollisionMaskId(maskId);
     
+    float forceFactor = std::min(forcePercentage, 100.f) / 100.f;
+    range = weapon->range * forceFactor;
+    
     translate(position, false);
     if (weapon->velocityScalar > 0.f) {
-        sf::Vector2f velocity = Utils::getVector(angleDegrees, weapon->velocityScalar);
+        float velocityScalar = weapon->velocityScalar * forceFactor;
+        sf::Vector2f velocity = Utils::getVector(angleDegrees, velocityScalar);
         setVelocityAndRotate(velocity);
     }
     
@@ -43,8 +47,18 @@ void Projectile::update() {
     if (weapon->rotation > 0.f)
         rotate(weapon->rotation);
     
+    float traveledDistance = getTraveledDistance();
+    if (weapon->isDraggable) {
+        float scale = 2.f - fabs((range / 2) - traveledDistance) / (range / 2);
+        rect.setScale(scale, scale);
+    }
+    
 //  range detonation
-    if (getTraveledDistance() > weapon->range) {
+    if (!canCollide && traveledDistance > range*(7/10.f)) {
+        setColor(sf::Color::Red);
+        canCollide = true;
+    }
+    if (traveledDistance > range) {
         if (weapon->loseForceOnMaxRange) {
             expired = true;
             return;
@@ -60,7 +74,7 @@ void Projectile::update() {
     }
     
 //  collision detonation
-    if (weapon->collisionDetonationSeconds > -1 && timeCollision == -1) {
+    if (canCollide && weapon->collisionDetonationSeconds > -1 && timeCollision == -1) {
         if (collidedAny())
             timeCollision = timerSeconds;
     }

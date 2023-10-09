@@ -45,16 +45,14 @@ int main()
     
     Gameplay gameplay;
     
-    
-    
-    bool forwardPressed = false;
-    bool turnClockPressed = false;
-    bool turnAnticlockPressed = false;
-    bool backwardPressed = false;
-    bool turnClockGunPressed = false;
-    bool turnAnticlockGunPressed = false;
-    bool attackPrimary = false;
-    bool attackSecondary = false;
+//    bool forwardPressed = false;
+//    bool turnClockPressed = false;
+//    bool turnAnticlockPressed = false;
+//    bool backwardPressed = false;
+//    bool turnClockGunPressed = false;
+//    bool turnAnticlockGunPressed = false;
+//    bool attackPrimary = false;
+//    bool attackSecondary = false;
     
     sf::Text framesText;
     framesText.setCharacterSize(30);
@@ -112,6 +110,8 @@ int main()
     
     UnitHud unitHud;
     
+    PressedButtons buttons;
+    
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event))
@@ -119,13 +119,22 @@ int main()
             if (event.type == sf::Event::MouseButtonPressed){
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "click: " << event.mouseButton.x << ", " << event.mouseButton.y << std::endl;
-                    sf::Vector2f point = {(float)event.mouseButton.x, (float)event.mouseButton.y};
+                    sf::Vector2f point = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
                     gameplay.handleClick(point);
                     
                     unitHud.handleClick(point);
                     
                     const CombatUnit* selectedUnit = gameplay.getSelected();
                     unitHud.setSelectedUnit(selectedUnit);
+                    
+                    buttons.drag.isDragging = true;
+                    buttons.drag.start = point;
+                }
+            } else if (event.type == sf::Event::MouseButtonReleased) {
+                if (event.mouseButton.button == sf::Mouse::Left && buttons.drag.isDragging) {
+                    buttons.drag.isDragging = false;
+                    buttons.drag.isFinish = true;
+                    buttons.drag.current = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -136,28 +145,28 @@ int main()
                         window.close();
                         break;
                     case sf::Keyboard::Scan::W:
-                        forwardPressed = true;
+                        buttons.moveFront = true;
                         break;
                     case sf::Keyboard::Scan::S:
-                        backwardPressed = true;
+                        buttons.moveBack = true;
                         break;
                     case sf::Keyboard::Scan::A:
-                        turnAnticlockPressed = true;
+                        buttons.rotateAntiClock = true;
                         break;
                     case sf::Keyboard::Scan::D:
-                        turnClockPressed = true;
+                        buttons.rotateClock = true;
                         break;
                     case sf::Keyboard::Scan::E:
-                        turnClockGunPressed = true;
+                        buttons.rotateSecondaryClock = true;
                         break;
                     case sf::Keyboard::Scan::Q:
-                        turnAnticlockGunPressed = true;
+                        buttons.rotateSecondaryAntiClock = true;
                         break;
                     case sf::Keyboard::Scan::N:
-                        attackPrimary = true;
+                        buttons.attackPrimary = true;
                         break;
                     case sf::Keyboard::Scan::M:
-                        attackSecondary = true;
+                        buttons.attackSecondary = true;
                         break;
                     case sf::Keyboard::Scan::P:
                         gameplay.togglePause();
@@ -172,33 +181,37 @@ int main()
             if (event.type == sf::Event::KeyReleased) {
                 switch (event.key.scancode) {
                     case sf::Keyboard::Scan::W:
-                        forwardPressed = false;
+                        buttons.moveFront = false;
                         break;
                     case sf::Keyboard::Scan::S:
-                        backwardPressed = false;
+                        buttons.moveBack = false;
                         break;
                     case sf::Keyboard::Scan::A:
-                        turnAnticlockPressed = false;
+                        buttons.rotateAntiClock = false;
                         break;
                     case sf::Keyboard::Scan::D:
-                        turnClockPressed = false;
+                        buttons.rotateClock = false;
                         break;
                     case sf::Keyboard::Scan::E:
-                        turnClockGunPressed = false;
+                        buttons.rotateSecondaryClock = false;
                         break;
                     case sf::Keyboard::Scan::Q:
-                        turnAnticlockGunPressed = false;
+                        buttons.rotateSecondaryAntiClock = false;
                         break;
                     case sf::Keyboard::Scan::N:
-                        attackPrimary = false;
+                        buttons.attackPrimary = false;
                         break;
                     case sf::Keyboard::Scan::M:
-                        attackSecondary = false;
+                        buttons.attackSecondary = false;
                         break;
                     default:
                         break;
                 }
             }
+        }
+        
+        if (buttons.drag.isDragging) {
+            buttons.drag.current = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
         }
         
         if (gameplay.getPlayerTurn() == Gameplay::PlayerTurn::playerA) {
@@ -210,17 +223,8 @@ int main()
             playerBTurnText.setFillColor(sf::Color(255, 0, 0, 255));
         }
 
-        PressedButtons buttons {
-            forwardPressed,
-            backwardPressed,
-            turnClockPressed,
-            turnAnticlockPressed,
-            turnClockGunPressed,
-            turnAnticlockGunPressed,
-            attackPrimary,
-            attackSecondary
-        };
         gameplay.handleControls(buttons);
+        buttons.drag.isFinish = false;
 
         Drawable::updateDrawables();
         PhysicsBody::updatePhysicsBodys();

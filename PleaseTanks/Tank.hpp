@@ -43,4 +43,6 @@ public:
     
     std::shared_ptr<Weapon> getPrimaryWeapon() const override;
     std::shared_ptr<Weapon> getSecondaryWeapon() const override;
+    
+    void handleDrag(sf::Vector2f deltaDrag, bool isFinished) override;
 };
