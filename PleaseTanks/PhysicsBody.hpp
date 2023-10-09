@@ -65,7 +65,7 @@ public:
     float getRotation() const;
     bool getMovementCollisions() const;
     int getCollisionMaskId() const;
-    sf::Vector2f getCenter() const;
+    const sf::Vector2f& getCenter() const;
     float getRadius() const;
     sf::Vector2f getSize() const;
     void setSize(sf::Vector2f size);

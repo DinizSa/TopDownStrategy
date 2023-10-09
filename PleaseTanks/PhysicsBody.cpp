@@ -127,7 +127,7 @@ void PhysicsBody::travelToDestination(sf::Vector2f destination) {
 int PhysicsBody::getCollisionMaskId() const {
     return collisionMaskId;
 }
-sf::Vector2f PhysicsBody::getCenter() const {
+const sf::Vector2f& PhysicsBody::getCenter() const {
     return centerWorld();
 }
 sf::Vector2f PhysicsBody::getSize() const {
@@ -152,7 +152,8 @@ void PhysicsBody::setVelocityAndRotate(sf::Vector2f v) {
     float velocityAngle = Utils::getAngle(v);
     float currentRot = rotation();
     float angle = imagesInitialAngle + velocityAngle - currentRot;
-    rotate(angle);
+    if (angle > 0.001f)
+        rotate(angle);
 
     setVelocity(v);
 }

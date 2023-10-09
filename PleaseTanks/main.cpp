@@ -227,6 +227,8 @@ int main()
         
         window.clear();
         
+        gameplay.update();
+        
         window.draw(terrain);
         Drawable::drawAll(window);
         window.draw(framesText);
@@ -234,7 +236,6 @@ int main()
         window.draw(playerBTurnText);
         unitHud.draw(window);
     
-        gameplay.update();
         gameplay.draw(window);
 
         if (gameplay.isPaused())

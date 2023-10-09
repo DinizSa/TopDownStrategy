@@ -25,7 +25,7 @@ public:
         for (auto unit : turnUnits) {
             if (!unit->getMovementCollisions())
                 continue;
-            sf::Vector2f center = unit->getCenter();
+            const sf::Vector2f& center = unit->getCenter();
             float radius = unit->getRadius()*6;
             int minX = static_cast<int>(floor(std::fmax(0, center.x - radius)));
             int maxX = static_cast<int>(floor(std::fmin(center.x + radius, 1200)));
