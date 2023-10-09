@@ -211,7 +211,7 @@ int main()
         }
         
         if (buttons.drag.isDragging) {
-            buttons.drag.current = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
+            buttons.drag.current = sf::Vector2f(sf::Mouse::getPosition(window));
         }
         
         if (gameplay.getPlayerTurn() == Gameplay::PlayerTurn::playerA) {

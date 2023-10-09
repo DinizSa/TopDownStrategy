@@ -114,7 +114,7 @@ public:
             return;
         if (selected != nullptr) {
             if (buttons.drag.isDragging) {
-//                selected->handleDrag(buttons.drag.start - buttons.drag.current, false);
+                selected->handleDrag(buttons.drag.current - buttons.drag.start, false);
             } else if (buttons.drag.isFinish) {
                 selected->handleDrag(buttons.drag.current - buttons.drag.start, true);
             }

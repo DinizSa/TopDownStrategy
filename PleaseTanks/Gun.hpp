@@ -29,6 +29,6 @@ public:
     
 private:
     GunParams gunParams;
-    
-    void setupGun(int initialAmmunition);
+    Drawable arrowAim;
+    bool dragging;
 };

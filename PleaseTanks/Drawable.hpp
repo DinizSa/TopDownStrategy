@@ -30,6 +30,8 @@ public:
     void setZIndex(int index);
     float getZIndex();
     void setColor(sf::Color color);
+    void setScale(sf::Vector2f scale);
+    void setOrigin(sf::Vector2f origin);
     virtual void setVisible(bool visible);
     bool isVisible();
     

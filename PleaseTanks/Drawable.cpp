@@ -78,6 +78,12 @@ float Drawable::getZIndex() {
 void Drawable::setColor(sf::Color color) {
     rect.setFillColor(color);
 }
+void Drawable::setScale(sf::Vector2f scale) {
+    rect.setScale(scale);
+}
+void Drawable::setOrigin(sf::Vector2f origin) {
+    rect.setOrigin(origin);
+}
 void Drawable::setSingleSpriteSize(const sf::Vector2f& size) {
     textureRect.width = size.x;
     textureRect.height = size.y;

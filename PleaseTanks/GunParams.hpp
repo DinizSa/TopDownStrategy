@@ -73,8 +73,8 @@ public:
         projectileStartDistance = Utils::getLength(sizeImage) / 2.5f;
         simultaneousShots = 1;
         
-        primaryWeapon = std::make_shared<Weapon>(SmokeWeapon());
-        secondaryWeapon = std::make_shared<Weapon>(AutomaticRifle());
+        primaryWeapon = std::make_shared<Weapon>(CannonHighExplosive());
+        secondaryWeapon = std::make_shared<Weapon>(SmokeWeapon());
     }
 };
 
