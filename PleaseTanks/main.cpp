@@ -108,11 +108,15 @@ int main()
     new Tree({120.f, 120.f}, {450.f, 300.f});
     new Tree({130.f, 130.f}, {600.f, 350.f});
     
+    int offsetDragFrames = 15;
+    int counterDragFrames = 0;
+    
     UnitHud unitHud;
     
     PressedButtons buttons;
     
     while (window.isOpen()) {
+        
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -127,14 +131,17 @@ int main()
                     const CombatUnit* selectedUnit = gameplay.getSelected();
                     unitHud.setSelectedUnit(selectedUnit);
                     
-                    buttons.drag.isDragging = true;
-                    buttons.drag.start = point;
+                    counterDragFrames++;
                 }
             } else if (event.type == sf::Event::MouseButtonReleased) {
-                if (event.mouseButton.button == sf::Mouse::Left && buttons.drag.isDragging) {
-                    buttons.drag.isDragging = false;
-                    buttons.drag.isFinish = true;
-                    buttons.drag.current = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    if (buttons.drag.isDragging) {
+                        buttons.drag.isDragging = false;
+                        buttons.drag.isFinish = true;
+                        buttons.drag.current = sf::Vector2f(event.mouseButton.x, event.mouseButton.y);
+                    }
+                    
+                    counterDragFrames = 0;
                 }
             }
             if (event.type == sf::Event::Closed)
@@ -209,7 +216,13 @@ int main()
                 }
             }
         }
-        
+        if (counterDragFrames > 0)
+            counterDragFrames++;
+    
+        if (counterDragFrames == offsetDragFrames) {
+            buttons.drag.isDragging = true;
+            buttons.drag.start = sf::Vector2f(sf::Mouse::getPosition(window));
+        }
         if (buttons.drag.isDragging) {
             buttons.drag.current = sf::Vector2f(sf::Mouse::getPosition(window));
         }
@@ -224,7 +237,11 @@ int main()
         }
 
         gameplay.handleControls(buttons);
-        buttons.drag.isFinish = false;
+        
+        if (buttons.drag.isFinish) {
+//            counterDragFrames = 0;
+            buttons.drag.isFinish = false;
+        }
 
         Drawable::updateDrawables();
         PhysicsBody::updatePhysicsBodys();

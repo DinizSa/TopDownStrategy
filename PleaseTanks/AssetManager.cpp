@@ -32,7 +32,7 @@ AssetManager::AssetManager() {
     spriteSheets.insert_or_assign(SpriteNames::smokeDense, new SpriteSheet({4, 4, imagesPath + "smokeDense.png", sf::Vector2f({256.f, 256.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::blood, new SpriteSheet({6, 1, imagesPath + "blood.png", sf::Vector2f({128.f, 128.f}), 1.f}));
     spriteSheets.insert_or_assign(SpriteNames::icons, new SpriteSheet({8, 8, imagesPath + "icons.png", sf::Vector2f({128.f, 128.f}), 1.f}));
-    spriteSheets.insert_or_assign(SpriteNames::arrow, new SpriteSheet({1, 1, imagesPath + "arrow.png", sf::Vector2f({626.f, 626.f}), 1.f}));
+    spriteSheets.insert_or_assign(SpriteNames::arrow, new SpriteSheet({1, 1, imagesPath + "arrow.png", sf::Vector2f({500.f, 500.f}), 1.f}));
 
     loadSoundBuffer(SoundNames::movingTank, "movingTank.mp3");
     loadSoundBuffer(SoundNames::damagedTank, "damagedTank.mp3");
