@@ -356,3 +356,9 @@ void PhysicsBody::setMovementCollisions(bool hasCollisions) {
 float PhysicsBody::getTraveledDistance() {
     return traveledDistance();
 }
+
+void PhysicsBody::cancelPath() {
+    path.clear();
+    shouldConsumePath = false;
+    setVelocity({0.f, 0.f});
+}

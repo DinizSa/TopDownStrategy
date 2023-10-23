@@ -11,6 +11,7 @@
 #include "Tank.hpp"
 #include "Soldier.hpp"
 #include "VisionMask.hpp"
+#include "UnitHud.hpp"
 
 struct Drag {
     sf::Vector2f start;
@@ -34,8 +35,9 @@ private:
     CombatUnit* selected;
     PlayerTurn playerTurn;
     bool paused;
+    UnitHud unitHud;
 public:
-    Gameplay(): selected(nullptr) {
+    Gameplay(): selected(nullptr), paused(false) {
         
         teamA.push_back(new Tank({80.f, 80.f}, {100.f, 200.f}, LightHullParams(), DoubleGunParams(), 4, 2.f, "Light Tank", Team::teamA));
         teamA.push_back(new Tank({90.f, 90.f}, {100.f, 400.f}, MediumHullParams(), SmokeGunParams(), 0, 1.5f, "Tank", Team::teamA));
@@ -58,6 +60,12 @@ public:
         
         playerTurn = PlayerTurn::playerA;
     }
+    ~Gameplay() {
+        for (auto combatUnit : teamA)
+            delete combatUnit;
+        for (auto combatUnit : teamB)
+            delete combatUnit;
+    }
     void update() {
         VisionMask::update(getCurrentTeam(), getNonCurrentTeam());
     }
@@ -69,13 +77,16 @@ public:
         for (auto combatUnit : team){
             if (combatUnit->instersects(clickPoint)){
                 selected = combatUnit;
+                unitHud.setSelectedUnit(selected);
                 return;
             }
         }
         if (selected) {
             bool isUnitFromTeam = std::find(team.begin(), team.end(), selected) != team.end();
-            if (isUnitFromTeam)
+            if (isUnitFromTeam){
                 selected->travelToDestination(clickPoint);
+                return;
+            }
         }
     }
     CombatUnit* getSelected() {
@@ -109,6 +120,11 @@ public:
         return playerTurn;
     }
     
+    void draw(sf::RenderWindow& window) {
+        VisionMask::draw(window);
+        unitHud.draw(window);
+    }
+    
     void handleControls(PressedButtons buttons) {
         if (selected == nullptr)
             return;
@@ -135,12 +151,5 @@ public:
             selected->attackPrimary();
         if (buttons.attackSecondary)
             selected->attackSecondary();
-    }
-    
-    ~Gameplay() {
-        for (auto combatUnit : teamA)
-            delete combatUnit;
-        for (auto combatUnit : teamB)
-            delete combatUnit;
     }
 };

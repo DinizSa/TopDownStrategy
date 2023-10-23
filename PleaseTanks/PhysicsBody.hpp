@@ -53,6 +53,7 @@ protected:
     std::array<sf::Vector2f, 4> getVertices() const;
     void setMovementCollisions(bool hasCollisions);
     float getTraveledDistance();
+    void cancelPath();
 
 public:
     PhysicsBody(sf::Vector2f size);

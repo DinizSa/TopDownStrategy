@@ -22,9 +22,8 @@ public:
         PhysicsBody::traveledDistance.subscribe([&](float distance){
             if (canMove && maxDistancePerTurn  > 0.01f && distance > startTurnDistance + maxDistancePerTurn) {
                 PhysicsBody::canMove = false;
-                setVelocity({0.f, 0.f});
-                PhysicsBody::path.clear(); 
                 startTurnDistance = distance;
+                cancelPath();
             }
         });
     };
@@ -36,6 +35,8 @@ public:
     void resetTurn(){
         PhysicsBody::canMove = true;
         setVisible(true);
+        startTurnDistance = PhysicsBody::traveledDistance();
+        cancelPath();
     };
     virtual void setVisible(bool visible) = 0;
     virtual bool isVisible() = 0;
